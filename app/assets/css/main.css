@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@plugin "@tailwindcss/typography";
+:root {
+  font-family: FarhangDot;
+}
+
+.navbar a {
+  @apply text-sm;
+}
