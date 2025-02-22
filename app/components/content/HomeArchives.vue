@@ -1,7 +1,12 @@
 <script setup lang="ts">
-const { data } = useAsyncData("home-archives", () => {
-  return queryCollection("items").limit(10).all();
-});
+const { locale, defaultLocale } = useI18n();
+
+const { data } = await useAsyncData(`home-archives`, () =>
+  queryCollection("items")
+    .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
+    .limit(10)
+    .all()
+);
 </script>
 
 <template>
@@ -11,7 +16,7 @@ const { data } = useAsyncData("home-archives", () => {
     <div v-if="data" class="px-5 md:m-0">
       <ol>
         <li v-for="item in data" :key="item.id" class="mb-2">
-          <NuxtLink :to="item.path.slice(0, -3)" class="hover:underline">
+          <NuxtLink :to="item.path" class="hover:underline">
             {{ item.title }}
           </NuxtLink>
 
