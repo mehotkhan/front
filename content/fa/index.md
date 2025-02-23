@@ -1,3 +1,11 @@
-::<HomeIntro />
 
-::<HomeArchives />
+<div>
+
+<HomeIntro />
+
+</div>
+
+<hr >
+
+<HomeArchives />
+
