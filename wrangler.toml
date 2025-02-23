@@ -13,10 +13,4 @@ migrations_dir = "migrations"
 binding = "inboxKV"
 id = "641b2dd1ff024c6d88da451bee969e54"
 
-#[[durable_objects.bindings]]
-#name = "$DurableObject"
-#class_name = "$DurableObject"
-
-#[[migrations]]
-#tag = "v1"
-#new_classes = ["$DurableObject"]
+ 
