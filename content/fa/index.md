@@ -1,3 +1,7 @@
+---
+title: "صفحه نخست"
+description: "صندوق ورودی :)"
+---
 
 <div>
 
@@ -8,4 +12,3 @@
 <hr >
 
 <HomeArchives />
-
