@@ -6,7 +6,7 @@ description: WebAssembly in Action introduces the WebAssembly stack and walks
   Expert developer Gerard Gallant gives you a firm foundation of the structure
   of a module, HTML basics, JavaScript Promises, and the WebAssembly JavaScript
   API.
-date: 2023-09-00
+date: 2023-09-01T16:33:46.294Z
 
 banner: true
 toc: true

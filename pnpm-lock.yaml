@@ -82,8 +82,8 @@ importers:
         specifier: ^1.2.26
         version: 1.2.26
       '@iconify-json/simple-icons':
-        specifier: ^1.2.25
-        version: 1.2.25
+        specifier: ^1.2.26
+        version: 1.2.26
       '@iconify-json/uil':
         specifier: ^1.2.3
         version: 1.2.3
@@ -127,8 +127,8 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
       wrangler:
-        specifier: ^3.109.2
-        version: 3.109.2(@cloudflare/workers-types@4.20250214.0)
+        specifier: ^3.109.3
+        version: 3.109.3(@cloudflare/workers-types@4.20250214.0)
 
 packages:
 
@@ -1033,14 +1033,14 @@ packages:
   '@iconify-json/lucide@1.2.26':
     resolution: {integrity: sha512-arD/8mK0lRxFY2LgLf345NhWVWiOtV8sOxJuLnq4QRz3frMiOwVwGxEgp5Xe/bRGzxO2CxxCBok0bPRpCkYZQQ==}
 
-  '@iconify-json/simple-icons@1.2.25':
-    resolution: {integrity: sha512-2E1/gOCO97rF6usfhhiXxwzCb+UhdEsxW3lW1Sew+xZY0COY6dp82Z/r1rUt2fWKneWjuoGcNeJHHXQyG8mIuw==}
+  '@iconify-json/simple-icons@1.2.26':
+    resolution: {integrity: sha512-NvqRuE+5h/tp4boPlnvfs0alD0CvnRE7oeG9Li5NGmZRx2/rhwlNjW/vEVTyhZcR9zqvRPAVh2GXR+PTEpzV+A==}
 
   '@iconify-json/uil@1.2.3':
     resolution: {integrity: sha512-if91+UBhDQc6glPsIaXecGIcXnbQZfEO4Gdv89TV2xQ+V5e9GWbY5rNl2fsKZd8COsRQ5lRQAKimVQVL0CZZVg==}
 
-  '@iconify/collections@1.0.520':
-    resolution: {integrity: sha512-cZtEPxgS73CoszQoJ4yLOf9yO2f5QSTiUfjLIFcMNJqh1eIIKBWOeu/8fJB4noq+dxP/g68o/njf4V6p+73HGw==}
+  '@iconify/collections@1.0.521':
+    resolution: {integrity: sha512-fryCall7fKZsBwsg5cA+2n+qBrFyFpJoGdIrdtznX9smwA2djSd4iRwClpmvkWk9xk1M/uPnu1PYUjiSnOiaeQ==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -6347,8 +6347,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@3.109.2:
-    resolution: {integrity: sha512-CT8izugPBth5o1o4gLNcQrDkHKSX2Jthy6gkyhaWiy2pFrx+536NMn/atWilLA1t1uhIgddEI5BXDNudIkPPHA==}
+  wrangler@3.109.3:
+    resolution: {integrity: sha512-T+SfFYEbkWDzf8WRR1JzaVKPH7wAzyciRIua8qszT+UqPqFNb6M5beCHHK/de7Zk5z6W5lvLly9SHToC11maDQ==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -7183,7 +7183,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.2.25':
+  '@iconify-json/simple-icons@1.2.26':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -7191,7 +7191,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify/collections@1.0.520':
+  '@iconify/collections@1.0.521':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -7786,7 +7786,7 @@ snapshots:
 
   '@nuxt/icon@1.10.3(magicast@0.3.5)(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(sass@1.85.0)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
-      '@iconify/collections': 1.0.520
+      '@iconify/collections': 1.0.521
       '@iconify/types': 2.0.0
       '@iconify/utils': 2.3.0
       '@iconify/vue': 4.3.0(vue@3.5.13(typescript@5.7.3))
@@ -13903,7 +13903,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250214.0
       '@cloudflare/workerd-windows-64': 1.20250214.0
 
-  wrangler@3.109.2(@cloudflare/workers-types@4.20250214.0):
+  wrangler@3.109.3(@cloudflare/workers-types@4.20250214.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)

@@ -1,6 +1,6 @@
 ---
 title: The Practitioner’s Guide to Graph Data
-date: 2021-10-11
+date: 2021-10-11T16:33:46.294Z
 thumbnail: content/The-Practitioners-Guide-To-Graph-Data.webp
 description:
   Think about the last time you searched for someone on a social media platform.
