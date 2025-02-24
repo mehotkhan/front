@@ -19,7 +19,7 @@ export default defineContentConfig({
     }),
     items: defineCollection({
       type: "page",
-      source: "**/items/*.md",
+      source: "**/notes/*.md",
       schema: z.object({
         title: z.string(),
         thumbnail: z.string(),

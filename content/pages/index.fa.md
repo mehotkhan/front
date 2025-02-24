@@ -1,3 +1,0 @@
-::<HomeIntro />
-
-::<HomeArchives />
