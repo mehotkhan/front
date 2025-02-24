@@ -143,5 +143,7 @@ export default defineAppConfig({
     site_name_en: "Ali Zemani",
     title_en: "Ali Zemani",
     description_en: "OpenSourceWebDeveloper",
+    footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
+    footer_en: "Everything must be wonderful in every shape and form ",
   },
 });
