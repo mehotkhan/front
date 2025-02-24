@@ -2,3 +2,4 @@
 .env
 public
 content
+app/app.config.ts
