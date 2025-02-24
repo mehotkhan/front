@@ -13,17 +13,17 @@ export const generateRoutes = (): string[] => {
   // Process each locale folder
   for (const locale of locales) {
     const localeDir = path.join(contentDir, locale);
-    // Scan pages: all markdown files except in the "items" subfolder
+    // Scan pages: all markdown files except in the "notes" subfolder
     const pagesRoutes = scanDirectory(localeDir, localeDir, "", locale, [
-      "items",
+      "notes",
     ]);
     routes.push(...pagesRoutes);
 
-    // Scan items: if an "items" folder exists, add a route prefix for items.
-    const itemsDir = path.join(localeDir, "items");
-    if (fs.existsSync(itemsDir) && fs.statSync(itemsDir).isDirectory()) {
-      const itemsRoutes = scanDirectory(itemsDir, itemsDir, "item", locale);
-      routes.push(...itemsRoutes);
+    // Scan notes: if an "notes" folder exists, add a route prefix for notes.
+    const notesDir = path.join(localeDir, "notes");
+    if (fs.existsSync(notesDir) && fs.statSync(notesDir).isDirectory()) {
+      const notesRoutes = scanDirectory(notesDir, notesDir, "note", locale);
+      routes.push(...notesRoutes);
     }
   }
 
@@ -35,7 +35,7 @@ export const generateRoutes = (): string[] => {
  *
  * @param directory The current directory being scanned.
  * @param baseDir The base directory used to calculate the relative path.
- * @param routePrefix An optional prefix to add (for items).
+ * @param routePrefix An optional prefix to add (for notes).
  * @param locale The locale code (from the top-level folder).
  * @param excludeDirs An optional array of subdirectory names to skip.
  * @returns An array of routes.
