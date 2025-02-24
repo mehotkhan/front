@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
+
+@font-face {
+  font-family: "Farhang";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("~/assets/fonts/FarhangVariable.woff");
+}
+
+@font-face {
+  font-family: "FarhangDot";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("~/assets/fonts/FarhangVariableDot.woff");
+}
+
 :root {
   font-family: FarhangDot;
 }
