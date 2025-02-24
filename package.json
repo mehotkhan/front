@@ -1,5 +1,5 @@
 {
-  "name": "mamoochi",
+  "name": "front",
   "version": 1,
   "private": true,
   "type": "module",
@@ -54,7 +54,7 @@
     "typescript": "^5.7.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^3.109.2"
+    "wrangler": "^3.109.3"
   },
   "overrides": {
     "@nuxt/ui": {
