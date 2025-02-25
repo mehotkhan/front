@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
+const route = useRoute();
 
 const { data } = await useAsyncData(
   `home-archives-${route.path}`,
