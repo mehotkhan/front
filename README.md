@@ -1,3 +1,1 @@
-# The Front Page
-
-- DEV Area
+# The Mamoochi
