@@ -2,7 +2,7 @@
 const { locale, defaultLocale } = useI18n();
 
 const { data } = await useAsyncData(
-  `home-archives`,
+  `home-archives-${route.path}`,
   async () =>
     await queryCollection("notes")
       .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
