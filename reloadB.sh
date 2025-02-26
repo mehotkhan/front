@@ -20,4 +20,4 @@ npx drizzle-kit generate
 # npx drizzle-kit push --force
 
 # Apply the migrations cleanly
-npx wrangler d1 migrations apply front --local
+npx wrangler d1 migrations apply inbox --local

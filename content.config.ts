@@ -13,12 +13,11 @@ export default defineContentConfig({
         category: z.string(),
         rawbody: z.string(),
         banner: z.boolean(),
-        toc: z.boolean(),
         postIntro: z.boolean(),
         comments: z.boolean(),
       }),
     }),
-    items: defineCollection({
+    notes: defineCollection({
       type: "page",
       source: "**/notes/*.md",
       schema: z.object({
@@ -29,7 +28,6 @@ export default defineContentConfig({
         category: z.string(),
         rawbody: z.string(),
         banner: z.boolean(),
-        toc: z.boolean(),
         postIntro: z.boolean(),
         comments: z.boolean(),
       }),
