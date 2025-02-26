@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
+const route = useRoute();
 
 const { data } = await useAsyncData(
-  `home-archives`,
+  `home-archives-${route.path}`,
   async () =>
-    await queryCollection("items")
+    await queryCollection("notes")
       .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
       .limit(10)
       .all()
