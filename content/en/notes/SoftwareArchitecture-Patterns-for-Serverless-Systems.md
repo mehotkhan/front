@@ -6,7 +6,7 @@ description: Software Architecture Patterns for Serverless Systems, by John Gilb
 
 banner: false
 toc: false
-postIntro: true
+intro: true
 category: books
 ---
 

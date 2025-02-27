@@ -6,7 +6,7 @@ description: کتاب الگوهای معماری نرم‌افزار برای �
 
 banner: false
 toc: false
-postIntro: true
+intro: false
 category: books
 ---
 

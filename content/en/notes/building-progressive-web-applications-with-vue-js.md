@@ -9,7 +9,7 @@ description:
 banner: false
 date: 2021-09-11T16:33:46.294Z
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 
@@ -73,4 +73,3 @@ in Chapter 9, we polish the details of our app and make it available to the worl
 ## How to Get
 
 - Apress (Buy): [Building Progressive Web Applications with Vue.js : Reliable, Fast, and Engaging Apps with Vue.js](https://www.apress.com/gp/book/9781484253335)
- 

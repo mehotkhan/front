@@ -2,7 +2,7 @@
 title: "تماس با من"
 description: "اطلاعات تماس"
 thumbnail: content/library.jpg
-postIntro: true
+intro: false
 ---
 
 - ایمیل: sallam@alizemani.ir

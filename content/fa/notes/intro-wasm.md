@@ -10,7 +10,7 @@ date: 2023-09-12T16:33:46.294Z
 banner: false
 comments: true
 toc: true
-postIntro: true
+intro: false
 category: notes
 ---
 

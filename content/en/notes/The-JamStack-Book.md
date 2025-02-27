@@ -5,7 +5,7 @@ thumbnail: content/The-Jamstack-Book.jpeg
 description: "The Jamstack Book by Brian Rinaldi and Raymond Camden introduces the modern Jamstack architecture, which is built on a combination of JavaScript, APIs, and Markup. This architecture delivers faster, more secure, and cost-efficient websites by serving pre-built content through CDNs, compared to traditional server-side rendering. The book provides practical examples and guidance on tools like Eleventy, Jekyll, and Next.js, making it a great resource for developers looking to improve site performance and security."
 banner: false
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 

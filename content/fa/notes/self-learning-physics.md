@@ -6,7 +6,7 @@ description: فیزیک؛ یکی از قدیمی‌ترین و پایه‌ای�
 
 banner: false
 toc: true
-postIntro: true
+intro: false
 category: notes
 ---
 

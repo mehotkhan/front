@@ -10,9 +10,8 @@ description:
   «ارباب درختان، آب‌ها و تپه‌ها» معرفی شده‌است. در پشت ظاهر سادهٔ تام
   بامبادیل دانش و قدرتی عظیم قرار دارد ولی در محدوده قلمرو خودش.
 
-banner: true
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 

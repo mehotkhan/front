@@ -5,7 +5,7 @@ thumbnail: content/Building-Progressive-Web-Applications-with-Vuejs.webp
 description: برنامه‌های وب پیش‌رونده (PWA) در سال ۲۰۱۵ توسط گوگل معرفی شدند و ثابت کردند که مزایای بسیاری برای پلتفرم وب به ارمغان می‌آورند. در این کتاب، ما بررسی می‌کنیم چگونه می‌توانیم برنامه‌های وب خود را سریع و قابل اعتماد کنیم و تجربه کاربری غنی با پشتیبانی آفلاین ارائه دهیم.
 banner: false
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 

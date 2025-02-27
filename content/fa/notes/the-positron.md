@@ -8,9 +8,8 @@ description: نخستین نشانه‌های وجود پوزیترون یعنی
   ذره تک بار و خیلی سبک همانند الکترون بود، مشاهده شد که در جهتی متناظر با بار
   مثبت منحرف می‌شد.
 
-banner: true
 toc: true
-postIntro: true
+intro: true
 category: notes
 ---
 

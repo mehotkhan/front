@@ -8,9 +8,8 @@ description: WebAssembly in Action introduces the WebAssembly stack and walks
   API.
 date: 2023-09-01T16:33:46.294Z
 
-banner: true
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 

@@ -11,7 +11,7 @@ description:
 
 banner: false
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 

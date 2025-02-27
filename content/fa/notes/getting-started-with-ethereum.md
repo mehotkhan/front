@@ -16,7 +16,7 @@ description: Get started with blockchain development with this step-by-step
 
 banner: false
 toc: true
-postIntro: true
+intro: false
 category: books
 ---
 
