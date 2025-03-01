@@ -2,7 +2,6 @@
 title: "Conctact Me"
 description: "Conctact Details"
 thumbnail: content/library.jpg
-intro: false
 ---
 
 - Email: sallam@alizemani.ir

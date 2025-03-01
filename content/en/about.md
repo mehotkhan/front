@@ -1,6 +1,5 @@
 ---
 title: About Me
-date: 2023-08-12T04:29:59.358Z
 thumbnail: content/physics.webp
 description: Hello! I'm Ali Zemani, a full-stack web developer from Tehran, Iran. With over 16 years of experience in the tech industry, especially in web and mobile application development, I am always eager to learn and implement new technologies.
 ---

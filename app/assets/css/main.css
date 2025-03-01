@@ -1,6 +1,6 @@
 @import "tailwindcss" theme(static);
-@import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
+@import "@nuxt/ui";
 
 .navbar a {
 }
@@ -16,6 +16,7 @@ html {
 [dir="rtl"] {
   ol {
     list-style: persian !important;
+    
   }
 }
 
