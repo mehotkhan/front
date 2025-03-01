@@ -9,8 +9,7 @@ description:
   you probably spent most of your time inspecting the “shared friends” section to
   understand how you knew someone.
 
-banner: false
-toc: true
+toc: false
 intro: false
 category: books
 ---

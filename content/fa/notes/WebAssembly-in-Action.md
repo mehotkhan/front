@@ -1,70 +1,60 @@
 ---
-title: WebAssembly in Action
-thumbnail: content/wasm-in-actions.png
-description: WebAssembly in Action introduces the WebAssembly stack and walks
-  you through the process of writing and running browser-based applications.
-  Expert developer Gerard Gallant gives you a firm foundation of the structure
-  of a module, HTML basics, JavaScript Promises, and the WebAssembly JavaScript
-  API.
-
+title: وب اسمبلی در عمل
 date: 2023-09-01T16:33:46.294Z
+thumbnail: content/wasm-in-actions.png
+description: "این کتاب به بررسی WebAssembly پرداخته و راهنمایی جامع برای توسعه‌دهندگانی است که می‌خواهند برنامه‌های پرکاربرد مبتنی بر مرورگر را با عملکرد بالا ایجاد کنند. این کتاب شامل مباحثی مانند ساخت ماژول‌های WebAssembly، تعامل با JavaScript، و بهینه‌سازی عملکرد با Web Workers و Pthreads است."
 
-banner: false
-toc: true
+toc: false
 intro: false
 category: books
 ---
 
-## About the Book
+## درباره‌ی کتاب
 
-WebAssembly in Action teaches you how to write and run high-performance browser-based applications using C++ and other languages supported by WebAssembly. In it, you'll learn to create native WebAssembly modules, interact with JavaScript components, and maximize performance with web workers and pthreads. And you'll love how the clearly organized sections make it a breeze to find the important details about every function, feature, and technique.
+کتاب **WebAssembly in Action** راهنمایی جامع برای نوشتن و اجرای برنامه‌های **پرکاربرد مبتنی بر مرورگر** با استفاده از C++ و سایر زبان‌های پشتیبانی‌شده در WebAssembly است. در این کتاب، یاد خواهید گرفت که چگونه **ماژول‌های WebAssembly** ایجاد کنید، با **کامپوننت‌های JavaScript تعامل داشته باشید** و عملکرد برنامه‌های خود را با **Web Workers و Pthreads** بهبود دهید.
 
-### About the Technology
+### چرا WebAssembly؟
 
-Write high-performance browser-based applications without relying only on JavaScript! By compiling to the WebAssembly binary format, your C, C++, or Rust code runs at near-native speed in the browser. WebAssembly delivers greater speed, opportunities to reuse existing code, and access to newer and faster libraries. Plus, you can easily interact with JavaScript when you need to.
+WebAssembly به توسعه‌دهندگان این امکان را می‌دهد که **کدهایی با عملکرد نزدیک به بومی** را در مرورگر اجرا کنند. با **ترجمه‌ی C، C++ یا Rust به فرمت باینری WebAssembly**، می‌توانید سرعت پردازش بالاتری را تجربه کنید و از **کدهای موجود** مجدداً استفاده نمایید.
 
-### What's inside
+### مباحث کلیدی کتاب
 
-• Dynamic linking of multiple modules at runtime
-• Communicating between modules and JavaScript
-• Debugging with WebAssembly Text Format
-• Threading with web workers and pthreads
+- **اتصال پویا به چندین ماژول در زمان اجرا**
+- **ارتباط میان ماژول‌های WebAssembly و JavaScript**
+- **اشکال‌زدایی با WebAssembly Text Format**
+- **پردازش موازی با Web Workers و Pthreads**
 
-### About the Reader
+### برای چه کسانی مناسب است؟
 
-Written for developers with a basic understanding of C/C++, JavaScript, and HTML.
+این کتاب برای **توسعه‌دهندگان C/C++، JavaScript و HTML** که می‌خواهند درک بهتری از WebAssembly داشته باشند، مناسب است.
 
-### About the Author
+## فهرست مطالب
 
-Gerard Gallant is a Microsoft Certified Professional and a Senior Software Developer at Dovico Software. He blogs regularly on Blogger.com and DZone.com.
+### بخش ۱ - آشنایی اولیه
 
-## Table of contents
+1. معرفی WebAssembly
+2. بررسی ساختار ماژول‌های WebAssembly
+3. ایجاد اولین ماژول WebAssembly
 
-### PART 1 - FIRST STEPS
+### بخش ۲ - کار با ماژول‌ها
 
-1. Meet WebAssembly
-2. A look inside WebAssembly modules
-3. Creating your first WebAssembly module
+4. استفاده از کدهای C++ در WebAssembly
+5. ایجاد ماژولی که با JavaScript تعامل دارد
+6. استفاده از اشاره‌گرهای تابع در WebAssembly
 
-### PART 2 - WORKING WITH MODULES
+### بخش ۳ - مباحث پیشرفته
 
-4. Reusing your existing C++ codebase
-5. Creating a WebAssembly module that calls into JavaScript
-6. Creating a WebAssembly module that talks to JavaScript using function pointers
+7. لینک‌دهی پویا: اصول اولیه
+8. لینک‌دهی پویا: پیاده‌سازی
+9. پردازش همزمان: Web Workers و Pthreads
+10. اجرای ماژول‌های WebAssembly در Node.js
 
-### PART 3 - ADVANCED TOPICS
+### بخش ۴ - اشکال‌زدایی و تست
 
-7. Dynamic linking: The basics
-8. Dynamic linking: The implementation
-9. Threading: Web workers and pthreads
-10. WebAssembly modules in Node.js
+11. فرمت متنی WebAssembly
+12. اشکال‌زدایی در WebAssembly
+13. تست‌نویسی در WebAssembly و مراحل بعدی
 
-### PART 4 - DEBUGGING AND TESTING
+## دریافت کتاب
 
-11. WebAssembly text format
-12. Debugging
-13. Testing — and then what?
-
-## How to Get
-
-- Manning Publications (Buy): [WebAssembly in Action](https://www.manning.com/books/webassembly-in-action)
+- خرید از Manning Publications: [WebAssembly in Action](https://www.manning.com/books/webassembly-in-action)

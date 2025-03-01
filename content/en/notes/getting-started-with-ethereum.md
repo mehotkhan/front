@@ -14,8 +14,7 @@ description: Get started with blockchain development with this step-by-step
   way that allows you to focus on the topic that most interests you, covering
   Ethereum-related technologies broadly and not just focusing on Solidity.
 
-banner: false
-toc: true
+toc: false
 intro: false
 category: books
 ---

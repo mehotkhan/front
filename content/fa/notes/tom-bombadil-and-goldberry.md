@@ -1,25 +1,29 @@
 ---
 title: تام بامبادیل
-thumbnail: content/tom-bombadil-and-goldberry.webp
 date: 2021-09-11T16:33:46.294Z
-description:
-  نام شخصیتی است در رشته داستان‌های تالکین . در جلد اول سه‌گانهٔ ارباب
-  حلقه‌ها ، فرودو و همراهانش او را در جنگل کهن ملاقات می‌کنند. این‌طور به
-  نظر می‌آید که قدرت حلقه یگانه بر روی او اثری ندارد. او به همراه همسرش
-  گلدبری، دختر رودخانه، در ویتی‌ویندل زندگی می‌کنند. در books او با نام
-  «ارباب درختان، آب‌ها و تپه‌ها» معرفی شده‌است. در پشت ظاهر سادهٔ تام
-  بامبادیل دانش و قدرتی عظیم قرار دارد ولی در محدوده قلمرو خودش.
+thumbnail: content/tom-bombadil-and-goldberry.webp
+description: "تام بامبادیل یکی از شخصیت‌های اسرارآمیز در دنیای تالکین است. او در جلد اول سه‌گانه‌ی ارباب حلقه‌ها معرفی می‌شود و به نظر می‌رسد که قدرت حلقه‌ی یگانه بر او اثری ندارد. همراه با همسرش، گلدبری، در ویتی‌ویندل زندگی می‌کند و به عنوان ارباب درختان، آب‌ها و تپه‌ها شناخته می‌شود."
 
-toc: true
+toc: false
 intro: false
 category: books
 ---
 
-## From Book
+## معرفی تام بامبادیل
 
-Describes Tom's encounters with Goldberry, the River-woman's beautiful daughter; with Old Man Willow, who tries to trap Tom inside his trunk; with the Badger-folk; and with the ghostly Barrow-wight, who dwells in the ancient mound on the hilltop.
-Abstract: Describes Tom's encounters with Goldberry, the River-woman's beautiful daughter; with Old Man Willow, who tries to trap Tom inside his trunk; with the Badger-folk; and with the ghostly Barrow-wight, who dwells in the ancient mound on the hilltop
+**تام بامبادیل** یکی از اسرارآمیزترین شخصیت‌های دنیای تالکین است که در **جلد اول ارباب حلقه‌ها** ظاهر می‌شود. فرودو و همراهانش در سفر خود به **جنگل کهن** با او ملاقات می‌کنند. نکته‌ی جالب درباره‌ی تام این است که **قدرت حلقه‌ی یگانه هیچ اثری بر او ندارد**. او به همراه **همسرش گلدبری**، که به عنوان دختر رودخانه شناخته می‌شود، در منطقه‌ی **ویتی‌ویندل** زندگی می‌کند.
 
-## How to Get
+### قدرت و ویژگی‌های تام بامبادیل
 
-- Amazon (Buy): [ The adventures of Tom Bombadil: and other verses from The red book](https://www.amazon.com/Adventures-Tom-Bombadil-Other-Verses/dp/B005XEQ3WM)
+تام بامبادیل به ظاهر شخصیتی ساده و بی‌تکلف به نظر می‌رسد، اما **دانش و قدرتی عظیم** در اختیار دارد. هرچند او در محدوده‌ی قلمرو خود تأثیرگذار است، اما فراتر از آن مداخله‌ای ندارد. در کتاب، او با عنوان **ارباب درختان، آب‌ها و تپه‌ها** معرفی شده و نشان داده می‌شود که ارتباطی عمیق با طبیعت دارد.
+
+### داستان‌های مرتبط با تام بامبادیل
+
+1. **ملاقات با گلدبری** – دختر زیبای رودخانه و همسر تام بامبادیل.
+2. **درگیری با اولد من ویلو** – درختی که سعی می‌کند تام را درون تنه‌ی خود به دام بیندازد.
+3. **برخورد با بجر-فولک (مردمان گورکن)** – موجوداتی که در دل زمین زندگی می‌کنند.
+4. **مبارزه با روح بارو-وایت** – موجودی شبح‌مانند که در تپه‌های باستانی سکونت دارد.
+
+## دریافت کتاب
+
+- خرید از Amazon: [ماجراهای تام بامبادیل و دیگر اشعار از کتاب سرخ](https://www.amazon.com/Adventures-Tom-Bombadil-Other-Verses/dp/B005XEQ3WM)
