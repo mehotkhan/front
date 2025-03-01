@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-const { defaultLocale } = useI18n();
 const route = useRoute();
 
 // Fetch page content dynamically
@@ -96,13 +95,17 @@ useSeoMeta({
       </Can>
     </div>
 
-    <!-- Loading State -->
     <!-- Loading Skeleton -->
-    <div v-else class="flex flex-col gap-5 text-center pt-15 pb-10">
-      <div class="max-w-7xl mx-auto">
+    <div
+      v-else
+      class="flex flex-col gap-5 text-center pt-15 pb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
+    >
+      <div class="max-w-7xl mx-auto w-full">
+        <!-- Title -->
         <div
           class="h-12 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mx-auto animate-pulse"
         />
+        <!-- Metadata -->
         <div class="flex justify-center gap-4 mt-4">
           <div
             class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
@@ -114,10 +117,20 @@ useSeoMeta({
             class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
           />
         </div>
-        <div
-          class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-1/2 mx-auto mt-4 animate-pulse"
-        />
+        <!-- Description (Multi-line) -->
+        <div class="mt-4 space-y-2">
+          <div
+            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
+          />
+          <div
+            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
+          />
+          <div
+            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 animate-pulse"
+          />
+        </div>
       </div>
+      <!-- Image -->
       <div
         class="h-[calc(100vh-24rem)] max-w-7xl bg-gray-200 dark:bg-slate-700 rounded-lg mx-auto animate-pulse"
       />
