@@ -1,3 +1,3 @@
  
-# The Front Page
+# The Front
 
