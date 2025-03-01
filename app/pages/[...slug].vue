@@ -104,36 +104,36 @@ useSeoMeta({
         <!-- Title -->
         <div
           class="h-12 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mx-auto animate-pulse"
-        />
+        ></div>
         <!-- Metadata -->
         <div class="flex justify-center gap-4 mt-4">
           <div
             class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          />
+          ></div>
           <div
             class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          />
+          ></div>
           <div
             class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          />
+          ></div>
         </div>
         <!-- Description (Multi-line) -->
         <div class="mt-4 space-y-2">
           <div
             class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
-          />
+          ></div>
           <div
             class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
-          />
+          ></div>
           <div
             class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 animate-pulse"
-          />
+          ></div>
         </div>
       </div>
       <!-- Image -->
       <div
         class="h-[calc(100vh-24rem)] max-w-7xl bg-gray-200 dark:bg-slate-700 rounded-lg mx-auto animate-pulse"
-      />
+      ></div>
     </div>
   </div>
 </template>
