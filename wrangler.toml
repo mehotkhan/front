@@ -9,6 +9,4 @@ database_name = "front"
 database_id = "9be4e7ed-9aa9-4b4c-a793-eff446903779"
 migrations_dir = "migrations"
 
-[[kv_namespaces]]
-binding = "inboxKV"
-id = "641b2dd1ff024c6d88da451bee969e54"
+ 
