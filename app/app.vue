@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import * as locales from "@nuxt/ui/locale";
 
-const { locale, t } = useI18n();
+const { locale } = useI18n();
 const { registerNew } = useUser();
 const appConfig = useAppConfig();
 
@@ -62,8 +62,8 @@ registerNew();
   <UApp :locale="appLocales">
     <NuxtLayout class="dark:bg-slate-700">
       <NuxtLoadingIndicator />
-      <NuxtPage />
-      <!-- <Installer /> -->
+      <Installer v-if="!appConfig.installed" />
+      <NuxtPage v-else />
     </NuxtLayout>
   </UApp>
 </template>
