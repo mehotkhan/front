@@ -34,7 +34,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // preset: "cloudflare-pages",
     compressPublicAssets: true,
     minify: true,
     prerender: {
@@ -43,7 +42,7 @@ export default defineNuxtConfig({
     },
   },
   ui: {
-    fonts: true,
+    fonts: false,
   },
   i18n: {
     detectBrowserLanguage: {
