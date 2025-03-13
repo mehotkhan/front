@@ -81,6 +81,11 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/**": { prerender: true },
+    "/logs": { isr: 3600 },
+    "/logs/**": { isr: true },
+    "/cats/**": { isr: true },
+    "/profile/**": { robots: false },
+    "/manage/**": { ssr: false, robots: false },
   },
   experimental: {
     restoreState: true,
@@ -91,7 +96,6 @@ export default defineNuxtConfig({
       bindingName: "DB",
     },
   },
-  unocss: { preflight: true },
   echarts: {
     ssr: true,
     renderer: ["canvas", "svg"],
@@ -104,5 +108,8 @@ export default defineNuxtConfig({
       "GeoComponent",
       "VisualMapComponent",
     ],
+  },
+  robots: {
+    disallow: ["/manage", "/profile"],
   },
 });
