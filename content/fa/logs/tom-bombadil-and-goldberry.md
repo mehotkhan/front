@@ -6,7 +6,7 @@ description: "تام بامبادیل یکی از شخصیت‌های اسرار
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## معرفی تام بامبادیل

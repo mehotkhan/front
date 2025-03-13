@@ -6,7 +6,7 @@ description: فیزیک؛ یکی از قدیمی‌ترین و پایه‌ای�
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## پیشگفتار

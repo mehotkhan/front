@@ -12,9 +12,9 @@ export default defineAppConfig({
       to: "/",
     },
     {
-      label: "Explorer",
+      label: "logs",
       // icon: "i-lucide-search",
-      to: "/explorer",
+      to: "/logs",
     },
     {
       label: "About",
@@ -41,11 +41,11 @@ export default defineAppConfig({
       defaultOpen: true,
       to: "/manage/items",
     },
-    // {
-    //   label: "Comments",
-    //   // icon: "i-lucide-database",
-    //   to: "/manage/comments",
-    // },
+    {
+      label: "Comments",
+      // icon: "i-lucide-database",
+      to: "/manage/comments",
+    },
     {
       label: "Users",
       // icon: "i-lucide-box",
@@ -77,6 +77,11 @@ export default defineAppConfig({
     "roles.edit",
     "roles.delete",
 
+    "comment.create",
+    "comment.read",
+    "comment.edit",
+    "comment.delete",
+
     "item.create",
     "item.read",
     "item.edit",
@@ -104,5 +109,5 @@ export default defineAppConfig({
     footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
     footer_en: "Everything must be wonderful in every shape and form ",
   },
-  category: ["books", "notes", "projects"],
+  cats: ["books", "notes", "projects"],
 });

@@ -6,7 +6,7 @@ description: برنامه‌های وب پیش‌رونده (PWA) که در سا
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## مقدمه

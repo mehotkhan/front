@@ -6,7 +6,7 @@ description: "وب‌اسمبلی (WebAssembly) یک استاندارد باز �
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## مقدمه

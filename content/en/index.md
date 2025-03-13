@@ -11,4 +11,4 @@ description: "Inbox Page"
 
 <hr >
 
-<HomeArchives />
+<LogsArchives />

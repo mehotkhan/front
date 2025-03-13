@@ -6,7 +6,7 @@ description: "نخستین شواهد از وجود پوزیترون، پادم�
 
 toc: false
 intro: true
-category: books
+cat: books
 ---
 
 ## کشف پوزیترون و ویژگی‌های آن

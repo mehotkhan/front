@@ -11,4 +11,4 @@ description: "صندوق ورودی :)"
 
 <hr >
 
-<HomeArchives />
+<LogsArchives />

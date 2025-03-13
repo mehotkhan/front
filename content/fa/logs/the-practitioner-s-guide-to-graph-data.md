@@ -6,7 +6,7 @@ description: "این کتاب به بررسی روش‌های تفکر گراف�
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## مقدمه

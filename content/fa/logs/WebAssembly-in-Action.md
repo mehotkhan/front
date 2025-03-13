@@ -6,7 +6,7 @@ description: "این کتاب به بررسی WebAssembly پرداخته و را
 
 toc: false
 intro: false
-category: books
+cat: books
 ---
 
 ## درباره‌ی کتاب
