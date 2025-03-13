@@ -109,5 +109,5 @@ export default defineAppConfig({
     footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
     footer_en: "Everything must be wonderful in every shape and form ",
   },
-  cats: ["books", "notes", "projects"],
+  cats: ["books", "notes", "projects", "tuts"],
 });

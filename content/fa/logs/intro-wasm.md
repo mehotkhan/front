@@ -4,166 +4,167 @@ date: 2023-09-12T16:33:46.294Z
 thumbnail: content/web-assembly-logo.png
 description: "وب‌اسمبلی (WebAssembly) یک استاندارد باز است که امکان اجرای کدهای باینری بهینه را در محیط‌های جاوا اسکریپت فراهم می‌کند. هدف اصلی آن افزایش سرعت و کارایی برنامه‌های وب است، اما می‌توان آن را در محیط‌های دیگر نیز اجرا کرد."
 
-toc: false
+toc: true
 intro: false
-cat: books
+comments: true
+cat: tuts
+tuts: work-with-wasm
 ---
 
-## مقدمه
+## معرفی WebAssembly (WASM)
 
-در توسعه ابزارهای وب، سرعت و کارایی از اهمیت بالایی برخوردارند. نرم‌افزارهای سریع‌تر و بهینه‌تر تجربه کاربری بهتری ایجاد می‌کنند. طبق آمار، اگر زمان بارگذاری یک وب‌سایت بیش از ۳ ثانیه طول بکشد، حدود ۴۰٪ از کاربران خود را از دست خواهید داد. این موضوع اهمیت بهینه‌سازی برنامه‌های وب را نشان می‌دهد.
+وب در سال‌های اخیر تغییرات چشمگیری داشته است. برنامه‌های کاربردی پیچیده‌تر، بازی‌های آنلاین پیشرفته‌تر و اپلیکیشن‌های تحت وب با نیازهای پردازشی سنگین‌تری همراه شده‌اند. جاوا اسکریپت، هرچند قدرتمند و محبوب، همیشه قادر نیست عملکرد لازم برای اجرای چنین برنامه‌هایی را فراهم کند. به همین دلیل توسعه‌دهندگان به دنبال راهکاری برای افزایش سرعت و کارایی برنامه‌های تحت وب بوده‌اند.
 
-جاوا اسکریپت تاکنون پیشرفت زیادی کرده است، اما همیشه نیاز به راهکاری برای بهبود سرعت وجود دارد. برای حل این چالش، WebAssembly (WASM) توسعه یافت. WASM یک فرمت باینری است که کدهای کامپایل‌شده را در مرورگر اجرا می‌کند و امکان اجرای سریع‌تر برنامه‌ها را فراهم می‌آورد.
+WebAssembly یا به اختصار WASM به عنوان یک راه حل مناسب به وجود آمده است. WASM یک استاندارد باز و فرمت باینری است که به توسعه‌دهندگان این امکان را می‌دهد تا کدهایی را که در زبان‌هایی مانند C، C++، Rust و Go نوشته شده‌اند، به کدهای بهینه‌شده و قابل اجرا در مرورگر تبدیل کنند. این کدهای باینری در محیط ایزوله‌ای اجرا می‌شوند که امنیت و پایداری بالایی را به همراه دارد.
 
-## معرفی WASM
+از جمله مزایای استفاده از WebAssembly می‌توان به سرعت بالای اجرا، امنیت بیشتر، چندزبانه بودن و کاهش قابل توجه حجم کدهای اجرایی اشاره کرد. این تکنولوژی در حال حاضر توسط شرکت‌های بزرگی همچون گوگل، مایکروسافت و موزیلا حمایت می‌شود و روز به روز نقش پررنگ‌تری در صنعت توسعه وب پیدا می‌کند.
 
-WebAssembly یا WASM یک استاندارد باز است که به توسعه‌دهندگان امکان می‌دهد کدهای خود را در زبان‌های مختلف نوشته و سپس به فرمت WASM کامپایل کنند. این کدها در ماشین مجازی جاوا اسکریپت اجرا می‌شوند و قابلیت‌هایی نظیر امنیت بالا و دسترسی به APIهای مرورگر را دارند.
-
-## استفاده از WASM با Go و TinyGo
+## ساخت اولین پروژه WASM با Go و TinyGo
 
 ### نصب ابزارهای لازم
+
+برای ایجاد برنامه WASM با زبان Go به TinyGo نیاز دارید. می‌توانید با استفاده از Homebrew آن را نصب کنید:
+
+```bash
+brew install tinygo
+```
+
+بررسی نسخه‌های نصب‌شده:
 
 ```bash
 go version
 tinygo version
 ```
 
-### ایجاد پروژه و کامپایل برنامه WASM
+### نوشتن اولین برنامه Go برای WASM
 
-**فایل HTML:**
+فایل `main.go` را ایجاد کرده و کد زیر را در آن قرار دهید:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("سلام از Go و WASM!")
+}
+```
+
+### کامپایل به فرمت WASM
+
+از دستور زیر برای کامپایل کد Go به فرمت WebAssembly استفاده کنید:
+
+```bash
+tinygo build -o main.wasm -no-debug -opt=2 main.go
+```
+
+### ایجاد صفحه HTML و اجرای WASM
+
+صفحه HTML را به صورت زیر ایجاد کنید:
 
 ```html
-<!doctype html>
-<html dir="rtl">
+<!DOCTYPE html>
+<html lang="fa">
   <head>
-    <meta charset="utf-8" />
-    <title>وب‌اسمبلی با تاینی‌گو</title>
+    <meta charset="UTF-8" />
+    <title>اولین پروژه WASM</title>
     <script src="wasm_exec.js"></script>
-    <script src="wasm.js"></script>
   </head>
   <body>
-    <h1>وب‌اسمبلی (Wasm)</h1>
+    <h1>اولین پروژه با WebAssembly و Go</h1>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(
+        fetch("main.wasm"),
+        go.importObject
+      ).then((result) => {
+        go.run(result.instance);
+      });
+    </script>
   </body>
 </html>
 ```
 
-**فایل جاوا اسکریپت:**
+## تعامل جاوا اسکریپت و WASM
 
-```js
-WASM_URL = "wasm.wasm";
-let wasm;
-const initWasm = () => {
-  const go = new Go();
-  WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject).then(
-    (obj) => {
-      wasm = obj.instance;
-      go.run(wasm);
-    }
-  );
-};
-initWasm();
-```
+شما می‌توانید توابع Go را به‌صورت مستقیم از جاوا اسکریپت فراخوانی کنید:
 
-**کد Go:**
+### کد Go (تابع add)
 
 ```go
 package main
-import "fmt"
-func main() {
-    fmt.Println("Hello world from Go :)")
-}
-```
-
-**کامپایل و اجرای پروژه:**
-
-```bash
-tinygo build -o main.wasm -no-debug -opt=2 main.go
-npx serve .
-```
-
-## تعامل WASM با جاوا اسکریپت
-
-برای ارسال داده‌ها به WASM و دریافت نتیجه از آن، می‌توان توابع Go را از جاوا اسکریپت فراخوانی کرد.
-
-**فایل `index.html` برای محاسبه دو عدد:**
-
-```html
-<input type="number" id="a" value="2" /> +
-<input type="number" id="b" value="2" /> =
-<input type="number" id="result" />
-<button>محاسبه</button>
-<script>
-  document.querySelector("button").addEventListener("click", () => {
-    var a = parseInt(document.getElementById("a").value);
-    var b = parseInt(document.getElementById("b").value);
-    var res = wasm.exports.add(a, b);
-    document.getElementById("result").value = res;
-  });
-</script>
-```
-
-**کد Go برای تابع `add`:**
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("Hello world from Go :)")
-}
 
 //export add
-func add(x, y int) int {
-    return x + y
+func add(a, b int) int {
+    return a + b
 }
+
+func main() {}
 ```
 
-**اجرای کامپایل:**
+### فراخوانی از جاوا اسکریپت
 
-```bash
-tinygo build -o main.wasm -no-debug -opt=2 main.go
+```javascript
+const wasmUrl = "main.wasm";
+
+WebAssembly.instantiateStreaming(fetch(wasmUrl), go.importObject).then(
+  (result) => {
+    go.run(result.instance);
+
+    document.getElementById("calc").addEventListener("click", () => {
+      const a = parseInt(document.getElementById("a").value);
+      const b = parseInt(document.getElementById("b").value);
+      const res = result.instance.exports.add(a, b);
+      document.getElementById("result").textContent = res;
+    });
+  }
+);
 ```
 
-## تغییرات در DOM با WASM
+### کد HTML برای انجام عملیات
 
-برای تغییر محتوا در صفحه وب از Go و WASM، می‌توان از `syscall/js` استفاده کرد.
+```html
+<input type="number" id="a" placeholder="عدد اول" />
+<input type="number" id="b" placeholder="عدد دوم" />
+<button id="calc">محاسبه</button>
+<p>نتیجه: <span id="result"></span></p>
+```
 
-**کد Go برای افزودن یک پیام به DOM:**
+## تغییر DOM با استفاده از WASM
+
+برای تغییرات مستقیم در DOM از Go و WASM، از کتابخانه `syscall/js` استفاده کنید:
+
+### کد Go برای تغییر DOM
 
 ```go
 package main
 
 import (
-    "fmt"
-    "syscall/js"
+	"syscall/js"
 )
 
 func main() {
-    fmt.Println("Hello world from Go :)")
-    document := js.Global().Get("document")
-    p := document.Call("createElement", "p")
-    p.Set("innerHTML", "Hello WASM from Go!")
-    document.Get("body").Call("appendChild", p)
+	document := js.Global().Get("document")
+	div := document.Call("createElement", "div")
+	div.Set("innerHTML", "سلام از طریق Go و WASM!")
+	document.Get("body").Call("appendChild", div)
+
+	select {}
 }
 ```
 
-**اجرای کامپایل:**
+### کامپایل و اجرا
 
 ```bash
-tinygo build -o main.wasm -no-debug -opt=2 main.go
+tinygo build -o main.wasm -target wasm -no-debug main.go
 ```
-
-پس از اجرا، متن "Hello WASM from Go!" در صفحه نمایش داده می‌شود.
 
 ## نتیجه‌گیری
 
-در این آموزش، با WebAssembly (WASM) و نحوه استفاده از آن در زبان Go و کامپایلر TinyGo آشنا شدیم. WASM امکان بهینه‌سازی و افزایش کارایی وب‌سایت‌ها را فراهم می‌کند و می‌توان از آن برای بهبود عملکرد اپلیکیشن‌های وب استفاده کرد.
+در این ماژول، ضمن آشنایی مقدماتی با WebAssembly، نحوه ایجاد، کامپایل و اجرای برنامه‌های WASM با زبان Go و ابزار TinyGo را فرا گرفتید. همچنین تعامل با جاوا اسکریپت و تغییرات مستقیم DOM از طریق WASM را بررسی کردیم. در ماژول‌های بعدی به مباحث پیشرفته‌تری از این تکنولوژی قدرتمند خواهیم پرداخت.
 
 ## منابع بیشتر
 
-- [TinyGO](https://tinygo.org/)
-- [LLVM](https://llvm.org/)
-- [WebAssembly](https://webassembly.org/)
-- [Golang](https://go.dev/)
-- [سورس‌های آموزش](https://github.com/mehotkhan/tinygo-wasm-tuts)
+- [وب‌سایت رسمی WebAssembly](https://webassembly.org)
+- [مستندات TinyGo](https://tinygo.org/docs/)
+- [آموزش‌های تکمیلی در GitHub](https://github.com/mehotkhan/tinygo-wasm-tutorial)
