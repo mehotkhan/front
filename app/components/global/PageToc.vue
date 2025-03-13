@@ -6,11 +6,11 @@ defineProps({
 <template>
   <div class="w-full">
     <h3
-      class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white pb-5"
+      class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mt-0"
     >
       {{ $t("Content Toc") }}
     </h3>
-    <ul class="text-[1rem]">
+    <ol class="text-[1rem] md:-mb-4">
       <li v-for="link of body.toc.links" :key="link.id">
         <a :href="`#${link.id}`">{{ link.text }}</a>
         <ul>
@@ -19,6 +19,6 @@ defineProps({
           </li>
         </ul>
       </li>
-    </ul>
+    </ol>
   </div>
 </template>

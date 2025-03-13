@@ -86,10 +86,10 @@ console.log(pageData.value);
       <!-- Main Content -->
       <UContainer>
         <div
-          class="max-w-7xl mx-auto flex flex-col items-center prose prose-lg dark:prose-invert"
+          class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4 prose prose-lg dark:prose-invert"
         >
           <PageToc v-if="pageData.toc" :body="pageData.body" />
-          <ContentRenderer :value="pageData" />
+          <ContentRenderer :value="pageData" class="w-full" />
           <Comments v-if="pageData.comments" />
         </div>
       </UContainer>
