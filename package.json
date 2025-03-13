@@ -61,12 +61,12 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "better-sqlite3",
-      "esbuild",
-      "workerd",
-      "@parcel/watcher",
-      "sharp",
-      "vue-demi"
+      // "better-sqlite3",
+      // "esbuild",
+      // "workerd",
+      // "@parcel/watcher",
+      // "sharp",
+      // "vue-demi"
     ],
     "overrides": {},
     "ignoredBuiltDependencies": []
