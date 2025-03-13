@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     "@nuxt/ui",
+    "@nuxtjs/seo",
     "@nuxt/content",
     "@nuxt/image",
     "@nuxt/eslint",
@@ -17,7 +18,6 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-authorization",
     "nuxt-echarts",
-    "@nuxtjs/seo",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
