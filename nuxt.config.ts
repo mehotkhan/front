@@ -80,12 +80,24 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    // Disable prerender (and SSR) for any manage routes:
+    "/manage": { prerender: false, ssr: false, robots: false },
+    "/manage/**": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
+
+    // ISR rules for logs (all locales)
+    "/:locale/logs": { isr: 3600 },
+    "/:locale/logs/**": { isr: true },
+
+    // ISR rules for cats (all locales)
+    "/:locale/cats/**": { isr: true },
+
+    // Profile routes: disable robots indexing (all locales)
+    "/:locale/profile/**": { robots: false },
+
+    // Default: prerender everything else
     "/**": { prerender: true },
-    "/logs": { isr: 3600 },
-    "/logs/**": { isr: true },
-    "/cats/**": { isr: true },
-    "/profile/**": { robots: false },
-    "/manage/**": { ssr: false, robots: false },
   },
   experimental: {
     restoreState: true,
@@ -108,8 +120,5 @@ export default defineNuxtConfig({
       "GeoComponent",
       "VisualMapComponent",
     ],
-  },
-  robots: {
-    disallow: ["/manage", "/profile"],
   },
 });
