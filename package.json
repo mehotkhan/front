@@ -60,7 +60,9 @@
     "wrangler": "^3.114.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [],
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ],
     "overrides": {},
     "ignoredBuiltDependencies": []
   }
