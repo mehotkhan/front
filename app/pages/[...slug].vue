@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-const route = useRoute();
-const { locale } = useI18n();
+const { defaultLocale } = useI18n();
 
-// Fetch page content dynamically
+const route = useRoute();
 const { data: pageData }: any = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      return await queryCollection("content").path(route.path).first();
+      return await queryCollection("content")
+        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
+        .first();
     } catch (error) {
       console.error("Error fetching page content:", error);
     }
@@ -46,13 +47,10 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData.author }}</span>
               </span>
-              <span
-                v-if="pageData?.category"
-                class="font-medium whitespace-nowrap"
-              >
+              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <span class="normal-case">
-                  {{ $t(pageData.category) ?? pageData.category }}
+                  {{ $t(pageData.cat) ?? pageData.cat }}
                 </span>
               </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
@@ -83,11 +81,12 @@ useSeoMeta({
 
       <!-- Main Content -->
       <UContainer>
-        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4">
           <ContentRenderer
             :value="pageData"
             class="prose prose-lg dark:prose-invert w-full max-w-4xl"
           />
+          <Comments v-if="pageData.comments" />
         </div>
       </UContainer>
 
