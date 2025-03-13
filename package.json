@@ -60,14 +60,7 @@
     "wrangler": "^3.114.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      // "better-sqlite3",
-      // "esbuild",
-      // "workerd",
-      // "@parcel/watcher",
-      // "sharp",
-      // "vue-demi"
-    ],
+    "onlyBuiltDependencies": [],
     "overrides": {},
     "ignoredBuiltDependencies": []
   }
