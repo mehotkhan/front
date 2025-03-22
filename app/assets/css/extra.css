@@ -10,6 +10,12 @@
 :root {
   font-family: FarhangDot;
 }
-.navbar span {
+[dir="rtl"] .description {
+  @apply text-xl;
+}
+[dir="rtl"] .logo {
+  @apply text-3xl;
+}
+[dir="rtl"] .navbar span {
   @apply text-lg;
 }
