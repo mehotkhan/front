@@ -1,11 +1,15 @@
- @font-face {
-   font-family: "FarhangDot";
-   font-style: normal;
-   font-weight: 100 900;
-   src: url("~/assets/fonts/FarhangVariableDot.woff");
- }
+@import "tailwindcss" theme(static);
 
- :root {
-   font-family: FarhangDot;
- }
-  
+@font-face {
+  font-family: "FarhangDot";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("~/assets/fonts/FarhangVariableDot.woff");
+}
+
+:root {
+  font-family: FarhangDot;
+}
+.navbar span {
+  @apply text-lg;
+}
