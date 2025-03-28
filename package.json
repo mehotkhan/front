@@ -27,7 +27,7 @@
     "drizzle-orm": "^0.41.0",
     "echarts-liquidfill": "^3.1.0",
     "h3-zod": "^0.5.3",
-    "luxon": "^3.5.0",
+    "luxon": "^3.6.0",
     "minisearch": "^7.1.2",
     "nostr-tools": "^2.11.0",
     "nuxt": "^3.16.1",
@@ -41,14 +41,14 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250321.0",
-    "@iconify-json/lucide": "^1.2.32",
+    "@cloudflare/workers-types": "^4.20250327.0",
+    "@iconify-json/lucide": "^1.2.33",
     "@nuxt/content": "^3.4.0",
     "@nuxt/eslint": "^1.2.0",
-    "@nuxtjs/i18n": "^9.3.4",
+    "@nuxtjs/i18n": "^9.4.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/luxon": "^3.4.2",
-    "drizzle-kit": "^0.30.5",
+    "drizzle-kit": "^0.30.6",
     "eslint": "^9.23.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nitro-cloudflare-dev": "^0.2.2",
@@ -57,7 +57,7 @@
     "typescript": "^5.8.2",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^4.4.0"
+    "wrangler": "^4.5.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

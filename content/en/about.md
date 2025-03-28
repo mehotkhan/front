@@ -18,7 +18,7 @@ Over the years, I have collaborated with various teams and contributed to multip
 
 ## Get in Touch
 
-To learn more about my projects and contributions, feel free to visit my [GitHub page](https://github.com/mehotkhan) or reach out via [email](mailto:sallam@alizemani.ir).
+To learn more about my projects and contributions, feel free to visit my [GitHub page](https://github.com/mehotkhan) or reach out via [email](mailto:hi@mohet.ir).
 
 ---
 
