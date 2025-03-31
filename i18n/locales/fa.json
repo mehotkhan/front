@@ -113,7 +113,6 @@
   "Must be at least 2 characters": "باید حداقل 2 کاراکتر باشد",
   "Must be at least 3 characters": "باید حداقل 3 کاراکتر باشد",
   "New Password": "رمز عبور جدید",
-  "Next": "Next",
   "No Database Connection": "اتصال پایگاه داده وجود ندارد",
   "No results found": "نتیجه‌ای یافت نشد",
   "Note Section": "بخش یادداشت",
@@ -227,6 +226,5 @@
   "tuts": "tuts",
   "type": "نوع",
   "user_agent": "user_agent",
-  "username": "نام کاربری",
-  "vue": "ویو"
+  "username": "نام کاربری"
 }
