@@ -101,7 +101,7 @@ export default defineAppConfig({
   ],
   app: {
     site_name_fa: "مُـهِِــت",
-    title_fa: "مُـ هِِــت",
+    title_fa: "مُـ هِــت",
     description_fa: "توسعه دهنده متن باز",
     site_name_en: " Mohet",
     title_en: "Mo het",
