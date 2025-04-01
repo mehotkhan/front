@@ -31,10 +31,10 @@ useSeoMeta({
         <div
           :class="
             $colorMode.value === 'dark'
-              ? 'text-gray-300 border-slate-700bg-slate-600'
+              ? 'text-gray-300 border-slate-700 bg-slate-600'
               : 'text-gray-600 border-gray-200 bg-gray-100'
           "
-          class="flex flex-col gap-6 text-center pt-10 pb-12 border-b min-h-[calc(100vh-2rem)] items-center justify-between"
+          class="flex flex-col gap-6 text-center pt-10 pb-12 min-h-[calc(100vh-2rem)] items-center justify-between"
         >
           <div class="max-w-7xl mx-auto px-6">
             <h1 class="text-4xl sm:text-5xl font-bold mb-4">
@@ -86,7 +86,7 @@ useSeoMeta({
       <!-- Main Content -->
       <UContainer>
         <div
-          class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4 prose prose-lg dark:prose-invert"
+          class="max-w-7xl mx-auto flex flex-col items-center gap-10 py-10 px-4 prose prose-lg dark:prose-invert"
         >
           <PageToc v-if="pageData.toc" :body="pageData.body" />
           <ContentRenderer :value="pageData" class="w-full" />
