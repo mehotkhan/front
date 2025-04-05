@@ -3,49 +3,58 @@ import { z } from "zod";
 
 import type { FormSubmitEvent } from "#ui/types";
 
-const route = useRoute();
 const props = defineProps<{ pagePath: string }>();
+const route = useRoute();
 const { t } = useI18n();
+const toast = useToast();
 
-// Fetch the content data based on the current route and pagePath.
-const { data: page }: any = await useAsyncData(route.path, () => {
-  return queryCollection("content").path(props.pagePath).first();
-});
+const { data: page } = await useAsyncData(route.path, () =>
+  queryCollection("content").path(props.pagePath).first()
+);
 
-// Helper function to sanitize the raw body text.
-function sanitizeBody(rawBody: string): string {
-  return (
-    rawBody
-      .replace(/\\n/g, "\n")
-      .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "") ?? ""
-  );
-}
+/**
+ * Converts literal "\n" to real newlines, then extracts the front matter block
+ * (from the start of the file until the second triple-dash) and the remaining content.
+ */
+const parseFrontMatter = (
+  raw: string
+): { frontMatter: string; content: string } => {
+  const replaced = raw.replace(/\\n/g, "\n");
+  const match = replaced.match(/^---\n[\s\S]*?\n---\n?/);
+  return match
+    ? { frontMatter: match[0], content: replaced.replace(match[0], "") }
+    : { frontMatter: "", content: replaced };
+};
+
+const rawBody = page?.value?.rawbody || "";
+const { frontMatter, content } = parseFrontMatter(rawBody);
 
 const state = reactive({
   title: page?.value?.title ?? "title",
-  body: page?.value?.rawbody ? sanitizeBody(page.value.rawbody) : "",
+  frontMatter, // Save the extracted front matter for later
+  body: content, // Show only the content in the editor
 });
 
-const toast = useToast();
 const submitting = ref(false);
 const codeEditor = ref(false);
 
 const schema = z.object({
-  title: z.string().min(5),
+  title: z.string().min(1),
   body: z.string().min(5),
 });
 type Schema = z.infer<typeof schema>;
 
-const form = ref();
-
-async function onSubmit(event: FormSubmitEvent<Schema>) {
+const onSubmit = async (event: FormSubmitEvent<Schema>): Promise<void> => {
   submitting.value = true;
   try {
-    await $fetch("/api/editor/new", {
+    const finalBody = state.frontMatter
+      ? `${state.frontMatter.trim()}\n\n${event.data.body}`
+      : event.data.body;
+    await $fetch("/api/builds/commit", {
       method: "POST",
       body: JSON.stringify({
-        path: props.pagePath,
-        body: event.data.body,
+        path: page?.value?.id,
+        body: finalBody,
       }),
     });
     toast.add({
@@ -62,15 +71,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   } finally {
     submitting.value = false;
   }
-}
-
-const isTyping = (data: string) => {
-  state.body = data;
 };
+
+const isTyping = (data: string): void => (state.body = data);
 
 definePageMeta({
   middleware: "permissions",
-  permission: "dashboard.read",
+  permission: "commit.create",
 });
 </script>
 
@@ -95,7 +102,11 @@ definePageMeta({
                   :icon="codeEditor ? 'i-lucide-brush' : 'i-lucide-code'"
                   color="secondary"
                   variant="outline"
-                  @click="codeEditor = !codeEditor"
+                  @click="
+                    () => {
+                      codeEditor.value = !codeEditor.value;
+                    }
+                  "
                 >
                   {{ codeEditor ? $t("Visual") : $t("Code") }}
                 </UButton>
@@ -117,7 +128,6 @@ definePageMeta({
               autoresize
               :rows="30"
             />
-
             <Editor
               v-else
               :body="state.body"
