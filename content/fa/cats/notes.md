@@ -1,7 +1,7 @@
 ---
 title: یادداشت
 description: یادداشت ها
-thumbnail: /totoro_render.webp
+thumbnail: /mamoochi-tiny.webp
 ---
 
 <LogsArchives cat='notes' />

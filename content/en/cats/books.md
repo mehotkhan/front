@@ -1,7 +1,7 @@
 ---
 title: Books
 description: "Books Archives"
-thumbnail: /totoro_render.webp
+thumbnail: /mamoochi-tiny.webp
 ---
 
 <LogsArchives cat='books' />

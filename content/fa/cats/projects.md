@@ -1,7 +1,7 @@
 ---
 title: پروژه
 description: پروژه ها
-thumbnail: /totoro_render.webp
+thumbnail: /mamoochi-tiny.webp
 ---
 
 <LogsArchives cat='projects' />

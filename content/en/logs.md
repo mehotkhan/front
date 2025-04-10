@@ -1,7 +1,7 @@
 ---
 title: logs
 description: "logs Archives"
-thumbnail: /totoro_render.webp
+thumbnail: /mamoochi-tiny.webp
 ---
 
 <LogsArchives   />

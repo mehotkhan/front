@@ -133,7 +133,7 @@ export default defineNuxtConfig({
   },
   image: {
     cloudflare: {
-      baseURL: "https://mamoochi.bagche.app",
+      baseURL: "https://mohet.ir",
     },
   },
 });

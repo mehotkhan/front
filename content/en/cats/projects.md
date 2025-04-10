@@ -1,7 +1,7 @@
 ---
 title: Projects
 description: "loProjectsgs Archives"
-thumbnail: /totoro_render.webp
+thumbnail: /mamoochi-tiny.webp
 ---
 
 <LogsArchives cat='projects' />

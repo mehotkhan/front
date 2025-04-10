@@ -7,8 +7,7 @@ description: "وب‌اسمبلی (WebAssembly) یک استاندارد باز �
 toc: true
 intro: false
 comments: true
-cat: tuts
-tuts: work-with-wasm
+tuts: true
 ---
 
 ## معرفی WebAssembly (WASM)
