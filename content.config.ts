@@ -25,7 +25,7 @@ export default defineContentConfig({
     logs: defineCollection(
       asRobotsCollection({
         type: "page",
-        source: "**/logs/**/*.md",
+        source: "**/logs/*.md",
         schema: z.object({
           title: z.string(),
           thumbnail: z.string(),
