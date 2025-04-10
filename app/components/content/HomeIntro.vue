@@ -30,7 +30,7 @@ const { data } = useAsyncData(
       v-if="data"
       class="flex flex-col md:flex-row items-center gap-0 md:gap-8"
     >
-      <div class="w-full md:w-1/2 flex flex-col justify-center">
+      <div class="w-full md:w-1/2 flex flex-col justify-end">
         <h2
           class="text-2xl md:text-3xl hover:underline transition-colors duration-300"
         >
@@ -48,6 +48,8 @@ const { data } = useAsyncData(
       </div>
       <div class="w-full md:w-1/2 flex justify-center">
         <nuxt-img
+          provider="cloudflare"
+          :modifiers="{ fit: 'contain' }"
           preload
           loading="lazy"
           class="w-full max-w-md rounded-lg object-cover"

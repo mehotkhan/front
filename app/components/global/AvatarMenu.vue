@@ -99,19 +99,26 @@ const items = computed(() => {
         <UAvatar
           :alt="profile.displayName"
           size="xs"
-          src="/totoro_render.webp"
+          src="/mamoochi-tiny.webp"
           class="avatar-button"
           placeholder
+          provider="cloudflare"
+          :modifiers="{ fit: 'contain' }"
+          preload
+          loading="lazy"
         />
-
         <!-- Account slot -->
         <template #account="{ item }">
           <UAvatar
             :alt="profile.displayName"
             size="2xs"
-            src="/totoro_render.webp"
+            src="/mamoochi-tiny.webp"
             class="avatar-button"
             placeholder
+            provider="cloudflare"
+            :modifiers="{ fit: 'contain' }"
+            preload
+            loading="lazy"
           />
           <p class="text-sm">{{ profile.displayName }}</p>
         </template>
