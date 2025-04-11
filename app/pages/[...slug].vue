@@ -64,18 +64,17 @@ useSeoMeta({
             </p>
           </div>
 
-          <!-- Optimized Image (Matches Content Layout) -->
           <nuxt-img
             v-if="pageData.thumbnail"
             provider="cloudflare"
             :modifiers="{ fit: 'contain' }"
             preload
             loading="lazy"
-            sizes="(max-width: 640px) 100vw, 700px"
-            class="object-cove h-[calc(100vh-24rem)] max-w-7xl rounded-lg"
+            :placeholder="[400]"
+            sizes="(max-width: 640px) 100vw, 500px"
+            class="object-cover h-[calc(100vh-24rem)] md:max-w-6xl rounded-lg px-4 md:px-0"
             :src="pageData.thumbnail"
             :alt="pageData.title"
-            :placeholder="[600]"
           />
         </div>
       </template>

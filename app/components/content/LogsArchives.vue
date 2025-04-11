@@ -38,11 +38,13 @@ const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
     <div v-if="data" class="px-5 md:m-0">
       <ol>
         <li v-for="item in data" :key="item.id" class="mb-2">
-          <div class="flex justify-start gap-2">
+          <div class="md:inline-flex">
             <NuxtLink :to="item.path" class="hover:!underline">
               {{ item.title }}
             </NuxtLink>
-            <span class="font-thin"> / {{ formatDateTime(item.date) }} </span>
+            <span class="font-thin block">
+              / {{ formatDateTime(item.date) }}
+            </span>
             <NuxtLinkLocale
               v-if="item.cat"
               :to="`/cats/${item.cat}`"
