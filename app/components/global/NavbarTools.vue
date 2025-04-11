@@ -39,17 +39,17 @@ const loggedInItems = [
 // Items for guests
 const loggedOutItems = [
   {
-    label: t("Register"),
-    icon: "i-lucide-log-in",
-    onSelect: () => {
-      registerIsOpen.value = true;
-    },
-  },
-  {
     label: t("Login"),
     icon: "i-lucide-arrow-right-left",
     onSelect: () => {
       loginIsOpen.value = true;
+    },
+  },
+  {
+    label: t("Register"),
+    icon: "i-lucide-log-in",
+    onSelect: () => {
+      registerIsOpen.value = true;
     },
   },
 ];
@@ -67,22 +67,23 @@ const exitItem = {
 };
 
 // Theme group holds the dark mode login slot
-const themeGroup = [
+const i18nGroup = [
   {
     label: locale.value === "en" ? t("Persian") : t("English"),
     icon: "i-lucide-languages",
-    onSelect: () => (locale.value === "en" ? setLocale("fa") : setLocale("fa")),
+    onSelect: () => (locale.value === "en" ? setLocale("fa") : setLocale("en")),
   },
+];
+const themeGroup = [
   {
     label: "",
     slot: "theme",
   },
 ];
-
 const items = computed(() => {
   return loggedIn.value
-    ? [accountGroup, loggedInItems, themeGroup, [exitItem]]
-    : [accountGroup, loggedOutItems, themeGroup];
+    ? [accountGroup, loggedInItems, themeGroup, i18nGroup, [exitItem]]
+    : [accountGroup, loggedOutItems, themeGroup, i18nGroup];
 });
 </script>
 
@@ -116,6 +117,7 @@ const items = computed(() => {
           />
         </Can>
         <UDropdownMenu
+          :key="locale"
           :items="items"
           :content="{
             align: 'end',

@@ -62,6 +62,7 @@ export default defineEventHandler(async (event) => {
         status: comments.status,
         id: comments.id,
         parentCommentId: comments.parentCommentId,
+        body: comments.body,
       })
       .from(comments)
       .leftJoin(users, eq(users.id, comments.authorId))
