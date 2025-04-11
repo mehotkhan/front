@@ -83,7 +83,7 @@ useSeoMeta({
       <!-- Main Content -->
       <UContainer>
         <div
-          class="max-w-7xl mx-auto flex flex-col items-center gap-10 py-10 px-4 prose prose-lg dark:prose-invert"
+          class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4 prose prose-xl dark:prose-invert"
         >
           <PageToc v-if="pageData.toc" :body="pageData.body" />
           <ContentRenderer :value="pageData" class="w-full" />
@@ -92,15 +92,6 @@ useSeoMeta({
       </UContainer>
 
       <!-- Edit Button (If User Has Permission) -->
-      <Can :ability="createCommit">
-        <UButton
-          :to="'/manage/editor' + route.path"
-          :label="$t('Edit This page')"
-          class="fixed left-10 bottom-10 shadow-md rounded-full cursor-pointer text-4xl z-100 p-3 transition-all"
-        >
-          <UIcon name="i-lucide-square-pen" />
-        </UButton>
-      </Can>
     </div>
 
     <!-- **Skeleton Loader (Better Matched to UI)** -->

@@ -18,8 +18,7 @@ description: " سلام! من علی زمانی هستم، توسعه‌دهند
 
 ## ارتباط با من
 
-برای آشنایی بیشتر با پروژه‌ها و دستاوردهایم، می‌توانید به [صفحهٔ گیت‌هاب من](https://github.com/mehotkhan) سر بزنید یا از طریق [ایمیل](mailto:hi@mohet.ir) با من در ارتباط باشید.
-
----
-
-امیدوارم این معرفی مختصر، نمای کلی از تخصص‌ها و تجربیات من را ارائه داده باشد.
+- ایمیل: hi@mohet.ir
+- گیت‌هاب: [Mehotkhan / Github](https://github.com/mehotkhan)
+- لینکدین: [AliZemani / LinkedIn](https://www.linkedin.com/in/ali-zemani/)
+- توییتر: [AliZemani / Twitter](https://twitter.com/ZemaniAli/)

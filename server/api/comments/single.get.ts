@@ -50,8 +50,22 @@ export default defineEventHandler(async (event) => {
 
     // Query paginated comments matching our condition, ordered by creation time descending
     const paginatedComments = await drizzleDb
-      .select()
+      // .leftJoin(comments, eq(users.id, comments.authorId))
+      .select({
+        author: {
+          id: users.id,
+          displayName: users.displayName,
+          avatar: users.avatar,
+        },
+        createdAt: comments.createdAt,
+        updatedAt: comments.updatedAt,
+        status: comments.status,
+        id: comments.id,
+        parentCommentId: comments.parentCommentId,
+      })
       .from(comments)
+      .leftJoin(users, eq(users.id, comments.authorId))
+
       .where(whereCondition)
       .orderBy(desc(comments.createdAt))
       .limit(pageSize)

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { profile } = useUser();
 const route = useRoute();
 
 const page = ref(1);
@@ -41,18 +40,19 @@ watch(commentsData, () => {
         <div class="w-full flex justify-between">
           <div class="flex items-center gap-2">
             <UAvatar
-              :alt="profile.displayName"
-              size="2xl"
-              src="/mamoochi-tiny.webp"
+              icon="i-lucide-user"
+              size="xl"
               placeholder
               provider="cloudflare"
               :modifiers="{ fit: 'contain' }"
+              :src="comment.author.avatar"
               preload
               loading="lazy"
+              class="tracking-wide"
             />
 
-            <span class="text-base font-medium">
-              {{ profile.displayName }}
+            <span class="text-lg font-medium">
+              {{ comment.author.displayName }}
             </span>
           </div>
           <div class="flex gap-2 text-sm">
@@ -80,6 +80,7 @@ watch(commentsData, () => {
       </template>
     </UCard>
     <UPagination
+      v-if="total > pageSize"
       v-model:page="page"
       :total="total"
       :page-size="pageSize"

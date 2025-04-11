@@ -81,6 +81,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
           variant="ghost"
           color="primary"
           class="w-full"
+          size="xl"
           autoresize
           :disabled="!canCreate"
           @keydown="handleKeyDown"

@@ -18,8 +18,7 @@ Over the years, I have collaborated with various teams and contributed to multip
 
 ## Get in Touch
 
-To learn more about my projects and contributions, feel free to visit my [GitHub page](https://github.com/mehotkhan) or reach out via [email](mailto:hi@mohet.ir).
-
----
-
-I hope this brief introduction provides an overview of my expertise and experience.
+- Email: hi@mohet.ir
+- Github: [AliZemani / Github](https://github.com/mehotkhan)
+- LinkedIn: [AliZemani / LinkedIn](https://www.linkedin.com/in/ali-zemani/)
+- Twitter: [AliZemani / Twitter](https://twitter.com/ZemaniAli/)
