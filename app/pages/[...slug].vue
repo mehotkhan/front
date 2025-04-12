@@ -29,7 +29,7 @@ useSeoMeta({
     <div v-if="pageData" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
-          class="page-header flex flex-col gap-6 text-center pt-10 pb-12 min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
+          class="page-header flex flex-col gap-6 text-center pt-10 pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
         >
           <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
@@ -71,7 +71,7 @@ useSeoMeta({
               loading="lazy"
               :placeholder="[400]"
               sizes="(max-width: 768px) 100vw, 1280px"
-              class="w-full h-auto object-cover rounded-lg"
+              class="h-[calc(100vh-24rem)] w-full md:max-w-7xl md:rounded-sm"
               :src="pageData.thumbnail"
               :alt="pageData.title"
             />
