@@ -136,4 +136,7 @@ export default defineNuxtConfig({
       baseURL: "https://mohet.ir",
     },
   },
+  linkChecker: {
+    enabled: false,
+  },
 });

@@ -9,7 +9,7 @@ const handleCommentPosted = () => {
 </script>
 
 <template>
-  <section class="w-full">
+  <section id="comments" class="w-full">
     <div class="flex justify-between items-center my-5">
       <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
     </div>
@@ -19,10 +19,3 @@ const handleCommentPosted = () => {
     <CommentsLists ref="commentsListRef" />
   </section>
 </template>
-
-<style lang="scss" scoped>
-h3 {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-</style>

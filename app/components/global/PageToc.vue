@@ -1,14 +1,15 @@
 <script setup lang="ts">
 defineProps({
   body: { type: Object, required: true, default: {} },
+  comments: { type: Boolean, required: false, default: false },
 });
 </script>
 <template>
-  <div class="w-full">
-    <h3 class="text-2xl sm:text-3xl font-bold mt-0">
+  <div class="w-full prose md:prose-lg">
+    <h3 class="mt-0">
       {{ $t("Content Toc") }}
     </h3>
-    <ol class="text-md md:-mb-4">
+    <ol class="md:-mb-4">
       <li v-for="link of body.toc.links" :key="link.id">
         <a :href="`#${link.id}`">{{ link.text }}</a>
         <ul>
@@ -16,6 +17,9 @@ defineProps({
             <a :href="`#${link1.id}`">{{ link1.text }}</a>
           </li>
         </ul>
+      </li>
+      <li v-if="comments" key="comments">
+        <a :href="`#comments`">{{ $t("Comments") }}</a>
       </li>
     </ol>
   </div>

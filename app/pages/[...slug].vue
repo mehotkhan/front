@@ -71,7 +71,7 @@ useSeoMeta({
             preload
             loading="lazy"
             :placeholder="[400]"
-            sizes="(max-width: 640px) 100vw, 500px"
+            sizes="100vw sm:50vw md:700px"
             class="object-cover h-[calc(100vh-24rem)] md:max-w-6xl rounded-lg px-4 md:px-0"
             :src="pageData.thumbnail"
             :alt="pageData.title"
@@ -82,9 +82,13 @@ useSeoMeta({
       <!-- Main Content -->
       <UContainer>
         <div
-          class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4 prose prose-xl dark:prose-invert"
+          class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
         >
-          <PageToc v-if="pageData.toc" :body="pageData.body" />
+          <PageToc
+            v-if="pageData.toc"
+            :body="pageData.body"
+            :comments="pageData.comments"
+          />
           <ContentRenderer :value="pageData" class="w-full" />
           <Comments v-if="pageData.comments" />
         </div>
