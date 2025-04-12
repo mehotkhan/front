@@ -1,25 +1,43 @@
 <script lang="ts" setup>
 const { defaultLocale } = useI18n();
-
 const route = useRoute();
-const { data: pageData, status }: any = useAsyncData(
-  `page:${route.path}`,
-  async () => {
-    try {
-      return await queryCollection("content")
-        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
-        .first();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
-    }
-  },
-  { default: () => null, lazy: true }
+const path = computed(() =>
+  route.path === "/" ? "/" + defaultLocale + "/" : route.path
 );
 
-// Set dynamic page metadata (SEO)
+// Retry logic for unstable data fetching
+async function fetchPageData(retries = 2): Promise<any> {
+  while (retries-- > 0) {
+    try {
+      const result = await queryCollection("content").path(path.value).first();
+      if (result) return result;
+    } catch (err) {
+      console.warn("Fetch retry remaining:", retries, err);
+    }
+  }
+  return null;
+}
+
+const { data: pageData, status } = await useAsyncData(
+  `page:${path.value}`,
+  () => fetchPageData(),
+  {
+    // Avoid lazy so SSR always fetches
+    lazy: false,
+    default: () => null,
+    server: true,
+  }
+);
+
+// Watch for path change in CSR and refetch manually if needed
+watch(path, async (newPath) => {
+  await refreshNuxtData(`page:${newPath}`);
+});
+
+// SEO
 useSeoMeta({
-  title: pageData.value?.title,
-  description: pageData.value?.description,
+  title: () => pageData.value?.title ?? "Untitled Page",
+  description: () => pageData.value?.description ?? "",
 });
 </script>
 
