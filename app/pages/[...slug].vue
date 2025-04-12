@@ -31,11 +31,11 @@ useSeoMeta({
         <div
           class="page-header flex flex-col gap-6 text-center pt-10 pb-12 min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
         >
-          <div class="max-w-7xl mx-auto px-6">
-            <h1 class="text-4xl sm:text-5xl font-bold mb-4">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
               {{ pageData.title }}
             </h1>
-            <div class="flex flex-wrap justify-center gap-6 text-sm">
+            <div class="flex flex-wrap justify-center gap-6 text-sm mb-4">
               <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
@@ -59,23 +59,23 @@ useSeoMeta({
                 }}</span>
               </span>
             </div>
-            <p class="mt-5 text-xl">
+            <p class="mt-5 text-lg">
               {{ pageData.description }}
             </p>
           </div>
-
-          <nuxt-img
-            v-if="pageData.thumbnail"
-            provider="cloudflare"
-            :modifiers="{ fit: 'contain' }"
-            preload
-            loading="lazy"
-            :placeholder="[400]"
-            sizes="100vw sm:50vw md:700px"
-            class="object-cover h-[calc(100vh-24rem)] md:max-w-6xl rounded-lg px-4 md:px-0"
-            :src="pageData.thumbnail"
-            :alt="pageData.title"
-          />
+          <div class="max-w-7xl mx-auto mt-6">
+            <nuxt-img
+              v-if="pageData.thumbnail"
+              provider="cloudflare"
+              preload
+              loading="lazy"
+              :placeholder="[400]"
+              sizes="(max-width: 768px) 100vw, 1280px"
+              class="w-full h-auto object-cover rounded-lg"
+              :src="pageData.thumbnail"
+              :alt="pageData.title"
+            />
+          </div>
         </div>
       </template>
 

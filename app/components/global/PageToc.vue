@@ -5,7 +5,7 @@ defineProps({
 });
 </script>
 <template>
-  <div class="w-full prose md:prose-lg">
+  <div class="w-full">
     <h3 class="mt-0">
       {{ $t("Content Toc") }}
     </h3>
