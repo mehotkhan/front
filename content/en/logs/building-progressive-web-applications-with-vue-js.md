@@ -9,7 +9,7 @@ description:
   and to provide an immersive user experience with offline support.
 toc: false
 intro: false
-cat: books
+cat: library
 ---
 
 ## Introduction

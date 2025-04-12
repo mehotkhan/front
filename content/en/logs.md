@@ -1,7 +1,7 @@
 ---
 title: logs
 description: "logs Archives"
-thumbnail: /mamoochi-tiny.webp
+thumbnail: /content/blogging.png
 ---
 
 <LogsArchives   />

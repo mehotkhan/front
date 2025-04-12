@@ -1,7 +1,7 @@
 ---
 title: پروژه
 description: پروژه ها
-thumbnail: /mamoochi-tiny.webp
+thumbnail: /content/blogging.png
 ---
 
 <LogsArchives cat='projects' />

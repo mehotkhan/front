@@ -1,7 +1,7 @@
 ---
 title: Notes
 description: "Notes Archives"
-thumbnail: /mamoochi-tiny.webp
+thumbnail: /content/blogging.png
 ---
 
 <LogsArchives cat='notes' />

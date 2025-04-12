@@ -2,7 +2,7 @@
 const { defaultLocale } = useI18n();
 
 const route = useRoute();
-const { data: pageData }: any = useAsyncData(
+const { data: pageData, status }: any = useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
@@ -26,7 +26,7 @@ useSeoMeta({
 <template>
   <div class="w-full min-h-screen">
     <!-- If Content is Available -->
-    <div v-if="pageData" class="w-full">
+    <div v-if="status === 'success' && pageData" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
           class="page-header flex flex-col gap-6 text-center pt-10 pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
@@ -98,7 +98,7 @@ useSeoMeta({
     </div>
 
     <!-- **Skeleton Loader (Better Matched to UI)** -->
-    <div v-else class="w-full">
+    <div v-else-if="status === 'pending' && !pageData" class="w-full">
       <div
         class="flex flex-col gap-6 text-center pt-10 pb-12 border-b min-h-[calc(100vh-2rem)] items-center justify-around"
       >
@@ -138,6 +138,26 @@ useSeoMeta({
             <USkeleton class="h-5 w-3/4 rounded-md" />
           </div>
         </div>
+      </UContainer>
+    </div>
+
+    <div v-else class="flex items-center h-[calc(100vh-7rem)]">
+      <UContainer
+        class="flex flex-col items-center max-w-7xl mx-auto gap-6 text-center"
+      >
+        <UIcon name="i-lucide-search-x" class="text-yellow-500 size-40" />
+        <h2 class="text-3xl font-semibold">{{ $t("404 - Page Not Found") }}</h2>
+        <p class="text-lg">
+          {{
+            $t("The page you are looking for doesn’t exist or has been moved.")
+          }}
+        </p>
+        <p class="text-lg">
+          {{ $t("Please check the URL or return to the homepage.") }}
+        </p>
+        <RouterLink to="/" class="mt-4 text-blue-500 hover:underline">
+          {{ $t("Return to Homepage") }}
+        </RouterLink>
       </UContainer>
     </div>
   </div>

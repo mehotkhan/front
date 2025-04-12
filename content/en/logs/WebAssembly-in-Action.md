@@ -10,7 +10,7 @@ date: 2023-09-01T16:33:46.294Z
 
 toc: false
 intro: false
-cat: books
+cat: library
 ---
 
 ## About the Book
@@ -65,4 +65,4 @@ Gerard Gallant is a Microsoft Certified Professional and a Senior Software Devel
 
 ## How to Get
 
-- Manning Publications (Buy): [WebAssembly in Action](https://www.manning.com/books/webassembly-in-action)
+- Manning Publications (Buy): [WebAssembly in Action](https://www.manning.com/library/webassembly-in-action)

@@ -3,10 +3,9 @@ const route = useRoute();
 const { locale, defaultLocale } = useI18n();
 
 const basePath = computed(() => {
-  const pathLocale = route.path.startsWith(`/${locale.value}/`)
+  return route.path.startsWith(`/${locale.value}/`)
     ? locale.value
     : defaultLocale;
-  return route.path === "/" ? `/${pathLocale}` : route.path;
 });
 
 const props = defineProps({
@@ -14,18 +13,18 @@ const props = defineProps({
 });
 
 const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
-  const logsQuery = queryCollection("logs");
+  let logsQuery = queryCollection("logs");
+
   if (props.cat) {
-    logsQuery.where("cat", "=", props.cat);
+    logsQuery = logsQuery.where("cat", "=", props.cat);
   }
 
-  return await logsQuery
-    .andWhere((query) => {
-      return query.where("path", "LIKE", `${basePath.value}%`);
-    })
-    .limit(10)
-    .order("date", "DESC")
-    .all();
+  logsQuery = logsQuery
+    .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
+    .limit(20)
+    .order("date", "DESC");
+
+  return await logsQuery.all();
 });
 </script>
 
@@ -45,14 +44,14 @@ const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
             <span class="font-thin block">
               / {{ formatDateTime(item.date) }}
             </span>
-            <NuxtLinkLocale
+            <NuxtLink
               v-if="item.cat"
-              :to="`/cats/${item.cat}`"
+              :to="`/${locale}/cats/${item.cat}`"
               class="hover:!underline transition-colors duration-300 font-thin"
             >
               /
               {{ $t(item.cat) ?? item.cat }}
-            </NuxtLinkLocale>
+            </NuxtLink>
           </div>
         </li>
       </ol>

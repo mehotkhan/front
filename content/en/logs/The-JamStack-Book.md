@@ -6,7 +6,7 @@ description: "The Jamstack Book by Brian Rinaldi and Raymond Camden introduces t
 
 toc: false
 intro: false
-cat: books
+cat: library
 ---
 
 ## Summary of _The Jamstack Book_ by Brian Rinaldi and Raymond Camden (2022)
@@ -53,4 +53,4 @@ Overall, this book is a practical guide for developers looking to adopt or explo
 
 ## Get the Book
 
-- Manning (Buy): [The Jamstack Book, Beyond static sites with JavaScript, APIs, and markup](https://www.manning.com/books/the-jamstack-book)
+- Manning (Buy): [The Jamstack Book, Beyond static sites with JavaScript, APIs, and markup](https://www.manning.com/library/the-jamstack-book)

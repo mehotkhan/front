@@ -1,7 +1,7 @@
 ---
 title: یادداشت
 description: یادداشت ها
-thumbnail: /mamoochi-tiny.webp
+thumbnail: /content/blogging.png
 ---
 
 <LogsArchives cat='notes' />

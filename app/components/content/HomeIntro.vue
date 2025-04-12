@@ -3,19 +3,17 @@ const route = useRoute();
 const { locale, defaultLocale } = useI18n();
 
 const basePath = computed(() => {
-  const pathLocale = route.path.startsWith(`/${locale.value}/`)
+  return route.path.startsWith(`/${locale.value}/`)
     ? locale.value
     : defaultLocale;
-  return route.path === "/" ? `/${pathLocale}` : route.path;
 });
-
 const { data } = useAsyncData(
   `home-intro-${route.path}`,
   async () => {
     return await queryCollection("logs")
       .where("intro", "=", true)
       .andWhere((query) => {
-        return query.where("path", "LIKE", `${basePath.value}%`);
+        return query.where("path", "LIKE", `/${basePath.value}%`);
       })
       .order("date", "DESC")
       .first();

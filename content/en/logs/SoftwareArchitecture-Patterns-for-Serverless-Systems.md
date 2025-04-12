@@ -6,7 +6,7 @@ description: Software Architecture Patterns for Serverless Systems, by John Gilb
 
 toc: false
 intro: true
-cat: books
+cat: library
 ---
 
 _Software Architecture Patterns for Serverless Systems_ by John Gilbert explores the design and implementation of serverless architecture systems that are scalable, flexible, and responsive to today’s dynamic business environments. The book introduces the following key concepts:

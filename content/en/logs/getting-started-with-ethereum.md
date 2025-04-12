@@ -16,7 +16,7 @@ description: Get started with blockchain development with this step-by-step
 
 toc: false
 intro: false
-cat: books
+cat: library
 ---
 
 ## Introduction
