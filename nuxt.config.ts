@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     minify: true,
     prerender: {
       crawlLinks: false, // Rely on explicit routes
-      // routes: generateRoutes(),
+      routes: generateRoutes(),
       failOnError: false, // Fail build if prerendering fails
       concurrency: 10,
     },
@@ -68,11 +68,23 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/**": { ssr: true },
-    "/manage": { ssr: false, robots: false },
-    "/manage/**": { ssr: false, robots: false },
-    "/:locale/manage": { ssr: false, robots: false },
-    "/:locale/manage/**": { ssr: false, robots: false },
+    // Static pages (SSG)
+    "/": { prerender: true },
+    "/fa/": { prerender: true },
+    "/en/": { prerender: true },
+    // Content pages (SSG)
+    "/:locale/**": { prerender: true },
+    // API routes (serverless)
+    "/api/**": { ssr: true },
+    // Client-side only routes
+    "/manage": { prerender: false, ssr: false, robots: false },
+    "/manage/**": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
+    // Optional: ISR for logs and categories
+    // "/:locale/logs": { isr: 3600 },
+    // "/:locale/logs/**": { isr: true },
+    // "/:locale/cats/**": { isr: true },
     "/:locale/profile/**": { robots: false },
   },
   experimental: { restoreState: true },
