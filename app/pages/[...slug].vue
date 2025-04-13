@@ -1,23 +1,62 @@
 <script lang="ts" setup>
+import type { ParsedContent } from "@nuxt/content/dist/runtime/types";
+
 const { defaultLocale } = useI18n();
-
 const route = useRoute();
-const { data: pageData }: any = useAsyncData(`page:${route.path}`, async () => {
-  return await queryCollection("content")
-    .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
-    .first();
+
+// Normalize the path for Nuxt Content
+const contentPath = computed(() => {
+  // Handle root route
+  if (route.path === "/" || route.path === `/${defaultLocale}/`) {
+    return `/${defaultLocale}/index`;
+  }
+  // Remove trailing slash, keep path as-is
+  return route.path.replace(/\/$/, "");
 });
 
-// Set dynamic page metadata (SEO)
+// Fetch content with useAsyncData
+const { data: pageData, error } = await useAsyncData<ParsedContent | null>(
+  `page:${contentPath.value}`,
+  async () => {
+    try {
+      const content = await queryContent(contentPath.value).findOne();
+      return content || null;
+    } catch (err) {
+      console.error(`Content fetch error for ${contentPath.value}:`, err);
+      return null;
+    }
+  },
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    // Optimize for static generation
+    lazy: false,
+    server: true,
+  }
+);
+
+// Set SEO metadata
 useSeoMeta({
-  title: pageData.value?.title,
-  description: pageData.value?.description,
+  title: pageData.value?.title || "Page Not Found",
+  description: pageData.value?.description || "No description available",
+  ogTitle: pageData.value?.title,
+  ogDescription: pageData.value?.description,
+  ogImage: pageData.value?.thumbnail,
 });
+
+// Handle 404s during prerendering
+if (!pageData.value && import.meta.server) {
+  console.warn(`No content found for route: ${contentPath.value}`);
+  throw createError({
+    statusCode: 404,
+    message: "Page not found",
+    fatal: false,
+  });
+}
 </script>
 
 <template>
   <div class="w-full min-h-screen">
-    <!-- If Content is Available -->
     <div v-if="pageData" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
@@ -71,7 +110,6 @@ useSeoMeta({
         </div>
       </template>
 
-      <!-- Main Content -->
       <UContainer>
         <div
           class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
@@ -85,8 +123,6 @@ useSeoMeta({
           <Comments v-if="pageData.comments" />
         </div>
       </UContainer>
-
-      <!-- Edit Button (If User Has Permission) -->
     </div>
 
     <div v-else class="flex items-center h-[calc(100vh-7rem)]">
@@ -103,9 +139,9 @@ useSeoMeta({
         <p class="text-lg">
           {{ $t("Please check the URL or return to the homepage.") }}
         </p>
-        <RouterLink to="/" class="mt-4 text-blue-500 hover:underline">
+        <NuxtLinkLocale to="/" class="mt-4 text-blue-500 hover:underline">
           {{ $t("Return to Homepage") }}
-        </RouterLink>
+        </NuxtLinkLocale>
       </UContainer>
     </div>
   </div>
