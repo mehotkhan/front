@@ -1,29 +1,17 @@
 <script lang="ts" setup>
-import type { ParsedContent } from "@nuxt/content/dist/runtime/types";
-
 const { defaultLocale } = useI18n();
 const route = useRoute();
 
-// Normalize the path for Nuxt Content
-const contentPath = computed(() => {
-  // Handle root route
-  if (route.path === "/" || route.path === `/${defaultLocale}/`) {
-    return `/${defaultLocale}/index`;
-  }
-  // Remove trailing slash, keep path as-is
-  return route.path.replace(/\/$/, "");
-});
-
 // Fetch content with useAsyncData
-const { data: pageData, error } = await useAsyncData<ParsedContent | null>(
-  `page:${contentPath.value}`,
+const { data: pageData, error } = await useAsyncData(
+  `page:${route.path}`,
   async () => {
     try {
-      const content = await queryContent(contentPath.value).findOne();
-      return content || null;
-    } catch (err) {
-      console.error(`Content fetch error for ${contentPath.value}:`, err);
-      return null;
+      return await queryCollection("content")
+        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
+        .first();
+    } catch (error) {
+      console.error("Error fetching page content:", error);
     }
   },
   {
@@ -46,7 +34,7 @@ useSeoMeta({
 
 // Handle 404s during prerendering
 if (!pageData.value && import.meta.server) {
-  console.warn(`No content found for route: ${contentPath.value}`);
+  console.warn(`No content found for route: ${route.path}`);
   throw createError({
     statusCode: 404,
     message: "Page not found",

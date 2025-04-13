@@ -35,7 +35,6 @@ export const generateRoutes = (): string[] => {
   locales.forEach((locale) => routes.add(`/${locale}`));
 
   const routeList = Array.from(routes);
-  console.log("Generated routes:", routeList); // Debug output
   return routeList;
 };
 

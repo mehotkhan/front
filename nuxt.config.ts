@@ -84,12 +84,12 @@ export default defineNuxtConfig({
 
   experimental: { restoreState: true },
 
-  content: {
-    database: {
-      type: "d1",
-      bindingName: "DB",
-    },
-  },
+  // content: {
+  //   database: {
+  //     type: "d1",
+  //     bindingName: "DB",
+  //   },
+  // },
 
   echarts: {
     ssr: true,
