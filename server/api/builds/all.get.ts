@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -11,15 +12,37 @@ export default defineEventHandler(async (event) => {
       statusMessage: t("Forbidden: You do not have permission to get builds."),
     });
   }
+
   try {
+    // Define Zod schema for query parameters
+    const querySchema = z.object({
+      page: z
+        .string()
+        .optional()
+        .transform((val) => (val ? Number(val) : 1))
+        .refine((val) => val >= 1, t("Page must be at least 1")),
+      pageSize: z
+        .string()
+        .optional()
+        .transform((val) => (val ? Number(val) : 10))
+        .refine((val) => val >= 1, t("Page size must be at least 1")),
+    });
+
+    const query = getQuery(event);
+    const parsedQuery = querySchema.safeParse(query);
+
+    if (!parsedQuery.success) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: parsedQuery.error.message,
+      });
+    }
+
+    const { page, pageSize } = parsedQuery.data;
+    const offset = (page - 1) * pageSize;
+
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);
-
-    // Get pagination parameters from query
-    const query = getQuery(event);
-    const page = Number(query.page) || 1;
-    const pageSize = Number(query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
 
     // Query the total count of builds
     const totalResult = await db.select({ count: sql`COUNT(*)` }).from(builds);

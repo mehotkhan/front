@@ -44,7 +44,7 @@ export default defineNuxtConfig({
       crawlLinks: false, // Rely on explicit routes
       routes: generateRoutes(),
       failOnError: false, // Fail build if prerendering fails
-      concurrency: 10,
+      concurrency: 1,
     },
   },
 
@@ -81,11 +81,6 @@ export default defineNuxtConfig({
     "/manage/**": { prerender: false, ssr: false, robots: false },
     "/:locale/manage": { prerender: false, ssr: false, robots: false },
     "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
-    // Optional: ISR for logs and categories
-    // "/:locale/logs": { isr: 3600 },
-    // "/:locale/logs/**": { isr: true },
-    // "/:locale/cats/**": { isr: true },
-    "/:locale/profile/**": { robots: false },
   },
   experimental: { restoreState: true },
 

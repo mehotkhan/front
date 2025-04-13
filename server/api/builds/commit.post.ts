@@ -21,8 +21,8 @@ export default defineEventHandler(async (event) => {
   // Validate incoming payload
   const body = await readBody(event);
   const schema = z.object({
-    path: z.string(),
-    body: z.string(),
+    path: z.string().min(1, t("Path must not be empty")),
+    body: z.string().min(1, t("Content must not be empty")),
   });
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
   if (existingBuild) {
     buildId = existingBuild.id;
   } else {
-    // Create a new build.
+    // Create a new build
     const now = new Date();
     const pad = (n: number) => n.toString().padStart(2, "0");
     // Format as "YYYY-MM-DD HH:mm"

@@ -5,17 +5,53 @@ const page = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 
-const { data: commentsData, refresh: refreshComments } = useFetch(
-  "/api/comments/single",
+// Fetch comments with useAsyncData
+const {
+  data: commentsData,
+  refresh: refreshComments,
+  error,
+} = useAsyncData(
+  `comments:${route.path}:${page.value}`,
+  async () => {
+    try {
+      // Skip API call during prerendering if server isn't available
+      if (import.meta.server && process.env.NODE_ENV === "prerender") {
+        return { comments: [], total: 0 };
+      }
+
+      // Fetch comments with unwrapped refs
+      const response = await $fetch("/api/comments/single", {
+        query: {
+          page: page.value, // Unwrap ref
+          pageSize: pageSize.value, // Unwrap ref
+          path: route.path,
+        },
+      });
+      return response;
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+      // Return fallback data on error
+      return { comments: [], total: 0 };
+    }
+  },
   {
-    query: { page, pageSize, path: route.path },
+    // Optimize for prerendering
+    lazy: false,
+    server: true,
+    // Watch for changes in page and path
+    watch: [page, () => route.path],
+    // Transform data to ensure consistent shape
+    transform: (data) => data || { comments: [], total: 0 },
   }
 );
 
+// Expose refreshComments for external use
 defineExpose({ refreshComments });
 
+// Computed property for comments
 const currentComments = computed(() => commentsData.value?.comments || []);
 
+// Update total when commentsData changes
 watch(commentsData, () => {
   if (commentsData.value?.total !== undefined) {
     total.value = commentsData.value.total;

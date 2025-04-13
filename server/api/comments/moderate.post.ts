@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -15,23 +16,24 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Read the body and validate required fields
-    const { id, newStatus } = await readBody(event);
-    if (!id || !newStatus) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: t("Missing required fields: id or newStatus"),
-      });
-    }
+    // Define Zod schema for body validation
+    const schema = z.object({
+      id: z.number().int().positive(t("Comment ID must be a positive integer")),
+      newStatus: z.enum(["published", "spam", "draft"], {
+        errorMap: () => ({ message: t("Invalid status value.") }),
+      }),
+    });
 
-    // Validate newStatus is allowed
-    const allowedStatuses = ["published", "spam", "draft"];
-    if (!allowedStatuses.includes(newStatus)) {
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
       throw createError({
         statusCode: 400,
-        statusMessage: t("Invalid status value."),
+        statusMessage: parsed.error.message,
       });
     }
+    const { id, newStatus } = parsed.data;
 
     // Initialize database connection
     const { DB } = event.context.cloudflare.env;

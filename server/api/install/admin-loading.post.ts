@@ -1,25 +1,35 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  // Use plain object property access for headers
   const headers: any = getHeaders(event);
   const now = new Date();
 
   try {
-    const body = await readBody(event);
+    // Define Zod schema for body validation
+    const schema = z.object({
+      firstName: z.string().min(1, t("First name must not be empty")),
+      lastName: z.string().min(1, t("Last name must not be empty")),
+      userName: z.string().min(1, t("Username must not be empty")),
+      password: z.string().min(1, t("Password must not be empty")),
+      pub: z.string().min(1, t("Public key must not be empty")),
+      about: z.string().min(1, t("About must not be empty")),
+      avatar: z.string().optional(),
+    });
 
-    // Validate that all required admin details are provided
-    const { firstName, lastName, userName, password, pub, about, avatar } = body;
-    if (!firstName || !lastName || !userName || !password || !pub || !about) {
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
       throw createError({
         statusCode: 400,
-        statusMessage: t(
-          "Please provide firstName, lastName, about, userName, password, and pub."
-        ),
+        statusMessage: parsed.error.message,
       });
     }
+    const { firstName, lastName, userName, password, pub, about, avatar } =
+      parsed.data;
 
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
@@ -89,7 +99,7 @@ export default defineEventHandler(async (event) => {
       lastActivity: now,
     });
 
-    // Retrieve the default Admin role (which should already be configured)
+    // Retrieve the default Admin role
     const adminRole = await drizzleDb
       .select()
       .from(roles)
