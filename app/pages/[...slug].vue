@@ -3,7 +3,7 @@ const { defaultLocale } = useI18n();
 const route = useRoute();
 
 // Fetch content with useAsyncData
-const { data: pageData, error } = await useAsyncData(
+const { data: pageData, error } = useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
@@ -25,8 +25,8 @@ const { data: pageData, error } = await useAsyncData(
 
 // Set SEO metadata
 useSeoMeta({
-  title: pageData.value?.title || "Page Not Found",
-  description: pageData.value?.description || "No description available",
+  title: pageData.value?.title,
+  description: pageData.value?.description,
   ogTitle: pageData.value?.title,
   ogDescription: pageData.value?.description,
   ogImage: pageData.value?.thumbnail,
@@ -113,23 +113,46 @@ useSeoMeta({
       </UContainer>
     </div>
 
-    <div v-else class="flex items-center h-[calc(100vh-7rem)]">
-      <UContainer
-        class="flex flex-col items-center max-w-7xl mx-auto gap-6 text-center"
+    <div v-else class="w-full">
+      <div
+        class="flex flex-col gap-6 text-center pt-10 pb-12 border-b min-h-[calc(100vh-2rem)] items-center justify-around"
       >
-        <UIcon name="i-lucide-search-x" class="text-yellow-500 size-40" />
-        <h2 class="text-3xl font-semibold">{{ $t("404 - Page Not Found") }}</h2>
-        <p class="text-lg">
-          {{
-            $t("The page you are looking for doesn’t exist or has been moved.")
-          }}
-        </p>
-        <p class="text-lg">
-          {{ $t("Please check the URL or return to the homepage.") }}
-        </p>
-        <NuxtLinkLocale to="/" class="mt-4 text-blue-500 hover:underline">
-          {{ $t("Return to Homepage") }}
-        </NuxtLinkLocale>
+        <div class="max-w-7xl mx-auto px-5 w-full">
+          <!-- Skeleton Title -->
+          <USkeleton class="h-10 sm:h-12 w-3/4 mx-auto rounded-md" />
+
+          <!-- Metadata Skeleton -->
+          <div class="flex justify-center gap-6 mt-4">
+            <USkeleton
+              v-for="i in 3"
+              :key="i"
+              class="h-4 w-28 sm:w-32 rounded-md"
+            />
+          </div>
+
+          <!-- Description Skeleton -->
+          <div class="mt-6 space-y-3">
+            <USkeleton v-for="i in 2" :key="i" class="h-4 w-full rounded-md" />
+            <USkeleton class="h-4 w-3/4 rounded-md" />
+          </div>
+        </div>
+
+        <!-- Image Skeleton (Now Matches the Loaded Image) -->
+        <USkeleton
+          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px]"
+        />
+      </div>
+
+      <!-- Main Content Skeleton -->
+      <UContainer>
+        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
+          <div class="w-full space-y-5">
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+          </div>
+        </div>
       </UContainer>
     </div>
   </div>
