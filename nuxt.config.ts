@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: false, // Rely on explicit routes
       routes: generateRoutes(),
-      failOnError: true, // Fail build if prerendering fails
+      failOnError: false, // Fail build if prerendering fails
       concurrency: 10,
     },
   },

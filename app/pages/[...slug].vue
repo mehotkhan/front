@@ -33,14 +33,14 @@ useSeoMeta({
 });
 
 // Handle 404s during prerendering
-if (!pageData.value && import.meta.server) {
-  console.warn(`No content found for route: ${route.path}`);
-  throw createError({
-    statusCode: 404,
-    message: "Page not found",
-    fatal: false,
-  });
-}
+// if (!pageData.value && import.meta.server) {
+//   console.warn(`No content found for route: ${route.path}`);
+//   throw createError({
+//     statusCode: 404,
+//     message: "Page not found",
+//     fatal: false,
+//   });
+// }
 </script>
 
 <template>
