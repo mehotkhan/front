@@ -7,18 +7,29 @@ const basePath = computed(() => {
     ? locale.value
     : defaultLocale;
 });
+
 const { data } = useAsyncData(
   `home-intro-${route.path}`,
   async () => {
-    return await queryCollection("logs")
-      .where("intro", "=", true)
-      .andWhere((query) => {
-        return query.where("path", "LIKE", `/${basePath.value}%`);
-      })
-      .order("date", "DESC")
-      .first();
+    try {
+      return await queryCollection("logs")
+        .where("intro", "=", true)
+        .andWhere((query) => {
+          return query.where("path", "LIKE", `/${basePath.value}%`);
+        })
+        .order("date", "DESC")
+        .first();
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+    }
   },
-  { default: () => null }
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    // Optimize for static generation
+    lazy: false,
+    server: true,
+  }
 );
 </script>
 

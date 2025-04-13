@@ -12,20 +12,34 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
-  let logsQuery = queryCollection("logs");
+const { data } = useAsyncData(
+  `logs-archives-${route.path}`,
+  async () => {
+    try {
+      let logsQuery = queryCollection("logs");
 
-  if (props.cat) {
-    logsQuery = logsQuery.where("cat", "=", props.cat);
+      if (props.cat) {
+        logsQuery = logsQuery.where("cat", "=", props.cat);
+      }
+
+      logsQuery = logsQuery
+        .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
+        .limit(20)
+        .order("date", "DESC");
+
+      return await logsQuery.all();
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+    }
+  },
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    // Optimize for static generation
+    lazy: false,
+    server: true,
   }
-
-  logsQuery = logsQuery
-    .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
-    .limit(20)
-    .order("date", "DESC");
-
-  return await logsQuery.all();
-});
+);
 </script>
 
 <template>
