@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     minify: true,
     prerender: {
       crawlLinks: false, // Rely on explicit routes
-      routes: generateRoutes(),
+      // routes: generateRoutes(),
       failOnError: false, // Fail build if prerendering fails
       concurrency: 10,
     },
@@ -68,20 +68,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/": { prerender: true },
-    "/fa/": { prerender: true },
-    "/en/": { prerender: true },
-    "/manage": { prerender: false, ssr: false, robots: false },
-    "/manage/**": { prerender: false, ssr: false, robots: false },
-    "/:locale/manage": { prerender: false, ssr: false, robots: false },
-    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
-    "/:locale/logs": { isr: 3600 },
-    "/:locale/logs/**": { isr: true },
-    "/:locale/cats/**": { isr: true },
+    "/**": { ssr: true },
+    "/manage": { ssr: false, robots: false },
+    "/manage/**": { ssr: false, robots: false },
+    "/:locale/manage": { ssr: false, robots: false },
+    "/:locale/manage/**": { ssr: false, robots: false },
     "/:locale/profile/**": { robots: false },
-    "/**": { prerender: true },
   },
-
   experimental: { restoreState: true },
 
   content: {
