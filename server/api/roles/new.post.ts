@@ -4,17 +4,24 @@ import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  const body = await readBody(event);
 
-  // Define a Zod schema for validating the incoming payload.
+  // Define Zod schema for validating the incoming payload
   const schema = z.object({
-    roleName: z.string().min(3, t("Must be at least 3 characters")),
-    description: z.string().optional(),
+    roleName: z
+      .string()
+      .min(3, t("Role name must be at least 3 characters"))
+      .max(255, t("Role name must not exceed 255 characters")),
+    description: z
+      .string()
+      .max(1000, t("Description must not exceed 1000 characters"))
+      .optional(),
     permissions: z
-      .array(z.string())
+      .array(z.string().min(1, t("Permission must not be empty")))
       .min(1, t("At least one permission must be selected")),
   });
 
+  // Read and validate the body
+  const body = await readBody(event);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
     throw createError({
@@ -28,7 +35,7 @@ export default defineEventHandler(async (event) => {
   const { DB } = event.context.cloudflare.env;
   const drizzleDb = drizzle(DB);
 
-  // Check if the role name is already registered.
+  // Check if the role name is already registered
   const existingRole = await drizzleDb
     .select()
     .from(roles)
@@ -44,8 +51,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Insert the new role into the database.
-  // Permissions are stored as a JSON string.
+  // Insert the new role into the database
   await drizzleDb
     .insert(roles)
     .values({

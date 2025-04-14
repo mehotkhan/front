@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -16,14 +17,22 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Read and validate input
-    const { oldPassword, newPassword } = await readBody(event);
-    if (!oldPassword || !newPassword) {
+    // Define Zod schema for body validation
+    const schema = z.object({
+      oldPassword: z.string().min(1, t("Current password must not be empty")),
+      newPassword: z.string().min(1, t("New password must not be empty")),
+    });
+
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
       throw createError({
         statusCode: 400,
-        statusMessage: t("Missing required fields: oldPassword or newPassword"),
+        statusMessage: parsed.error.message,
       });
     }
+    const { oldPassword, newPassword } = parsed.data;
 
     // Initialize DB from Cloudflare environment
     const { DB } = event.context.cloudflare.env;
