@@ -113,19 +113,19 @@ export default defineNuxtConfig({
         highlight: false,
       },
     },
-    database: {
-      type: "d1",
-      bindingName: "DB",
-    },
+    // database: {
+    //   type: "d1",
+    //   bindingName: "DB",
+    // },
   },
 
   image: {
     cloudflare: {
       baseURL: "https://mohet.ir",
     },
-    formats: ["webp", "avif"],
-    densities: [1, 2],
-    quality: 80,
+    // formats: ["webp", "avif"],
+    // densities: [1, 2],
+    // quality: 80,
   },
   echarts: {
     ssr: true,
