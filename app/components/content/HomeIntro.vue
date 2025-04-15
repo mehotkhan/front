@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useNuxtApp } from "#imports";
+
 const route = useRoute();
-const { locale, defaultLocale } = useI18n();
+const nuxtApp = useNuxtApp();
+const i18n: any = nuxtApp.$i18n; // Access i18n server-side
+
+// Get locale server-side
+const locale = i18n.locale.value;
+const defaultLocale = i18n.defaultLocale;
 
 const basePath = computed(() => {
   return route.path.startsWith(`/${locale.value}/`)

@@ -1,27 +1,39 @@
 <script lang="ts" setup>
-const { defaultLocale, locale } = useI18n();
+import { useNuxtApp } from "#imports";
+
 const route = useRoute();
+const nuxtApp = useNuxtApp();
+const i18n: any = nuxtApp.$i18n; // Access i18n server-side
+
+// Get locale server-side
+const locale = i18n.locale.value;
+const defaultLocale = i18n.defaultLocale;
 
 // Fetch content with useAsyncData
 const { data: pageData, error } = useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      return await queryCollection("content")
-        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
-        .first();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
+      const contentPath =
+        route.path === "/" ? `/${defaultLocale}/` : route.path;
+      return await queryCollection("content").path(contentPath).first();
+    } catch (err) {
+      console.error(`Error fetching content for ${route.path}:`, err);
+      throw err;
     }
   },
   {
     dedupe: "defer",
     transform: (data) => data || null,
-    // Optimize for static generation
     lazy: false,
     server: true,
   }
 );
+
+// Log for debugging
+if (import.meta.server && !pageData.value) {
+  console.warn(`No content found for route: ${route.path}`);
+}
 
 // Set SEO metadata
 useSeoMeta({
@@ -32,7 +44,6 @@ useSeoMeta({
   ogImage: pageData.value?.thumbnail,
 });
 </script>
-
 <template>
   <div class="w-full min-h-screen">
     <div v-if="pageData" class="w-full">

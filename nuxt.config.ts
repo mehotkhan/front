@@ -55,7 +55,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: "cloudflare-pages",
+    // preset: "cloudflare-pages",
     compressPublicAssets: { brotli: true },
     minify: true,
     prerender: {
@@ -69,7 +69,6 @@ export default defineNuxtConfig({
       {
         dir: "public",
         maxAge: 31536000,
-        immutable: true,
       },
     ],
   },
@@ -87,16 +86,7 @@ export default defineNuxtConfig({
   },
 
   ui: { fonts: false },
-
   content: {
-    markdown: {
-      remarkPlugins: ["remark-reading-time"],
-      rehypePlugins: [],
-    },
-    highlight: {
-      theme: "github-light",
-      preload: ["json", "js", "ts", "html", "css", "vue"],
-    },
     database: {
       type: "d1",
       bindingName: "DB",
@@ -128,10 +118,10 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/fa/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/en/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/:locale/**": { prerender: true, cache: { maxAge: 31536000 } },
+    "/": { prerender: true },
+    "/fa/": { prerender: true },
+    "/en/": { prerender: true },
+    "/:locale/**": { prerender: true },
     "/api/**": { ssr: true },
     "/manage": { prerender: false, ssr: false, robots: false },
     "/manage/**": { prerender: false, ssr: false, robots: false },
@@ -142,7 +132,6 @@ export default defineNuxtConfig({
   experimental: {
     restoreState: true,
     payloadExtraction: true,
-    inlineSSRStyles: true,
   },
 
   echarts: {
@@ -166,12 +155,9 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    redirectTrailingSlash: true,
     automaticDefaults: true,
   },
-
   linkChecker: { enabled: false },
-
   hooks: {
     "nitro:build:public-assets": (nitro) => {
       console.log("Prerendered routes:", nitro.options.prerender?.routes);
