@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useNuxtApp } from "#imports";
-
 const route = useRoute();
-const nuxtApp = useNuxtApp();
-const i18n: any = nuxtApp.$i18n; // Access i18n server-side
-
-// Get locale server-side
-const locale = i18n.locale.value;
-const defaultLocale = i18n.defaultLocale;
+const { locale, defaultLocale } = useI18n();
 
 const basePath = computed(() => {
   return route.path.startsWith(`/${locale.value}/`)
@@ -19,24 +12,34 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = await useAsyncData(`logs-archives-${route.path}`, () => {
-  try {
-    let logsQuery = queryCollection("logs");
+const { data } = await useAsyncData(
+  `logs-archives-${route.path}`,
+  async () => {
+    try {
+      let logsQuery = queryCollection("logs");
 
-    if (props.cat) {
-      logsQuery = logsQuery.where("cat", "=", props.cat);
+      if (props.cat) {
+        logsQuery = logsQuery.where("cat", "=", props.cat);
+      }
+
+      logsQuery = logsQuery
+        .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
+        .limit(20)
+        .order("date", "DESC");
+
+      return await logsQuery.all();
+    } catch (error) {
+      console.error("Error fetching page content:", error);
     }
-
-    logsQuery = logsQuery
-      .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
-      .limit(20)
-      .order("date", "DESC");
-
-    return logsQuery.all();
-  } catch (error) {
-    console.error("Error fetching page content:", error);
+  },
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    // Optimize for static generation
+    lazy: false,
+    server: true,
   }
-});
+);
 </script>
 
 <template>

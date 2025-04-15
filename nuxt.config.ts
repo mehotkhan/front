@@ -106,6 +106,7 @@ export default defineNuxtConfig({
   },
   experimental: {
     restoreState: true,
+    payloadExtraction: false,
   },
   content: {
     build: {

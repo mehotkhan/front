@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useNuxtApp } from "#imports";
-
 const route = useRoute();
-const nuxtApp = useNuxtApp();
-const i18n: any = nuxtApp.$i18n; // Access i18n server-side
-
-// Get locale server-side
-const locale = i18n.locale.value;
-const defaultLocale = i18n.defaultLocale;
+const { locale, defaultLocale } = useI18n();
 
 const basePath = computed(() => {
   return route.path.startsWith(`/${locale.value}/`)
@@ -15,19 +8,29 @@ const basePath = computed(() => {
     : defaultLocale;
 });
 
-const { data } = await useAsyncData(`home-intro-${route.path}`, () => {
-  try {
-    return queryCollection("logs")
-      .where("intro", "=", true)
-      .andWhere((query) => {
-        return query.where("path", "LIKE", `/${basePath.value}%`);
-      })
-      .order("date", "DESC")
-      .first();
-  } catch (error) {
-    console.error("Error fetching page content:", error);
+const { data } = await useAsyncData(
+  `home-intro-${route.path}`,
+  async () => {
+    try {
+      return await queryCollection("logs")
+        .where("intro", "=", true)
+        .andWhere((query) => {
+          return query.where("path", "LIKE", `/${basePath.value}%`);
+        })
+        .order("date", "DESC")
+        .first();
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+    }
+  },
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    // Optimize for static generation
+    lazy: false,
+    server: true,
   }
-});
+);
 </script>
 
 <template>
