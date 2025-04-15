@@ -92,7 +92,7 @@ useSeoMeta({
             :comments="pageData?.comments"
           />
           <ContentRenderer :value="pageData" class="w-full" />
-          <Comments v-if="pageData?.comments" />
+          <!-- <Comments v-if="pageData?.comments" /> -->
         </div>
       </UContainer>
     </div>
