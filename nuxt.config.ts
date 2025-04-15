@@ -87,6 +87,14 @@ export default defineNuxtConfig({
 
   ui: { fonts: false },
   content: {
+    markdown: {
+      remarkPlugins: ["remark-reading-time"],
+      rehypePlugins: [],
+    },
+    highlight: {
+      theme: "github-dark",
+      preload: ["json", "js", "ts", "html", "css", "vue", "go"],
+    },
     database: {
       type: "d1",
       bindingName: "DB",
