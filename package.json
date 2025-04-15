@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.mjs build",
     "clean": "rm -rf .nuxt dist .output dist_build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",

@@ -1,12 +1,5 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale, defaultLocale } = useI18n();
-
-const basePath = computed(() => {
-  return route.path.startsWith(`/${locale.value}/`)
-    ? locale.value
-    : defaultLocale;
-});
 
 const props = defineProps({
   cat: { type: String, required: false, default: "" },
@@ -14,6 +7,8 @@ const props = defineProps({
 
 const { data } = await useAsyncData(`logs-archives-${route.path}`, () => {
   try {
+    const contentPath = route.path === "/" ? `/fa` : route.path;
+
     let logsQuery = queryCollection("logs");
 
     if (props.cat) {
@@ -21,7 +16,7 @@ const { data } = await useAsyncData(`logs-archives-${route.path}`, () => {
     }
 
     logsQuery = logsQuery
-      .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
+      .andWhere((query) => query.where("path", "LIKE", `${contentPath}%`))
       .limit(20)
       .order("date", "DESC");
 

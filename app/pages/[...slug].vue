@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute();
-
+const { locale } = useI18n();
 // Fetch content with useAsyncData
 const { data: pageData, error } = await useAsyncData(
   `page:${route.path}`,
