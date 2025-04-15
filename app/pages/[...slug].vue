@@ -43,10 +43,7 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
               </span>
-              <!-- <span
-                v-if="locale && pageData?.cat"
-                class="font-medium whitespace-nowrap"
-              >
+              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <NuxtLink
                   :to="`/${locale}/cats/${pageData?.cat}`"
@@ -54,7 +51,7 @@ useSeoMeta({
                 >
                   {{ $t(pageData?.cat) ?? pageData?.cat }}
                 </NuxtLink>
-              </span> -->
+              </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
                 <span class="normal-case">{{
@@ -92,7 +89,7 @@ useSeoMeta({
             :comments="pageData?.comments"
           />
           <ContentRenderer :value="pageData" class="w-full" />
-          <!-- <Comments v-if="pageData?.comments" /> -->
+          <Comments v-if="pageData?.comments" />
         </div>
       </UContainer>
     </div>

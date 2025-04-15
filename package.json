@@ -24,14 +24,14 @@
     "@tiptap/extension-floating-menu": "^2.11.7",
     "@tiptap/extension-placeholder": "^2.11.7",
     "dexie": "^4.0.11",
-    "drizzle-orm": "^0.41.0",
+    "drizzle-orm": "^0.42.0",
     "echarts-liquidfill": "^3.1.0",
     "h3-zod": "^0.5.3",
     "luxon": "^3.6.1",
     "minisearch": "^7.1.2",
     "nostr-tools": "^2.12.0",
     "nuxt": "^3.16.2",
-    "nuxt-auth-utils": "0.5.19",
+    "nuxt-auth-utils": "0.5.20",
     "nuxt-authorization": "0.3.3",
     "nuxt-tiptap-editor": "^2.1.4",
     "sass": "^1.86.3",
@@ -50,7 +50,7 @@
     "@nuxtjs/i18n": "^9.5.3",
     "@tailwindcss/typography": "^0.5.16",
     "@types/luxon": "^3.6.2",
-    "drizzle-kit": "^0.30.6",
+    "drizzle-kit": "^0.31.0",
     "eslint": "^9.24.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nitro-cloudflare-dev": "^0.2.2",
@@ -59,7 +59,7 @@
     "typescript": "^5.8.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^4.11.0"
+    "wrangler": "^4.11.1"
   },
   "pnpm": {
     "overrides": {

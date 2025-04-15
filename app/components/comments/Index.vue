@@ -16,6 +16,8 @@ const handleCommentPosted = () => {
     <!-- Emit "commentPosted" event from the create form -->
     <CommentsCreateForm @comment-posted="handleCommentPosted" />
     <!-- Bind ref to allow refresh from parent -->
-    <CommentsLists ref="commentsListRef" />
+    <ClientOnly>
+      <CommentsLists ref="commentsListRef" />
+    </ClientOnly>
   </section>
 </template>
