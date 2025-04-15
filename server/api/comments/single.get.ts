@@ -1,51 +1,55 @@
 import { and, eq, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { desc, sql } from "drizzle-orm/sql";
-import { z } from "zod";
+import {
+  maxValue,
+  minLength,
+  minValue,
+  number,
+  object,
+  parse,
+  pipe,
+  string,
+  transform,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
-  // Define a Zod schema for validating query parameters
-  const schema = z.object({
-    page: z
-      .string()
-      .transform((val) => Number(val))
-      .refine((val) => !isNaN(val) && val >= 1, {
-        message: t("Invalid page parameter: must be a number >= 1"),
-      }),
-    pageSize: z
-      .string()
-      .transform((val) => Number(val))
-      .refine((val) => !isNaN(val) && val >= 1 && val <= 100, {
-        message: t(
-          "Invalid pageSize parameter: must be a number between 1 and 100"
+  // Define a Valibot schema for validating query parameters
+  const schema = object({
+    page: pipe(
+      string(),
+      transform((val) => Number(val)),
+      number([minValue(1, t("Invalid page parameter: must be a number >= 1"))])
+    ),
+    pageSize: pipe(
+      string(),
+      transform((val) => Number(val)),
+      number([
+        minValue(
+          1,
+          t("Invalid pageSize parameter: must be a number between 1 and 100")
         ),
-      }),
-    path: z.string().min(1, {
-      message: t("Missing or invalid path parameter"),
-    }),
+        maxValue(
+          100,
+          t("Invalid pageSize parameter: must be a number between 1 and 100")
+        ),
+      ])
+    ),
+    path: string([minLength(1, t("Missing or invalid path parameter"))]),
   });
 
   // Parse query parameters
   const query = getQuery(event);
-  const parsed = schema.safeParse(query);
-
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.issues
-        .map((issue) => issue.message)
-        .join(", "),
-    });
-  }
+  const parsed = parse(schema, query, { abortEarly: false });
 
   try {
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
 
     // Extract validated parameters
-    const { page, pageSize, path } = parsed.data;
+    const { page, pageSize, path } = parsed;
     const offset = (page - 1) * pageSize;
 
     // Retrieve current user session (if any)

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { defaultLocale } = useI18n();
+const { defaultLocale, locale } = useI18n();
 const route = useRoute();
 
 // Fetch content with useAsyncData
@@ -31,16 +31,6 @@ useSeoMeta({
   ogDescription: pageData.value?.description,
   ogImage: pageData.value?.thumbnail,
 });
-
-// Handle 404s during prerendering
-// if (!pageData.value && import.meta.server) {
-//   console.warn(`No content found for route: ${route.path}`);
-//   throw createError({
-//     statusCode: 404,
-//     message: "Page not found",
-//     fatal: false,
-//   });
-// }
 </script>
 
 <template>
@@ -48,7 +38,7 @@ useSeoMeta({
     <div v-if="pageData" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
-          class="page-header flex flex-col gap-6 text-center pt-10 pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
+          class="page-header flex flex-col gap-6 text-center pt-10 md:pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
         >
           <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
@@ -64,12 +54,12 @@ useSeoMeta({
               </span>
               <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
-                <NuxtLinkLocale
-                  :to="`/cats/${pageData.cat}`"
+                <NuxtLink
+                  :to="`/${locale}/cats/${pageData.cat}`"
                   class="hover:!underline transition-colors duration-300"
                 >
                   {{ $t(pageData.cat) ?? pageData.cat }}
-                </NuxtLinkLocale>
+                </NuxtLink>
               </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
@@ -90,7 +80,7 @@ useSeoMeta({
               loading="lazy"
               :placeholder="[400]"
               sizes="(max-width: 768px) 100vw, 1280px"
-              class="h-[calc(100vh-24rem)] w-full md:max-w-7xl md:rounded-sm"
+              class="md:h-[calc(100vh-24rem)] w-full md:max-w-7xl md:rounded-sm h-auto"
               :src="pageData.thumbnail"
               :alt="pageData.title"
             />

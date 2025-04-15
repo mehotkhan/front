@@ -1,5 +1,15 @@
 import { drizzle } from "drizzle-orm/d1";
-import { z } from "zod";
+import {
+  integer,
+  minLength,
+  minValue,
+  nullable,
+  number,
+  object,
+  optional,
+  parse,
+  string,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -14,28 +24,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Define Zod schema for body validation
-  const schema = z.object({
-    routePath: z.string().min(1, t("Route path must not be empty")),
-    commentBody: z.string().min(1, t("Comment body must not be empty")),
-    parentCommentId: z
-      .number()
-      .int()
-      .positive(t("Parent comment ID must be a positive integer"))
-      .optional()
-      .nullable(),
+  // Define Valibot schema for body validation
+  const schema = object({
+    routePath: string([minLength(1, t("Route path must not be empty"))]),
+    commentBody: string([minLength(1, t("Comment body must not be empty"))]),
+    parentCommentId: optional(
+      nullable(
+        number([
+          integer(),
+          minValue(1, t("Parent comment ID must be a positive integer")),
+        ])
+      )
+    ),
   });
 
   // Read and validate the body
   const payload = await readBody(event);
-  const parsed = schema.safeParse(payload);
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.message,
-    });
-  }
-  const { routePath, commentBody, parentCommentId } = parsed.data;
+  const parsed = parse(schema, payload, { abortEarly: false });
+
+  const { routePath, commentBody, parentCommentId } = parsed;
 
   const { DB } = event.context.cloudflare.env;
   const drizzleDb = drizzle(DB);

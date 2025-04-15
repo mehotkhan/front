@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { z } from "zod";
+import { minLength, object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -17,23 +17,17 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Define Zod schema for body validation
-    const schema = z.object({
-      firstName: z.string().min(1, t("First name must not be empty")),
-      lastName: z.string().min(1, t("Last name must not be empty")),
-      about: z.string().min(1, t("About must not be empty")),
+    // Define Valibot schema for body validation
+    const schema = object({
+      firstName: string([minLength(1, t("First name must not be empty"))]),
+      lastName: string([minLength(1, t("Last name must not be empty"))]),
+      about: string([minLength(1, t("About must not be empty"))]),
     });
 
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = schema.safeParse(body);
-    if (!parsed.success) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: parsed.error.message,
-      });
-    }
-    const { firstName, lastName, about } = parsed.data;
+    const parsed = parse(schema, body, { abortEarly: false });
+    const { firstName, lastName, about } = parsed;
 
     // Initialize the database connection
     const { DB } = event.context.cloudflare.env;

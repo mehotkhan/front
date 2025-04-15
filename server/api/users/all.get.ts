@@ -1,36 +1,43 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
-import { z } from "zod";
+import {
+  minValue,
+  number,
+  object,
+  optional,
+  parse,
+  pipe,
+  string,
+  transform,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
   try {
-    // Define Zod schema for query parameters
-    const querySchema = z.object({
-      page: z
-        .string()
-        .optional()
-        .transform((val) => (val ? Number(val) : 1))
-        .refine((val) => val >= 1, t("Page must be at least 1")),
-      pageSize: z
-        .string()
-        .optional()
-        .transform((val) => (val ? Number(val) : 5))
-        .refine((val) => val >= 1, t("Page size must be at least 1")),
+    // Define Valibot schema for query parameters
+    const querySchema = object({
+      page: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 1)),
+          number([minValue(1, t("Page must be at least 1"))])
+        )
+      ),
+      pageSize: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 5)),
+          number([minValue(1, t("Page size must be at least 1"))])
+        )
+      ),
     });
 
     // Read and validate query parameters
     const query = getQuery(event);
-    const parsedQuery = querySchema.safeParse(query);
-    if (!parsedQuery.success) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: parsedQuery.error.message,
-      });
-    }
+    const parsedQuery = parse(querySchema, query, { abortEarly: false });
 
-    const { page, pageSize } = parsedQuery.data;
+    const { page = 1, pageSize = 5 } = parsedQuery;
     const offset = (page - 1) * pageSize;
 
     const { DB } = event.context.cloudflare.env;
@@ -49,8 +56,8 @@ export default defineEventHandler(async (event) => {
       .limit(pageSize)
       .offset(offset);
 
-    // Remove sensitive fields such as password and salt
-    const safeUsers = allUsers.map(({ password, salt, ...user }) => user);
+    // Remove sensitive fields such as password
+    const safeUsers = allUsers.map(({ password, ...user }) => user);
 
     return {
       total,

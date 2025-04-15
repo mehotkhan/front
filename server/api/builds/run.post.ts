@@ -1,23 +1,21 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { z } from "zod";
+import { integer, minValue, number, object, parse, pipe } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
   // Validate incoming payload
   const body = await readBody(event);
-  const schema = z.object({
-    buildId: z.number().int().positive(t("buildId must be a positive integer")),
+  const schema = object({
+    buildId: pipe(
+      number(),
+      integer(t("buildId must be an integer")),
+      minValue(1, t("buildId must be a positive integer"))
+    ),
   });
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.message,
-    });
-  }
-  const { buildId } = parsed.data;
+  const parsed = parse(schema, body, { abortEarly: false });
+  const { buildId } = parsed;
 
   // Initialize DB connection
   const { DB } = event.context.cloudflare.env;
@@ -111,10 +109,10 @@ export default defineEventHandler(async (event) => {
     `https://api.github.com/repos/${githubOwner}/${githubRepo}/git/commits/${currentSha}`,
     { headers: { Authorization: `token ${githubToken}` } }
   );
-  if (!commitResponse.ok) {
-    const err = await commitResponse.json();
+  if (!refResponse.ok) {
+    const err = await refResponse.json();
     throw createError({
-      statusCode: commitResponse.status,
+      statusCode: refResponse.status,
       statusMessage: t(`Failed to get current commit: ${err.message || ""}`),
     });
   }
