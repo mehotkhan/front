@@ -66,12 +66,12 @@ export default defineNuxtConfig({
       concurrency: 10,
       autoSubfolderIndex: true,
     },
-    publicAssets: [
-      {
-        dir: "public",
-        maxAge: 31536000,
-      },
-    ],
+    // publicAssets: [
+    //   {
+    //     dir: "public",
+    //     maxAge: 31536000,
+    //   },
+    // ],
   },
 
   app: {
@@ -117,10 +117,10 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/fa/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/en/": { prerender: true, cache: { maxAge: 31536000 } },
-    "/:locale/**": { prerender: true, cache: { maxAge: 31536000 } },
+    "/": { prerender: true },
+    "/fa/": { prerender: true },
+    "/en/": { prerender: true },
+    "/:locale/**": { prerender: true },
     "/api/**": { ssr: true },
     "/manage": { prerender: false, ssr: false, robots: false },
     "/manage/**": { prerender: false, ssr: false, robots: false },

@@ -295,5 +295,6 @@
   "tuts": "tuts",
   "type": "type",
   "user_agent": "user_agent",
-  "username": "username"
+  "username": "username",
+  "vue": "vue"
 }
