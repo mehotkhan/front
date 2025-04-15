@@ -1,5 +1,4 @@
 import viteCompression from "vite-plugin-compression";
-
 import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
@@ -32,8 +31,26 @@ export default defineNuxtConfig({
         scss: { api: "modern" },
       },
     },
-    plugins: [viteCompression({ algorithm: "brotliCompress" })],
-    build: { minify: true },
+    plugins: [
+      viteCompression({
+        algorithm: "brotliCompress",
+        threshold: 1024,
+      }),
+    ],
+    build: {
+      minify: "esbuild",
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["vue", "echarts"],
+          },
+        },
+      },
+    },
+    optimizeDeps: {
+      include: ["echarts", "echarts-liquidfill"],
+    },
   },
 
   nitro: {
@@ -41,22 +58,58 @@ export default defineNuxtConfig({
     compressPublicAssets: { brotli: true },
     minify: true,
     prerender: {
-      crawlLinks: false, // Rely on explicit routes
+      crawlLinks: false,
       routes: generateRoutes(),
-      failOnError: false, // Fail build if prerendering fails
-      // concurrency: 1,
+      failOnError: true,
+      concurrency: 10,
+      autoSubfolderIndex: true,
+    },
+    publicAssets: [
+      {
+        dir: "public",
+        maxAge: 31536000,
+        immutable: true,
+      },
+    ],
+  },
+
+  app: {
+    head: {
+      link: [
+        // Add your font preloads here, e.g.:
+        // { rel: "preload", as: "font", href: "/fonts/yourfont.woff2", type: "font/woff2", crossorigin: "anonymous" },
+      ],
+      meta: [
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
     },
   },
 
   ui: { fonts: false },
 
-  i18n: {
-    bundle: { optimizeTranslationDirective: false },
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      redirectOn: "root",
+  content: {
+    markdown: {
+      remarkPlugins: ["remark-reading-time"],
+      rehypePlugins: [],
     },
+    highlight: {
+      theme: "github-light",
+      preload: ["json", "js", "ts", "html", "css", "vue"],
+    },
+  },
+
+  image: {
+    cloudflare: {
+      baseURL: "https://mohet.ir",
+    },
+    formats: ["webp", "avif"],
+    densities: [1, 2],
+    quality: 80,
+  },
+
+  i18n: {
+    bundle: { optimizeTranslationDirective: true },
+    detectBrowserLanguage: false,
     locales: [
       { name: "فارسی", dir: "rtl", code: "fa", file: "fa.json" },
       { name: "English", dir: "ltr", code: "en", file: "en.json" },
@@ -65,35 +118,31 @@ export default defineNuxtConfig({
     defaultLocale: "fa",
     strategy: "prefix_and_default",
     experimental: { localeDetector: "localeDetector.ts" },
+    lazy: true,
+    baseUrl: "https://mohet.ir",
   },
 
   routeRules: {
-    // Static pages (SSG)
-    "/": { prerender: true },
-    "/fa/": { prerender: true },
-    "/en/": { prerender: true },
-    // Content pages (SSG)
-    "/:locale/**": { prerender: true },
-    // API routes (serverless)
+    "/": { prerender: true, cache: { maxAge: 31536000 } },
+    "/fa/": { prerender: true, cache: { maxAge: 31536000 } },
+    "/en/": { prerender: true, cache: { maxAge: 31536000 } },
+    "/:locale/**": { prerender: true, cache: { maxAge: 31536000 } },
     "/api/**": { ssr: true },
-    // Client-side only routes
     "/manage": { prerender: false, ssr: false, robots: false },
     "/manage/**": { prerender: false, ssr: false, robots: false },
     "/:locale/manage": { prerender: false, ssr: false, robots: false },
     "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
   },
-  experimental: { restoreState: true },
 
-  // content: {
-  //   database: {
-  //     type: "d1",
-  //     bindingName: "DB",
-  //   },
-  // },
+  experimental: {
+    restoreState: true,
+    payloadExtraction: true,
+    inlineSSRStyles: true,
+  },
 
   echarts: {
     ssr: true,
-    renderer: ["canvas", "svg"],
+    renderer: ["svg"],
     charts: ["BarChart", "LineChart"],
     components: [
       "DatasetComponent",
@@ -111,15 +160,13 @@ export default defineNuxtConfig({
     githubRepo: "",
   },
 
-  image: {
-    cloudflare: {
-      baseURL: "https://mohet.ir",
-    },
+  seo: {
+    redirectTrailingSlash: true,
+    automaticDefaults: true,
   },
 
   linkChecker: { enabled: false },
 
-  // Enable debug logs for prerendering
   hooks: {
     "nitro:build:public-assets": (nitro) => {
       console.log("Prerendered routes:", nitro.options.prerender?.routes);
