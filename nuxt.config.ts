@@ -35,12 +35,12 @@ export default defineNuxtConfig({
     plugins: [
       viteCompression({
         algorithm: "brotliCompress",
-        threshold: 1024,
+        // threshold: 1024,
       }),
     ],
     build: {
       minify: "esbuild",
-      cssMinify: true,
+      // cssMinify: true,
       rollupOptions: {
         output: {
           manualChunks: {
@@ -55,7 +55,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // preset: "cloudflare-pages",
+    preset: "cloudflare-pages",
     compressPublicAssets: { brotli: true },
     minify: true,
     prerender: {
@@ -63,14 +63,14 @@ export default defineNuxtConfig({
       routes: generateRoutes(),
       failOnError: true,
       concurrency: 10,
-      autoSubfolderIndex: true,
+      // autoSubfolderIndex: true,
     },
-    publicAssets: [
-      {
-        dir: "public",
-        maxAge: 31536000,
-      },
-    ],
+    // publicAssets: [
+    //   {
+    //     dir: "public",
+    //     maxAge: 31536000,
+    //   },
+    // ],
   },
 
   app: {
@@ -92,10 +92,10 @@ export default defineNuxtConfig({
         highlight: false,
       },
     },
-    database: {
-      type: "d1",
-      bindingName: "DB",
-    },
+    // database: {
+    //   type: "d1",
+    //   bindingName: "DB",
+    // },
   },
 
   image: {
@@ -136,7 +136,6 @@ export default defineNuxtConfig({
 
   experimental: {
     restoreState: true,
-    payloadExtraction: true,
   },
 
   echarts: {

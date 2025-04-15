@@ -8,7 +8,7 @@ const { data: pageData, error } = await useAsyncData(
   `page:${route.path}`,
   () => {
     try {
-      const contentPath = route.path === "/" ? `/fa/` : route.path;
+      const contentPath = route.path === "/" ? `/fa` : route.path;
       return queryCollection("content").path(contentPath).first();
     } catch (err) {
       console.error(`Error fetching content for ${route.path}:`, err);
@@ -28,7 +28,7 @@ useSeoMeta({
 </script>
 <template>
   <div class="w-full min-h-screen">
-    <div class="w-full">
+    <div v-if="pageData" class="w-full">
       <template v-if="pageData?.thumbnail">
         <div
           class="page-header flex flex-col gap-6 text-center pt-10 md:pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
