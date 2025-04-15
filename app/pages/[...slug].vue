@@ -45,7 +45,10 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
               </span>
-              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
+              <span
+                v-if="locale && pageData?.cat"
+                class="font-medium whitespace-nowrap"
+              >
                 {{ $t("Category:") }}
                 <NuxtLink
                   :to="`/${locale}/cats/${pageData?.cat}`"
