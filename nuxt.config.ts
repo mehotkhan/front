@@ -1,4 +1,5 @@
 import viteCompression from "vite-plugin-compression";
+
 import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
@@ -95,6 +96,10 @@ export default defineNuxtConfig({
     highlight: {
       theme: "github-light",
       preload: ["json", "js", "ts", "html", "css", "vue"],
+    },
+    database: {
+      type: "d1",
+      bindingName: "DB",
     },
   },
 
