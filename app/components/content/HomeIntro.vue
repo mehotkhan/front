@@ -15,29 +15,19 @@ const basePath = computed(() => {
     : defaultLocale;
 });
 
-const { data } = await useAsyncData(
-  `home-intro-${route.path}`,
-  () => {
-    try {
-      return queryCollection("logs")
-        .where("intro", "=", true)
-        .andWhere((query) => {
-          return query.where("path", "LIKE", `/${basePath.value}%`);
-        })
-        .order("date", "DESC")
-        .first();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
-    }
-  },
-  {
-    dedupe: "defer",
-    transform: (data) => data || null,
-    // Optimize for static generation
-    lazy: false,
-    server: true,
+const { data } = await useAsyncData(`home-intro-${route.path}`, () => {
+  try {
+    return queryCollection("logs")
+      .where("intro", "=", true)
+      .andWhere((query) => {
+        return query.where("path", "LIKE", `/${basePath.value}%`);
+      })
+      .order("date", "DESC")
+      .first();
+  } catch (error) {
+    console.error("Error fetching page content:", error);
   }
-);
+});
 </script>
 
 <template>

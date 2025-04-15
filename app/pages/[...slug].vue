@@ -21,12 +21,6 @@ const { data: pageData, error } = await useAsyncData(
       console.error(`Error fetching content for ${route.path}:`, err);
       throw err;
     }
-  },
-  {
-    dedupe: "defer",
-    transform: (data) => data || null,
-    lazy: false,
-    server: true,
   }
 );
 
