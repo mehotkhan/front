@@ -87,7 +87,11 @@ export default defineNuxtConfig({
 
   ui: { fonts: false },
   content: {
-    highlight: false, // Disable Shiki
+    build: {
+      markdown: {
+        highlight: false,
+      },
+    },
     database: {
       type: "d1",
       bindingName: "DB",
