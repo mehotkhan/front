@@ -6,7 +6,7 @@ export default defineContentConfig({
     content: defineCollection(
       asRobotsCollection({
         type: "page",
-        source: "**/*.md",
+        source: "**/**/*.md",
         schema: z.object({
           title: z.string(),
           thumbnail: z.string(),

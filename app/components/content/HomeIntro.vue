@@ -15,11 +15,11 @@ const basePath = computed(() => {
     : defaultLocale;
 });
 
-const { data } = useAsyncData(
+const { data } = await useAsyncData(
   `home-intro-${route.path}`,
-  async () => {
+  () => {
     try {
-      return await queryCollection("logs")
+      return queryCollection("logs")
         .where("intro", "=", true)
         .andWhere((query) => {
           return query.where("path", "LIKE", `/${basePath.value}%`);

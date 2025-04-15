@@ -19,9 +19,9 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = useAsyncData(
+const { data } = await useAsyncData(
   `logs-archives-${route.path}`,
-  async () => {
+  () => {
     try {
       let logsQuery = queryCollection("logs");
 
@@ -34,7 +34,7 @@ const { data } = useAsyncData(
         .limit(20)
         .order("date", "DESC");
 
-      return await logsQuery.all();
+      return logsQuery.all();
     } catch (error) {
       console.error("Error fetching page content:", error);
     }

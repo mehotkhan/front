@@ -10,13 +10,13 @@ const locale = i18n.locale.value;
 const defaultLocale = i18n.defaultLocale;
 
 // Fetch content with useAsyncData
-const { data: pageData, error } = useAsyncData(
+const { data: pageData, error } = await useAsyncData(
   `page:${route.path}`,
-  async () => {
+  () => {
     try {
       const contentPath =
         route.path === "/" ? `/${defaultLocale}/` : route.path;
-      return await queryCollection("content").path(contentPath).first();
+      return queryCollection("content").path(contentPath).first();
     } catch (err) {
       console.error(`Error fetching content for ${route.path}:`, err);
       throw err;
