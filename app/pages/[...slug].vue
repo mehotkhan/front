@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-const { locale, t } = useI18n();
-
 const route = useRoute();
 
 // Fetch content with useAsyncData
@@ -19,10 +17,10 @@ const { data: pageData, error } = await useAsyncData(
 
 // Set SEO metadata
 useSeoMeta({
-  title: pageData?.value?.title ?? t("Page not found"),
-  description: pageData?.value?.description ?? t("Page not found"),
-  ogTitle: pageData?.value?.title ?? t("Page not found"),
-  ogDescription: pageData?.value?.description ?? t("Page not found"),
+  title: pageData?.value?.title ?? "Page not found",
+  description: pageData?.value?.description ?? "Page not found",
+  ogTitle: pageData?.value?.title ?? "Page not found",
+  ogDescription: pageData?.value?.description ?? "Page not found",
   ogImage: pageData?.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
 });
 </script>
@@ -45,7 +43,7 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
               </span>
-              <span
+              <!-- <span
                 v-if="locale && pageData?.cat"
                 class="font-medium whitespace-nowrap"
               >
@@ -56,7 +54,7 @@ useSeoMeta({
                 >
                   {{ $t(pageData?.cat) ?? pageData?.cat }}
                 </NuxtLink>
-              </span>
+              </span> -->
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
                 <span class="normal-case">{{
