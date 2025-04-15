@@ -29,73 +29,94 @@ export default defineNuxtConfig({
     },
     css: {
       preprocessorOptions: {
-        scss: { api: "modern" },
-      },
-    },
-    plugins: [
-      viteCompression({
-        algorithm: "brotliCompress",
-        // threshold: 1024,
-      }),
-    ],
-    build: {
-      minify: "esbuild",
-      // cssMinify: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vendor: ["vue", "echarts"],
-          },
+        scss: {
+          api: "modern",
         },
       },
     },
-    optimizeDeps: {
-      include: ["echarts", "echarts-liquidfill"],
+    plugins: [viteCompression({ algorithm: "brotliCompress" })],
+    build: {
+      minify: true,
     },
   },
 
   nitro: {
     preset: "cloudflare-pages",
-    compressPublicAssets: { brotli: true },
+    compressPublicAssets: true,
     minify: true,
     prerender: {
       crawlLinks: false,
       routes: generateRoutes(),
-      failOnError: true,
-      concurrency: 10,
-      // autoSubfolderIndex: true,
-    },
-    // publicAssets: [
-    //   {
-    //     dir: "public",
-    //     maxAge: 31536000,
-    //   },
-    // ],
-  },
-
-  app: {
-    head: {
-      link: [
-        // Add your font preloads here, e.g.:
-        // { rel: "preload", as: "font", href: "/fonts/yourfont.woff2", type: "font/woff2", crossorigin: "anonymous" },
-      ],
-      meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-      ],
     },
   },
+  ui: {
+    fonts: false,
+  },
+  i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
+    locales: [
+      {
+        name: "فارسی",
+        dir: "rtl",
+        code: "fa",
+        file: "fa.json",
+      },
+      {
+        name: "English",
+        dir: "ltr",
+        code: "en",
+        file: "en.json",
+      },
+    ],
+    langDir: "locales",
+    defaultLocale: "fa",
+    strategy: "prefix_and_default",
+    experimental: {
+      localeDetector: "localeDetector.ts",
+    },
+  },
+  routeRules: {
+    "/": { prerender: true },
+    "/fa/": { prerender: true },
+    // Disable prerender (and SSR) for any manage routes:
+    "/manage": { prerender: false, ssr: false, robots: false },
+    "/manage/**": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
 
-  ui: { fonts: false },
+    // ISR rules for logs (all locales)
+    "/:locale/logs": { isr: 3600 },
+    "/:locale/logs/**": { isr: true },
+
+    // ISR rules for cats (all locales)
+    "/:locale/cats/**": { isr: true },
+
+    // Profile routes: disable robots indexing (all locales)
+    "/:locale/profile/**": { robots: false },
+
+    // Default: prerender everything else
+    "/**": { prerender: true },
+  },
+  experimental: {
+    restoreState: true,
+  },
   content: {
     build: {
       markdown: {
         highlight: false,
       },
     },
-    // database: {
-    //   type: "d1",
-    //   bindingName: "DB",
-    // },
+    database: {
+      type: "d1",
+      bindingName: "DB",
+    },
   },
 
   image: {
@@ -106,41 +127,9 @@ export default defineNuxtConfig({
     densities: [1, 2],
     quality: 80,
   },
-
-  i18n: {
-    bundle: { optimizeTranslationDirective: true },
-    detectBrowserLanguage: false,
-    locales: [
-      { name: "فارسی", dir: "rtl", code: "fa", file: "fa.json" },
-      { name: "English", dir: "ltr", code: "en", file: "en.json" },
-    ],
-    langDir: "locales",
-    defaultLocale: "fa",
-    strategy: "prefix_and_default",
-    experimental: { localeDetector: "localeDetector.ts" },
-    lazy: true,
-    baseUrl: "https://mohet.ir",
-  },
-
-  routeRules: {
-    "/": { prerender: true },
-    "/fa/": { prerender: true },
-    "/en/": { prerender: true },
-    "/:locale/**": { prerender: true },
-    "/api/**": { ssr: true },
-    "/manage": { prerender: false, ssr: false, robots: false },
-    "/manage/**": { prerender: false, ssr: false, robots: false },
-    "/:locale/manage": { prerender: false, ssr: false, robots: false },
-    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
-  },
-
-  experimental: {
-    restoreState: true,
-  },
-
   echarts: {
     ssr: true,
-    renderer: ["svg"],
+    renderer: ["canvas", "svg"],
     charts: ["BarChart", "LineChart"],
     components: [
       "DatasetComponent",
@@ -151,20 +140,9 @@ export default defineNuxtConfig({
       "VisualMapComponent",
     ],
   },
-
   runtimeConfig: {
     githubToken: "",
     githubOwner: "",
     githubRepo: "",
-  },
-
-  seo: {
-    automaticDefaults: true,
-  },
-  linkChecker: { enabled: false },
-  hooks: {
-    "nitro:build:public-assets": (nitro) => {
-      console.log("Prerendered routes:", nitro.options.prerender?.routes);
-    },
   },
 });
