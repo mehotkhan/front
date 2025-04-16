@@ -159,12 +159,12 @@ export default defineNuxtConfig({
 
   linkChecker: { enabled: false },
 
-  hooks: {
-    "nitro:build:before": (nitro) => {
-      console.log("Prerender routes:", nitro.options.prerender.routes);
-    },
-    "nitro:build:public-assets": (nitro) => {
-      console.log("Prerendered routes:", nitro.options.prerender?.routes);
-    },
-  },
+  // hooks: {
+  //   "nitro:build:before": (nitro) => {
+  //     console.log("Prerender routes:", nitro.options.prerender.routes);
+  //   },
+  //   "nitro:build:public-assets": (nitro) => {
+  //     console.log("Prerendered routes:", nitro.options.prerender?.routes);
+  //   },
+  // },
 });
