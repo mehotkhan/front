@@ -64,32 +64,20 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: generateRoutes(),
       failOnError: true,
-      concurrency: 10,
-      autoSubfolderIndex: true,
-    },
-    // publicAssets: [
-    //   {
-    //     dir: "public",
-    //     maxAge: 31536000,
-    //   },
-    // ],
-  },
-
-  app: {
-    head: {
-      meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-      ],
+      // concurrency: 10,
+      // autoSubfolderIndex: true,
     },
   },
-
   ui: { fonts: false },
-
   content: {
     build: {
       markdown: {
         highlight: false,
       },
+    },
+    database: {
+      type: "d1",
+      bindingName: "DB",
     },
   },
 
