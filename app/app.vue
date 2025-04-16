@@ -52,10 +52,7 @@ useHead({
     { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
   ],
 });
-onMounted(() => {
-  initDevice();
-});
-// Initialize user session/registration.
+initDevice();
 </script>
 
 <template>
