@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute();
-// const { locale } = useI18n();
+const { locale } = useI18n();
 
 // Fetch content with useAsyncData
 const { data: pageData, error } = await useAsyncData(
@@ -37,14 +37,14 @@ useSeoMeta({
               {{ pageData?.title }}
             </h1>
             <div class="flex flex-wrap justify-center gap-6 text-sm mb-4">
-              <!-- <span
+              <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
               >
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
-              </span> -->
-              <!-- <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
+              </span>
+              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <NuxtLink
                   :to="`/${locale}/cats/${pageData?.cat}`"
@@ -52,13 +52,13 @@ useSeoMeta({
                 >
                   {{ $t(pageData?.cat) ?? pageData?.cat }}
                 </NuxtLink>
-              </span> -->
-              <!-- <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
+              </span>
+              <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
                 <span class="normal-case">{{
                   formatDateTime(pageData?.date)
                 }}</span>
-              </span> -->
+              </span>
             </div>
             <p class="mt-5 text-lg">
               {{ pageData?.description }}
@@ -84,13 +84,13 @@ useSeoMeta({
         <div
           class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
         >
-          <!-- <PageToc
+          <PageToc
             v-if="pageData?.toc"
             :body="pageData?.body"
             :comments="pageData?.comments"
-          /> -->
+          />
           <ContentRenderer :value="pageData" class="w-full" />
-          <!-- <Comments v-if="pageData?.comments" /> -->
+          <Comments v-if="pageData?.comments" />
         </div>
       </UContainer>
     </div>

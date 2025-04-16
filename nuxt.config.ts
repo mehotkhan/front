@@ -33,27 +33,8 @@ export default defineNuxtConfig({
         scss: { api: "modern" },
       },
     },
-    plugins: [
-      viteCompression({
-        algorithm: "brotliCompress",
-        threshold: 1024,
-      }),
-    ],
-    build: {
-      minify: "esbuild",
-      cssMinify: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vendor: ["vue", "echarts"],
-          },
-        },
-      },
-    },
-    optimizeDeps: {
-      include: ["echarts", "echarts-liquidfill"],
-      exclude: ["shiki", "oniguruma"], // Exclude heavy highlighting deps
-    },
+    plugins: [viteCompression({ algorithm: "brotliCompress" })],
+    build: { minify: true },
   },
 
   nitro: {
@@ -91,8 +72,12 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    bundle: { optimizeTranslationDirective: true },
-    detectBrowserLanguage: false,
+    bundle: { optimizeTranslationDirective: false },
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
     locales: [
       { name: "فارسی", dir: "rtl", code: "fa", file: "fa.json" },
       { name: "English", dir: "ltr", code: "en", file: "en.json" },
@@ -101,8 +86,6 @@ export default defineNuxtConfig({
     defaultLocale: "fa",
     strategy: "prefix_and_default",
     experimental: { localeDetector: "localeDetector.ts" },
-    lazy: true,
-    baseUrl: "https://mohet.ir",
   },
 
   routeRules: {
