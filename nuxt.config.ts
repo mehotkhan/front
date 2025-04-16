@@ -56,10 +56,10 @@ export default defineNuxtConfig({
         highlight: false,
       },
     },
-    database: {
-      type: "d1",
-      bindingName: "DB",
-    },
+    // database: {
+    //   type: "d1",
+    //   bindingName: "DB",
+    // },
   },
 
   image: {
