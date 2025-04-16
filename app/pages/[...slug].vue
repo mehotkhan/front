@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute();
-const { locale } = useI18n();
+// const { locale } = useI18n();
 
 // Fetch content with useAsyncData
 const { data: pageData, error } = await useAsyncData(
@@ -44,7 +44,7 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
               </span>
-              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
+              <!-- <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <NuxtLink
                   :to="`/${locale}/cats/${pageData?.cat}`"
@@ -52,7 +52,7 @@ useSeoMeta({
                 >
                   {{ $t(pageData?.cat) ?? pageData?.cat }}
                 </NuxtLink>
-              </span>
+              </span> -->
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
                 <span class="normal-case">{{
