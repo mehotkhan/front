@@ -13,6 +13,7 @@ const {
   data: commentsData,
   refresh: refreshComments,
   error,
+  execute,
 } = await useFetch<{
   comments: Comment[];
   total: number;
@@ -22,7 +23,8 @@ const {
     pageSize,
     path: route.path,
   },
-  watch: [page, pageSize], // React to page and pageSize changes
+  watch: [page, pageSize],
+  immediate: false,
 });
 
 // Computed for comments
@@ -45,25 +47,26 @@ const handleCommentPosted = async () => {
 const handlePageChange = (newPage: number) => {
   page.value = newPage;
 };
+onMounted(() => {
+  execute();
+});
 </script>
 
 <template>
-  <ClientOnly>
-    <section id="comments" class="w-full">
-      <div class="flex justify-between items-center my-5">
-        <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
-      </div>
-      <CommentsCreateForm @comment-posted="handleCommentPosted" />
+  <section id="comments" class="w-full">
+    <div class="flex justify-between items-center my-5">
+      <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
+    </div>
+    <CommentsCreateForm @comment-posted="handleCommentPosted" />
 
-      <CommentsLists
-        :comments="comments"
-        :total="total"
-        :page="page"
-        :page-size="pageSize"
-        :is-loading="isLoading"
-        :error-message="errorMessage"
-        @update:page="handlePageChange"
-      />
-    </section>
-  </ClientOnly>
+    <CommentsLists
+      :comments="comments"
+      :total="total"
+      :page="page"
+      :page-size="pageSize"
+      :is-loading="isLoading"
+      :error-message="errorMessage"
+      @update:page="handlePageChange"
+    />
+  </section>
 </template>
