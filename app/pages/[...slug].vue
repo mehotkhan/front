@@ -37,13 +37,13 @@ useSeoMeta({
               {{ pageData?.title }}
             </h1>
             <div class="flex flex-wrap justify-center gap-6 text-sm mb-4">
-              <span
+              <!-- <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
               >
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData?.author }}</span>
-              </span>
+              </span> -->
               <!-- <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <NuxtLink
@@ -53,12 +53,12 @@ useSeoMeta({
                   {{ $t(pageData?.cat) ?? pageData?.cat }}
                 </NuxtLink>
               </span> -->
-              <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
+              <!-- <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
                 <span class="normal-case">{{
                   formatDateTime(pageData?.date)
                 }}</span>
-              </span>
+              </span> -->
             </div>
             <p class="mt-5 text-lg">
               {{ pageData?.description }}
