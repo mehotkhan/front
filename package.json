@@ -21,6 +21,7 @@
     "@nuxt/image": "^1.10.0",
     "@nuxt/ui": "3.0.2",
     "@nuxtjs/seo": "3.0.2",
+    "@nuxtjs/turnstile": "^1.0.0",
     "@tiptap/extension-bubble-menu": "^2.11.7",
     "@tiptap/extension-floating-menu": "^2.11.7",
     "@tiptap/extension-placeholder": "^2.11.7",

@@ -1,51 +1,23 @@
 <script setup lang="ts">
-const route = useRoute();
+defineProps<{
+  comments: Comment[];
+  total: number;
+  page: number;
+  pageSize: number;
+  isLoading: boolean;
+  errorMessage: string | null;
+}>();
 
-const page = ref(1);
-const pageSize = ref(10);
-const total = ref(0);
-
-// Fetch comments with useAsyncData
-const {
-  data: commentsData,
-  refresh: refreshComments,
-  error,
-} = useAsyncData(`comments:${route.path}:${page.value}`, async () => {
-  try {
-    // Fetch comments with unwrapped refs
-    const response = await $fetch("/api/comments/single", {
-      query: {
-        page: page.value, // Unwrap ref
-        pageSize: pageSize.value, // Unwrap ref
-        path: route.path,
-      },
-    });
-    return response;
-  } catch (err) {
-    console.error("Error fetching comments:", err);
-    // Return fallback data on error
-    return { comments: [], total: 0 };
-  }
-});
-
-// Expose refreshComments for external use
-defineExpose({ refreshComments });
-
-// Computed property for comments
-const currentComments = computed(() => commentsData.value?.comments || []);
-
-// Update total when commentsData changes
-watch(commentsData, () => {
-  if (commentsData.value?.total !== undefined) {
-    total.value = commentsData.value.total;
-  }
-});
+// Emit page change event
+const emit = defineEmits<{
+  (e: "update:page", page: number): void;
+}>();
 </script>
 
 <template>
   <div class="flex w-full flex-col mt-5">
     <UCard
-      v-for="comment in currentComments"
+      v-for="comment in comments"
       :key="comment.id"
       class="mb-10 w-full"
       variant="soft"
@@ -100,10 +72,11 @@ watch(commentsData, () => {
     </UCard>
     <UPagination
       v-if="total > pageSize"
-      v-model:page="page"
+      :page="page"
       :total="total"
       :page-size="pageSize"
       class="justify-center w-full flex"
+      @update:page="emit('update:page', $event)"
     />
   </div>
 </template>

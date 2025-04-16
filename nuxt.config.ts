@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-authorization",
     "nuxt-echarts",
+    "@nuxtjs/turnstile",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -151,6 +152,9 @@ export default defineNuxtConfig({
     githubToken: "",
     githubOwner: "",
     githubRepo: "",
+    turnstile: {
+      secretKey: "",
+    },
   },
 
   seo: {
@@ -158,13 +162,8 @@ export default defineNuxtConfig({
   },
 
   linkChecker: { enabled: false },
-
-  // hooks: {
-  //   "nitro:build:before": (nitro) => {
-  //     console.log("Prerender routes:", nitro.options.prerender.routes);
-  //   },
-  //   "nitro:build:public-assets": (nitro) => {
-  //     console.log("Prerendered routes:", nitro.options.prerender?.routes);
-  //   },
-  // },
+  turnstile: {
+    siteKey: "0x4AAAAAABMfNmOrYsdJl6yK",
+    addValidateEndpoint: true,
+  },
 });
