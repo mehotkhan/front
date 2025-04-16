@@ -1,29 +1,21 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const { data } = await useAsyncData(
-  `home-intro-${route.path}`,
-  () => {
-    try {
-      const contentPath = route.path === "/" ? `/fa` : route.path;
+const { data } = await useAsyncData(`home-intro-${route.path}`, () => {
+  try {
+    const contentPath = route.path === "/" ? `/fa` : route.path;
 
-      return queryCollection("logs")
-        .where("intro", "=", true)
-        .andWhere((query) => {
-          return query.where("path", "LIKE", `${contentPath}%`);
-        })
-        .order("date", "DESC")
-        .first();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
-    }
-  },
-  {
-    dedupe: "defer",
-    lazy: false,
-    server: true,
+    return queryCollection("logs")
+      .where("intro", "=", true)
+      .andWhere((query) => {
+        return query.where("path", "LIKE", `${contentPath}%`);
+      })
+      .order("date", "DESC")
+      .first();
+  } catch (error) {
+    console.error("Error fetching page content:", error);
   }
-);
+});
 </script>
 
 <template>

@@ -6,34 +6,26 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = await useAsyncData(
-  `logs-archives-${route.path}`,
-  async () => {
-    try {
-      const contentPath = route.path === "/" ? `/fa` : route.path;
+const { data } = await useAsyncData(`logs-archives-${route.path}`, async () => {
+  try {
+    const contentPath = route.path === "/" ? `/fa` : route.path;
 
-      let logsQuery = queryCollection("logs");
+    let logsQuery = queryCollection("logs");
 
-      if (props.cat) {
-        logsQuery = logsQuery.where("cat", "=", props.cat);
-      }
-
-      logsQuery = logsQuery
-        .andWhere((query) => query.where("path", "LIKE", `${contentPath}%`))
-        .limit(20)
-        .order("date", "DESC");
-
-      return await logsQuery.all();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
+    if (props.cat) {
+      logsQuery = logsQuery.where("cat", "=", props.cat);
     }
-  },
-  {
-    dedupe: "defer",
-    lazy: false,
-    server: true,
+
+    logsQuery = logsQuery
+      .andWhere((query) => query.where("path", "LIKE", `${contentPath}%`))
+      .limit(20)
+      .order("date", "DESC");
+
+    return await logsQuery.all();
+  } catch (error) {
+    console.error("Error fetching page content:", error);
   }
-);
+});
 </script>
 
 <template>

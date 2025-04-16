@@ -12,11 +12,6 @@ const { data: pageData, error } = await useAsyncData(
       console.error(`Error fetching content for ${route.path}:`, err);
       throw err;
     }
-  },
-  {
-    dedupe: "defer",
-    lazy: false,
-    server: true,
   }
 );
 // Set SEO metadata
