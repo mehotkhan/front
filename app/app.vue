@@ -52,7 +52,9 @@ useHead({
     { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
   ],
 });
-initDevice();
+onMounted(() => {
+  initDevice();
+});
 </script>
 
 <template>
