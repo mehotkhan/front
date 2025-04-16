@@ -84,11 +84,11 @@ useSeoMeta({
         <div
           class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
         >
-          <PageToc
+          <!-- <PageToc
             v-if="pageData?.toc"
             :body="pageData?.body"
             :comments="pageData?.comments"
-          />
+          /> -->
           <ContentRenderer :value="pageData" class="w-full" />
           <Comments v-if="pageData?.comments" />
         </div>
