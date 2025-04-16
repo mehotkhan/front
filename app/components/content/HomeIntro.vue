@@ -1,31 +1,27 @@
 <script setup lang="ts">
 const route = useRoute();
+const { locale, defaultLocale } = useI18n();
 
-const { data } = await useAsyncData(
-  `home-intro-${route.path}`,
-  () => {
-    try {
-      const contentPath = route.path === "/" ? `/fa` : route.path;
+const basePath = computed(() => {
+  return route.path.startsWith(`/${locale.value}/`)
+    ? locale.value
+    : defaultLocale;
+});
 
-      return queryCollection("logs")
-        .where("intro", "=", true)
-        .andWhere((query) => {
-          return query.where("path", "LIKE", `${contentPath}%`);
-        })
-        .order("date", "DESC")
-        .first();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
-    }
-  },
-  {
-    dedupe: "defer",
-    lazy: false,
-    server: true,
+const { data } = await useAsyncData(`home-intro-${route.path}`, () => {
+  try {
+    return queryCollection("logs")
+      .where("intro", "=", true)
+      .andWhere((query) => {
+        return query.where("path", "LIKE", `/${basePath.value}%`);
+      })
+      .order("date", "DESC")
+      .first();
+  } catch (error) {
+    console.error("Error fetching page content:", error);
   }
-);
+});
 </script>
-
 <template>
   <div class="container mx-auto">
     <div

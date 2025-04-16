@@ -1,41 +1,36 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale } = useI18n();
+const { locale, defaultLocale } = useI18n();
+
+const basePath = computed(() => {
+  return route.path.startsWith(`/${locale.value}/`)
+    ? locale.value
+    : defaultLocale;
+});
 
 const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = await useAsyncData(
-  `logs-archives-${route.path}`,
-  async () => {
-    try {
-      const contentPath = route.path === "/" ? `/fa` : route.path;
+const { data } = await useAsyncData(`logs-archives-${route.path}`, () => {
+  try {
+    let logsQuery = queryCollection("logs");
 
-      let logsQuery = queryCollection("logs");
-
-      if (props.cat) {
-        logsQuery = logsQuery.where("cat", "=", props.cat);
-      }
-
-      logsQuery = logsQuery
-        .andWhere((query) => query.where("path", "LIKE", `${contentPath}%`))
-        .limit(20)
-        .order("date", "DESC");
-
-      return await logsQuery.all();
-    } catch (error) {
-      console.error("Error fetching page content:", error);
+    if (props.cat) {
+      logsQuery = logsQuery.where("cat", "=", props.cat);
     }
-  },
-  {
-    dedupe: "defer",
-    lazy: false,
-    server: true,
-  }
-);
-</script>
 
+    logsQuery = logsQuery
+      .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
+      .limit(20)
+      .order("date", "DESC");
+
+    return logsQuery.all();
+  } catch (error) {
+    console.error("Error fetching page content:", error);
+  }
+});
+</script>
 <template>
   <div class="w-full">
     <h2 class="mt-0">
