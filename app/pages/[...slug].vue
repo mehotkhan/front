@@ -1,15 +1,22 @@
 <script lang="ts" setup>
-const { defaultLocale, locale } = useI18n();
+const { locale, defaultLocale } = useI18n();
 const route = useRoute();
 
 // Fetch content with useAsyncData
-const { data: pageData, error } = useAsyncData(
+const { data: pageData }: any = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      return await queryCollection("content")
-        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
-        .first();
+      let path = route.path; // e.g. "/fa/" or "/en/about"
+      if (path !== "/" && path.endsWith("/")) {
+        path = path.slice(0, -1); // "/fa" or "/en/about"
+      }
+
+      return await $fetch("/api/content/single", {
+        query: {
+          path: path === "/" ? "/" + defaultLocale + "/" : path,
+        },
+      });
     } catch (error) {
       console.error("Error fetching page content:", error);
     }
@@ -17,7 +24,6 @@ const { data: pageData, error } = useAsyncData(
   {
     dedupe: "defer",
     transform: (data) => data || null,
-    // Optimize for static generation
     lazy: false,
     server: true,
   }
@@ -94,10 +100,10 @@ useSeoMeta({
         >
           <PageToc
             v-if="pageData.toc"
-            :body="pageData.body"
+            :toc-data="pageData.tocData"
             :comments="pageData.comments"
           />
-          <ContentRenderer :value="pageData" class="w-full" />
+          <MDC :value="pageData?.body" tag="div" class="w-full" />
           <Comments v-if="pageData.comments" />
         </div>
       </UContainer>

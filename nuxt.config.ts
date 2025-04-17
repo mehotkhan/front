@@ -1,5 +1,5 @@
 import viteCompression from "vite-plugin-compression";
-
+import { resolve } from "path";
 import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "nuxt-authorization",
     "nuxt-echarts",
     "@nuxtjs/turnstile",
+    "@nuxtjs/mdc",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -136,5 +137,8 @@ export default defineNuxtConfig({
   turnstile: {
     siteKey: "0x4AAAAAABMfNmOrYsdJl6yK",
     addValidateEndpoint: true,
+  },
+  alias: {
+    "#velite": resolve(__dirname, "./.velite"), // Absolute path to .velite/index.js
   },
 });
