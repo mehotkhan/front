@@ -53,14 +53,15 @@ const { data, error } = await useAsyncData(
         </NuxtLink>
       </div>
       <nuxt-img
+        provider="cloudflare"
         :modifiers="{ fit: 'contain' }"
         preload
         loading="lazy"
         class="w-full md:w-1/2 flex justify-center"
         :src="data.thumbnail"
         :alt="data.title || 'Image'"
-        :placeholder="[400]"
-        sizes="100vw sm:50vw md:400px"
+        placeholder
+        sizes="(max-width: 4080x) 100vw, 400px"
       />
     </div>
     <div v-else>

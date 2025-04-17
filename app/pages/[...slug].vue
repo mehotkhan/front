@@ -84,8 +84,8 @@ useSeoMeta({
               provider="cloudflare"
               preload
               loading="lazy"
-              :placeholder="[400]"
-              sizes="(max-width: 768px) 100vw, 1280px"
+              placeholder
+              sizes="(max-width: 768px) 100vw, 800px"
               class="md:h-[calc(100vh-24rem)] w-full md:max-w-7xl md:rounded-sm h-auto"
               :src="pageData.thumbnail"
               :alt="pageData.title"
