@@ -34,10 +34,28 @@ export default defineNuxtConfig({
         scss: { api: "modern" },
       },
     },
-    plugins: [viteCompression({ algorithm: "brotliCompress" })],
-    build: { minify: true },
+    plugins: [
+      viteCompression({
+        algorithm: "brotliCompress",
+        threshold: 1024,
+      }),
+    ],
+    build: {
+      minify: "esbuild",
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["vue", "echarts", "vue-router"],
+          },
+        },
+      },
+    },
+    optimizeDeps: {
+      include: ["echarts", "echarts-liquidfill"],
+      exclude: ["shiki", "oniguruma"],
+    },
   },
-
   nitro: {
     preset: "cloudflare-pages",
     compressPublicAssets: { brotli: true },
