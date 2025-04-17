@@ -1,27 +1,35 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale, defaultLocale } = useI18n();
+const { locale } = useI18n();
 
-const basePath = computed(() => {
-  return route.path.startsWith(`/${locale.value}/`)
-    ? locale.value
-    : defaultLocale;
-});
-
-const { data } = await useAsyncData(`home-intro-${route.path}`, () => {
-  try {
-    return queryCollection("logs")
-      .where("intro", "=", true)
-      .andWhere((query) => {
-        return query.where("path", "LIKE", `/${basePath.value}%`);
-      })
-      .order("date", "DESC")
-      .first();
-  } catch (error) {
-    console.error("Error fetching page content:", error);
+const { data, error } = await useAsyncData(
+  `home-intro-${route.path}`,
+  async () => {
+    try {
+      const response = await $fetch("/api/content/query", {
+        query: {
+          intro: true,
+          sortBy: "date",
+          sortOrder: "DESC",
+          limit: 1,
+          locale: locale.value,
+        },
+      });
+      // Response is { status: 200, data: [...] }
+      return response.data[0] || null;
+    } catch (e) {
+      console.error("Error fetching home intro:", e);
+      return null;
+    }
+  },
+  {
+    dedupe: "defer",
+    lazy: false,
+    server: true,
   }
-});
+);
 </script>
+
 <template>
   <div class="container mx-auto">
     <div

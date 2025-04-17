@@ -1,5 +1,6 @@
-import viteCompression from "vite-plugin-compression";
 import { resolve } from "path";
+import viteCompression from "vite-plugin-compression";
+
 import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
@@ -9,7 +10,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/ui",
     "@nuxtjs/seo",
-    "@nuxt/content",
     "@nuxt/image",
     "@nuxt/eslint",
     "nitro-cloudflare-dev",
@@ -51,17 +51,6 @@ export default defineNuxtConfig({
     },
   },
   ui: { fonts: false },
-  content: {
-    build: {
-      markdown: {
-        highlight: false,
-      },
-    },
-    // database: {
-    //   type: "d1",
-    //   bindingName: "DB",
-    // },
-  },
 
   image: {
     cloudflare: {
@@ -140,5 +129,8 @@ export default defineNuxtConfig({
   },
   alias: {
     "#velite": resolve(__dirname, "./.velite"), // Absolute path to .velite/index.js
+  },
+  mdc: {
+    highlight: false,
   },
 });

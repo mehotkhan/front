@@ -1,5 +1,4 @@
 import { minLength, object, parse, string } from "valibot";
-import { parseMarkdown } from "@nuxtjs/mdc/runtime";
 
 export default defineEventHandler(async (event) => {
   const { default: Content } = await import("#velite/content.json", {

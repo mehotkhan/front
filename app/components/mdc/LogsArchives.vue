@@ -1,45 +1,48 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale, defaultLocale } = useI18n();
-
-const basePath = computed(() => {
-  return route.path.startsWith(`/${locale.value}/`)
-    ? locale.value
-    : defaultLocale;
-});
+const { locale } = useI18n();
 
 const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data } = await useAsyncData(`logs-archives-${route.path}`, () => {
-  try {
-    let logsQuery = queryCollection("logs");
-
-    if (props.cat) {
-      logsQuery = logsQuery.where("cat", "=", props.cat);
+const { data, error } = await useAsyncData(
+  `logs-archives-${route.path}-${props.cat}`,
+  async () => {
+    try {
+      const response = await $fetch("/api/content/query", {
+        query: {
+          ...(props.cat && { cat: props.cat }), // Include cat if provided
+          sortBy: "date",
+          sortOrder: "DESC",
+          limit: 20,
+          locale: locale.value,
+        },
+      });
+      // Response is { status: 200, data: [...] }
+      return response.data || null;
+    } catch (e) {
+      console.error("Error fetching logs archives:", e);
+      return null;
     }
-
-    logsQuery = logsQuery
-      .andWhere((query) => query.where("path", "LIKE", `/${basePath.value}%`))
-      .limit(20)
-      .order("date", "DESC");
-
-    return logsQuery.all();
-  } catch (error) {
-    console.error("Error fetching page content:", error);
+  },
+  {
+    dedupe: "defer",
+    lazy: false,
+    server: true,
   }
-});
+);
 </script>
+
 <template>
   <div class="w-full">
     <h2 class="mt-0">
       {{ cat ? $t("Latest ") + $t(cat) : $t("Latest Incoming") }}
     </h2>
 
-    <div v-if="data" class="px-5 md:m-0">
+    <div v-if="data && data.length" class="px-5 md:m-0">
       <ol>
-        <li v-for="item in data" :key="item.id" class="mb-2">
+        <li v-for="item in data" :key="item.path" class="mb-2">
           <div class="md:inline-flex">
             <NuxtLink :to="item.path" class="hover:!underline">
               {{ item.title }}

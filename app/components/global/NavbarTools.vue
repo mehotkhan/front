@@ -89,7 +89,6 @@ const items = computed(() => {
 
 <template>
   <div class="flex items-center gap-4">
-    <SearchBox class="" />
     <div class="relative flex">
       <UButtonGroup class="gap-3" color="success">
         <Can :ability="createCommit">
