@@ -57,7 +57,7 @@ const { data, error } = await useAsyncData(
         :modifiers="{ fit: 'contain' }"
         preload
         loading="lazy"
-        class="w-full md:w-1/2 flex justify-center"
+        class="w-full md:w-1/2 flex justify-center max-w-7xl md:rounded-sm"
         :src="data.thumbnail"
         :alt="data.title || 'Image'"
         placeholder

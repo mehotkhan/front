@@ -78,19 +78,18 @@ useSeoMeta({
               {{ pageData.description }}
             </p>
           </div>
-          <div class="max-w-7xl mx-auto mt-6">
-            <nuxt-img
-              v-if="pageData.thumbnail"
-              provider="cloudflare"
-              preload
-              loading="lazy"
-              placeholder
-              sizes="(max-width: 768px) 100vw, 800px"
-              class="md:h-[calc(100vh-24rem)] w-full md:max-w-7xl md:rounded-sm h-auto"
-              :src="pageData.thumbnail"
-              :alt="pageData.title"
-            />
-          </div>
+
+          <nuxt-img
+            v-if="pageData.thumbnail"
+            provider="cloudflare"
+            preload
+            loading="lazy"
+            placeholder
+            sizes="(max-width: 768px) 100vw, 900px"
+            class="w-full max-w-7xl md:rounded-sm"
+            :src="pageData.thumbnail"
+            :alt="pageData.title"
+          />
         </div>
       </template>
 
