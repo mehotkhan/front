@@ -66,97 +66,75 @@ const exitItem = {
   },
 };
 
-// Theme group holds the dark mode login slot
-const i18nGroup = [
-  {
-    label: locale.value === "en" ? t("Persian") : t("English"),
-    icon: "i-lucide-languages",
-    onSelect: () => (locale.value === "en" ? setLocale("fa") : setLocale("en")),
-  },
-];
-const themeGroup = [
-  {
-    label: "",
-    slot: "theme",
-  },
-];
 const items = computed(() => {
   return loggedIn.value
-    ? [accountGroup, loggedInItems, themeGroup, i18nGroup, [exitItem]]
-    : [accountGroup, loggedOutItems, themeGroup, i18nGroup];
+    ? [accountGroup, loggedInItems, [exitItem]]
+    : [accountGroup, loggedOutItems];
 });
 </script>
 
 <template>
-  <div class="flex items-center gap-4">
-    <div class="relative flex">
-      <UButtonGroup class="gap-3" color="success">
-        <Can :ability="createCommit">
-          <UButton
-            :to="'/' + locale + '/manage/editor' + route.path"
-            size="xs"
-            icon="i-lucide-square-pen"
-            variant="ghost"
-          />
-        </Can>
-        <Can :ability="readDashboard">
-          <UButton
-            v-if="route.path.includes('manage')"
-            icon="i-lucide-home"
-            variant="ghost"
-            size="xs"
-            :to="'/' + locale + '/'"
-          />
-          <UButton
-            v-else
-            icon="i-lucide-settings"
-            variant="ghost"
-            size="xs"
-            :to="'/' + locale + '/manage'"
-          />
-        </Can>
-        <UDropdownMenu
-          :key="locale"
-          :items="items"
-          :content="{
-            align: 'end',
-            side: 'bottom',
-            sideOffset: 8,
-          }"
-        >
-          <UAvatar
-            class="bg-transparent cursor-pointer -mx-2"
-            icon="i-lucide-user"
-            placeholder
-            provider="cloudflare"
-            :modifiers="{ fit: 'contain' }"
-            :src="profile.avatar"
-            preload
-            loading="lazy"
-          />
-          <!-- Account slot -->
-          <template #account="{ item }">
-            <NuxtLinkLocale class="-mx-1 gap-2 flex items-center" to="profile">
-              <UAvatar
-                icon="i-lucide-user"
-                placeholder
-                provider="cloudflare"
-                :modifiers="{ fit: 'contain' }"
-                :src="profile.avatar"
-                preload
-                loading="lazy"
-              />
-              <span>{{ profile.displayName }}</span>
-            </NuxtLinkLocale>
-          </template>
-
-          <!-- Theme slot with DarkMode   -->
-          <template #theme="{ item }">
-            <DarkMode />
-          </template>
-        </UDropdownMenu>
-      </UButtonGroup>
-    </div>
+  <div class="relative flex">
+    <UButtonGroup class="gap-3" color="success">
+      <Can :ability="createCommit">
+        <UButton
+          :to="'/' + locale + '/manage/editor' + route.path"
+          size="xs"
+          icon="i-lucide-square-pen"
+          variant="ghost"
+        />
+      </Can>
+      <Can :ability="readDashboard">
+        <UButton
+          v-if="route.path.includes('manage')"
+          icon="i-lucide-home"
+          variant="ghost"
+          size="xs"
+          :to="'/' + locale + '/'"
+        />
+        <UButton
+          v-else
+          icon="i-lucide-settings"
+          variant="ghost"
+          size="xs"
+          :to="'/' + locale + '/manage'"
+        />
+      </Can>
+      <UDropdownMenu
+        :items="items"
+        :content="{
+          align: 'end',
+          side: 'bottom',
+          sideOffset: 8,
+        }"
+      >
+        <UAvatar
+          class="bg-transparent cursor-pointer -mx-2"
+          icon="i-lucide-user"
+          placeholder
+          provider="cloudflare"
+          :modifiers="{ fit: 'contain' }"
+          :src="profile.avatar"
+          preload
+          loading="lazy"
+        />
+        <!-- Account slot -->
+        <template #account="{ item }">
+          <NuxtLinkLocale class="-mx-1 gap-2 flex items-center" to="profile">
+            <UAvatar
+              icon="i-lucide-user"
+              placeholder
+              provider="cloudflare"
+              :modifiers="{ fit: 'contain' }"
+              :src="profile.avatar"
+              preload
+              loading="lazy"
+            />
+            <span>{{ profile.displayName }}</span>
+          </NuxtLinkLocale>
+        </template>
+      </UDropdownMenu>
+    </UButtonGroup>
     <UModal
       v-model:open="registerIsOpen"
       :dismissible="false"
