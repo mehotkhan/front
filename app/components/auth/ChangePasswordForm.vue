@@ -5,6 +5,7 @@ import type { FormSubmitEvent } from "#ui/types";
 const { t } = useI18n();
 const toast = useToast();
 const submitting = ref(false);
+const form = ref(false);
 const emit = defineEmits(["close-modal"]);
 
 // Password visibility toggles
@@ -38,7 +39,7 @@ const changePassword = async (event: FormSubmitEvent<Schema>) => {
   submitting.value = true;
 
   try {
-    await $fetch("/api/users/change-password", {
+    await $fetch("/api/auth/change-password", {
       method: "PUT",
       body: {
         oldPassword: event.data.oldPassword,

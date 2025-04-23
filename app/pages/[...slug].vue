@@ -35,11 +35,31 @@ const { data: pageData, error }: any = await useAsyncData(
 
 // Set SEO metadata only if pageData exists
 useSeoMeta({
+  // Basic Meta Tags
   title: pageData.value?.title ?? t("Page Not Found"),
   description: pageData.value?.description ?? t("Page Not Found"),
+  charset: "utf-8",
+  viewport: "width=device-width, initial-scale=1",
+
+  // Open Graph Tags
   ogTitle: pageData.value?.title ?? t("Page Not Found"),
   ogDescription: pageData.value?.description ?? t("Page Not Found"),
-  ogImage: pageData.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
+  ogImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
+  ogImageAlt: pageData.value?.title ?? t("Page Not Found"),
+  // ogUrl: canonicalUrl,
+  ogType: "website",
+  ogLocale: locale.value,
+  // ogSiteName: config.public.siteName || 'Your Site Name',
+
+  // Twitter Card Tags
+  twitterCard: pageData.value?.thumbnail ?? "/content/gnu.webp",
+  twitterTitle: pageData.value?.title ?? t("Page Not Found"),
+  twitterDescription: pageData.value?.description ?? t("Page Not Found"),
+  twitterImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
+
+  // Additional SEO Tags
+  robots: pageData.value?.noIndex ? "noindex" : "index, follow",
+  keywords: pageData.value?.keywords?.join(", ") ?? "",
 });
 </script>
 
@@ -48,13 +68,17 @@ useSeoMeta({
     <div v-if="pageData && !error" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
-          class="page-header flex flex-col gap-6 text-center pt-10 md:pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
+          class="page-header flex flex-col gap-6 text-center pt-12 pb-6 md:pb-12 md:min-h-[50vh] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
         >
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1
+              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight"
+            >
               {{ pageData.title }}
             </h1>
-            <div class="flex flex-wrap justify-center gap-6 text-sm mb-4">
+            <div
+              class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base mb-6"
+            >
               <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
@@ -78,7 +102,7 @@ useSeoMeta({
                 }}</span>
               </span>
             </div>
-            <p class="mt-5 text-lg">
+            <p class="mt-4 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
               {{ pageData.description }}
             </p>
           </div>
@@ -89,8 +113,7 @@ useSeoMeta({
             preload
             loading="lazy"
             placeholder
-            sizes="(max-width: 768px) 100vw, 900px"
-            class="w-full max-w-7xl md:rounded-sm"
+            class="w-full max-w-7xl max-h-[50vh] h-auto object-contain md:rounded-lg"
             :src="pageData.thumbnail"
             :alt="pageData.title"
           />
@@ -99,7 +122,7 @@ useSeoMeta({
 
       <UContainer>
         <div
-          class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
+          class="mx-auto flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 prose prose-sm sm:prose-base md:prose-lg dark:prose-invert"
         >
           <PageToc
             v-if="pageData.toc"
@@ -107,6 +130,8 @@ useSeoMeta({
             :comments="pageData.comments"
           />
           <MDC :value="pageData?.body" tag="div" class="w-full" />
+          <NewsletterSubscribe v-if="pageData.newsletter" />
+          <Comments v-if="pageData.comments" />
         </div>
       </UContainer>
     </div>

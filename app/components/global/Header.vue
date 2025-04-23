@@ -7,7 +7,7 @@
       <div class="flex items-center gap-2">
         <LanguageSwitcher />
         <ThemeSwitcher />
-        <!-- <NavbarTools /> -->
+        <NavbarTools />
       </div>
     </UContainer>
   </header>

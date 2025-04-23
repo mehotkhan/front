@@ -84,7 +84,15 @@ export const comments = sqliteTable("comments", {
     .references(() => users.id),
   parentCommentId: integer("parent_comment_id").references(() => comments.id), // For threaded replies, nullable
   body: text("body").notNull(),
-  status: text("status").default("draft").notNull(),
+  status: text("status").default("new").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }),
+});
+
+export const newsletter = sqliteTable("newsletter", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  routePath: text("route_path").notNull(),
+  email: text("email").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updated_at", { mode: "timestamp" }),
 });
