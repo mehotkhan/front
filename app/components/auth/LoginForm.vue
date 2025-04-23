@@ -8,7 +8,6 @@ const form = ref();
 const toast = useToast();
 const submitting = ref(false);
 const showPassword = ref(false);
-const emit = defineEmits(["close-modal"]);
 
 const schema = z.object({
   userName: z.string().min(3, t("Must be at least 3 characters")),
@@ -30,7 +29,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
     submitting.value = true;
 
     // Send the public key from our useUser profile along with the credentials
-    const response = await $fetch("/api/users/login", {
+    const response = await $fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
         userName: event.data.userName,
@@ -49,14 +48,13 @@ const login = async (event: FormSubmitEvent<Schema>) => {
     });
 
     submitting.value = false;
-    emit("close-modal");
 
     toast.add({
       title: t("Success"),
       description: t("User logged in successfully"),
       color: "success",
     });
-    reloadNuxtApp();
+    window.location.replace("/");
   } catch (error: any) {
     console.error(error.statusMessage);
     toast.add({

@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     "@nuxt/ui",
-    "@nuxtjs/seo",
     "@nuxt/image",
     "@nuxt/eslint",
     "nitro-cloudflare-dev",
@@ -20,6 +19,8 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
+    "nuxt-booster",
+    "@nuxtjs/sitemap",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -47,6 +48,7 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             vendor: ["vue", "echarts", "vue-router"],
+            charts: ["echarts-liquidfill"],
           },
         },
       },
@@ -56,6 +58,7 @@ export default defineNuxtConfig({
       exclude: ["shiki", "oniguruma"],
     },
   },
+
   nitro: {
     preset: "cloudflare-pages",
     compressPublicAssets: { brotli: true },
@@ -64,15 +67,24 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: generateRoutes(),
       failOnError: true,
-      // concurrency: 10,
-      // autoSubfolderIndex: true,
+      autoSubfolderIndex: false,
     },
   },
   ui: { fonts: false },
-
   image: {
+    screens: {
+      default: 320,
+      xxs: 480,
+      xs: 576,
+      sm: 768,
+      md: 996,
+      lg: 1200,
+      xl: 1367,
+      xxl: 1600,
+      "4k": 1921,
+    },
     cloudflare: {
-      baseURL: "https://mohet.ir",
+      baseURL: "https://mamoochi.bagche.app",
     },
     formats: ["webp", "avif"],
     density: [1, 2],
@@ -80,30 +92,40 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    bundle: { optimizeTranslationDirective: false },
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+    lazy: true,
     detectBrowserLanguage: {
       useCookie: true,
-      cookieKey: "i18n_redirected",
+      cookieKey: "i18n",
       redirectOn: "root",
     },
     locales: [
-      { name: "فارسی", dir: "rtl", code: "fa", file: "fa.json" },
-      { name: "English", dir: "ltr", code: "en", file: "en.json" },
+      {
+        name: "فارسی",
+        dir: "rtl",
+        code: "fa",
+        file: "fa.js",
+      },
+      {
+        name: "English",
+        dir: "ltr",
+        code: "en",
+        file: "en.js",
+      },
     ],
     langDir: "locales",
     defaultLocale: "fa",
     strategy: "prefix",
-    experimental: { localeDetector: "localeDetector.ts" },
+    experimental: {
+      localeDetector: "localeDetector.ts",
+      generatedLocaleFilePathFormat: "off",
+    },
   },
 
   routeRules: {
-    "/": { prerender: true },
-    "/fa/": { prerender: true },
-    "/en/": { prerender: true },
-    "/:locale/**": { prerender: true },
     "/api/**": { ssr: true },
-    "/manage": { prerender: false, ssr: false, robots: false },
-    "/manage/**": { prerender: false, ssr: false, robots: false },
     "/:locale/manage": { prerender: false, ssr: false, robots: false },
     "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
   },
@@ -124,15 +146,18 @@ export default defineNuxtConfig({
       "ToolboxComponent",
       "GeoComponent",
       "VisualMapComponent",
+      "LegendComponent",
     ],
   },
 
   runtimeConfig: {
-    githubToken: "",
-    githubOwner: "",
-    githubRepo: "",
+    app: {
+      githubToken: process.env.NUXT_APP_GITHUB_TOKEN || "",
+      githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
+      githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
+    },
     turnstile: {
-      secretKey: "",
+      secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || "",
     },
   },
 
@@ -142,13 +167,40 @@ export default defineNuxtConfig({
 
   linkChecker: { enabled: false },
   turnstile: {
-    siteKey: "0x4AAAAAABMfNmOrYsdJl6yK",
+    siteKey: process.env.NUXT_TURNSTILE_SITE_KEY || "",
     addValidateEndpoint: true,
   },
   alias: {
-    "#velite": resolve(__dirname, "./.velite"), // Absolute path to .velite/index.js
+    "#velite": resolve(__dirname, "./.velite"),
   },
   mdc: {
     highlight: false,
+  },
+
+  booster: {
+    detection: {
+      performance: true,
+      browserSupport: true,
+    },
+    performanceMetrics: {
+      device: {
+        hardwareConcurrency: { min: 2, max: 48 },
+        deviceMemory: { min: 2 },
+      },
+      timing: {
+        fcp: 800,
+        dcl: 1200,
+      },
+    },
+    targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
+    lazyOffset: {
+      component: "0%",
+      asset: "0%",
+    },
+    optimizeSSR: {
+      cleanPreloads: true,
+      cleanPrefetches: true,
+      inlineStyles: true,
+    },
   },
 });
