@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب WebAssembly in Action: راهنمای جامع توسعه وب با عملکرد بالا

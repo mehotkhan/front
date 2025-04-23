@@ -48,8 +48,21 @@ useHead({
       href: "/fonts/Vazirmatn[wght].woff2",
       as: "font",
     },
+    {
+      rel: "preload",
+      type: "font/woff",
+      href: "/fonts/FarhangDot.woff",
+      as: "font",
+    },
   ],
 });
+
+// @font-face {
+//   font-family: "FarhangDot";
+//   font-style: normal;
+//   font-weight: 100 900;
+//   src: url("~/assets/fonts/FarhangVariableDot.woff");
+// }
 onMounted(() => {
   initDevice();
 });

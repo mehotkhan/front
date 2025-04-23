@@ -7,6 +7,8 @@ description: "The Jamstack Book by Brian Rinaldi and Raymond Camden introduces t
 toc: false
 intro: false
 cat: library
+comments: true
+newsletter: true
 ---
 
 ## Summary of _The Jamstack Book_ by Brian Rinaldi and Raymond Camden (2022)

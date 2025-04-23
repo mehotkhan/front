@@ -11,6 +11,8 @@ date: 2023-09-01T16:33:46.294Z
 toc: false
 intro: false
 cat: library
+comments: true
+newsletter: true
 ---
 
 ## About the Book

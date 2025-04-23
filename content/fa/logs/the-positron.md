@@ -8,6 +8,7 @@ cat: notes
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## پوزیترون: پادذره‌ای که جهان را روشن کرد

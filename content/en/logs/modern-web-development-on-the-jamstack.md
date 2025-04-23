@@ -12,6 +12,8 @@ description: In just the past few years, a flurry of advancements has greatly
 toc: false
 intro: false
 cat: library
+comments: true
+newsletter: true
 ---
 
 ## Introduction

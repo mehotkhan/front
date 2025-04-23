@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب Getting Started with Ethereum: دروازه‌ای به توسعه بلاکچین

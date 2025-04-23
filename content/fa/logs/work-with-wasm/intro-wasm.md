@@ -7,6 +7,7 @@ description: "وب‌اسمبلی (WebAssembly) یک استاندارد باز �
 toc: true
 intro: false
 comments: true
+newsletter: true
 cat: tuts
 ---
 

@@ -5,8 +5,9 @@ thumbnail: content/jamstack-with-cloudflare-intro.png
 description: در بخش اول این مجموعه آموزشی، با معماری Jamstack و ابزارهای قدرتمند Cloudflare Pages، Nuxt.js و اکوسیستم سرورلس Cloudflare آشنا می‌شوید. از تاریخچه وب تا ساخت اپلیکیشن‌های سریع، امن و مقیاس‌پذیر، این مقاله شما را قدم‌به‌قدم به سوی خلق پروژه‌های حرفه‌ای هدایت می‌کند. با آموزش‌های پروژه‌محور، آماده خواهید شد تا وب اپلیکیشن‌هایی بسازید که در دنیای فناوری برجسته باشند.
 toc: true
 intro: true
-comments: false
 cat: tuts
+comments: true
+newsletter: true
 ---
 
 ## ساخت ابزارهای وب با معماری Jamstack

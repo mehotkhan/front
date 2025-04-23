@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب Building Progressive Web Applications with Vue.js: ساخت اپلیکیشن‌های وب پیش‌رونده

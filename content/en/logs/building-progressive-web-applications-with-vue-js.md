@@ -10,6 +10,8 @@ description:
 toc: false
 intro: false
 cat: library
+comments: true
+newsletter: true
 ---
 
 ## Introduction

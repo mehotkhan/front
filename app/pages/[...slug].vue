@@ -44,7 +44,7 @@ useSeoMeta({
   // Open Graph Tags
   ogTitle: pageData.value?.title ?? t("Page Not Found"),
   ogDescription: pageData.value?.description ?? t("Page Not Found"),
-  ogImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
+  ogImage: pageData.value?.thumbnail ?? "/content/blogging.png",
   ogImageAlt: pageData.value?.title ?? t("Page Not Found"),
   // ogUrl: canonicalUrl,
   ogType: "website",
@@ -52,10 +52,10 @@ useSeoMeta({
   // ogSiteName: config.public.siteName || 'Your Site Name',
 
   // Twitter Card Tags
-  twitterCard: pageData.value?.thumbnail ?? "/content/gnu.webp",
+  twitterCard: pageData.value?.thumbnail ?? "/content/blogging.png",
   twitterTitle: pageData.value?.title ?? t("Page Not Found"),
   twitterDescription: pageData.value?.description ?? t("Page Not Found"),
-  twitterImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
+  twitterImage: pageData.value?.thumbnail ?? "/content/blogging.png",
 
   // Additional SEO Tags
   robots: pageData.value?.noIndex ? "noindex" : "index, follow",

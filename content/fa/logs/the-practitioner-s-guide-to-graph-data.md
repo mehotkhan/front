@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب The Practitioner's Guide to Graph Data: کلید تحلیل روابط پیچیده

@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## تام بامبادیل: راز جنگل کهن در دنیای تالکین

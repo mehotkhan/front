@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب Modern Web Development on the JAMstack: آینده توسعه وب

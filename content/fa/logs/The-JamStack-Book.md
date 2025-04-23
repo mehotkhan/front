@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب The Jamstack Book: راهنمای ساخت وب‌سایت‌های سریع و مدرن

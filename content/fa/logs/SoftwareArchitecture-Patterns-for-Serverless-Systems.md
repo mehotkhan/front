@@ -8,6 +8,7 @@ cat: library
 toc: true
 intro: false
 comments: true
+newsletter: true
 ---
 
 ## بررسی کتاب Software Architecture Patterns for Serverless Systems: طراحی آینده سیستم‌های مقیاس‌پذیر
