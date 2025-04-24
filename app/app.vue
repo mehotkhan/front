@@ -2,6 +2,8 @@
 import * as locales from "@nuxt/ui/locale";
 import { onMounted } from "vue";
 
+import Vazirmatn from "~/assets/fonts/Vazirmatn[wght].woff2";
+
 const { locale } = useI18n();
 const { initDevice } = useUser();
 const appConfig = useAppConfig();
@@ -44,19 +46,13 @@ useHead({
     { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
     {
       rel: "preload",
+      href: Vazirmatn,
+      as: "font",
       type: "font/woff2",
-      href: "@/assets/fonts/Vazirmatn[wght].woff2",
-      as: "font",
-    },
-    {
-      rel: "preload",
-      type: "font/woff",
-      href: "@/assets/fonts/FarhangDot.woff",
-      as: "font",
+      crossorigin: "anonymous",
     },
   ],
 });
-
 onMounted(() => {
   initDevice();
 });
