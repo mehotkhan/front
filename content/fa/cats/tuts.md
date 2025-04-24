@@ -1,7 +1,7 @@
 ---
 title: آموزش ها
 description: آموزش ها
-thumbnail: /content/blogging.png
+thumbnail: /content/blogging.webp
 ---
 
 <LogsArchives cat="tuts" />

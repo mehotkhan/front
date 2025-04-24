@@ -58,6 +58,8 @@ export default defineAppConfig({
     description_en: "OpenSourceWebDeveloper",
     footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
     footer_en: "Everything must be wonderful in every shape and form ",
+    default_banner: "/content/blogging.webp",
+    default_avatar: "/content/gnu.webp",
   },
   cats: ["library", "notes", "projects", "tuts"],
 });

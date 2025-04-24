@@ -1,7 +1,7 @@
 ---
 title: library
 description: "library Archives"
-thumbnail: /content/blogging.png
+thumbnail: /content/blogging.webp
 ---
 
 <LogsArchives cat='library' />

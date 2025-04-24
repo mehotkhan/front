@@ -295,7 +295,6 @@ export default {
   "about": "About",
   "avatar": "Avatar",
   "body": "body",
-  "books": "books",
   "buildId must be a positive integer": "buildId must be a positive integer",
   "buildId must be an integer": "buildId must be an integer",
   "build_name": "build_name",
@@ -310,6 +309,7 @@ export default {
   "firstName": "First Name",
   "ip_address": "ip_address",
   "lastName": "Last Name",
+  "library": "library",
   "logs": "logs",
   "message": "message",
   "more": "more",
@@ -325,8 +325,8 @@ export default {
   "route_path": "route_path",
   "status": "status",
   "title": "title",
+  "tuts": "tuts",
   "type": "type",
   "user_agent": "user_agent",
-  "username": "username",
-  "vue": "vue"
+  "username": "username"
 };

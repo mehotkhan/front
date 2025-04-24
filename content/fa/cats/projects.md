@@ -1,7 +1,7 @@
 ---
 title: پروژه
 description: پروژه ها
-thumbnail: /content/blogging.png
+thumbnail: /content/blogging.webp
 ---
 
 <LogsArchives cat='projects' />

@@ -1,7 +1,7 @@
 ---
 title: یادداشت
 description: یادداشت ها
-thumbnail: /content/blogging.png
+thumbnail: /content/blogging.webp
 ---
 
 <LogsArchives cat='notes' />

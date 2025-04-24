@@ -295,7 +295,6 @@ export default {
   "about": "درباره ما",
   "avatar": "آواتار",
   "body": "متن",
-  "books": "کتاب‌ها",
   "buildId must be a positive integer": "شناسه ساخت باید یک عدد صحیح مثبت باشد",
   "buildId must be an integer": "شناسه ساخت باید یک عدد صحیح باشد",
   "build_name": "نام ساخت",
@@ -310,6 +309,7 @@ export default {
   "firstName": "نام",
   "ip_address": "آدرس آی‌پی",
   "lastName": "نام خانوادگی",
+  "library": "library",
   "logs": "گزارش‌ها",
   "message": "پیام",
   "more": "بیشتر",
@@ -325,8 +325,8 @@ export default {
   "route_path": "مسیر",
   "status": "وضعیت",
   "title": "عنوان",
+  "tuts": "tuts",
   "type": "نوع",
   "user_agent": "عامل کاربر",
-  "username": "نام کاربری",
-  "vue": "ویو"
+  "username": "نام کاربری"
 };

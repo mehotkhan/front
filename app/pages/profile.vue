@@ -14,7 +14,7 @@ useSeoMeta({
   description: profile.value?.about ?? t("User profile page"),
   ogTitle: profile.value?.displayName ?? t("User Profile"),
   ogDescription: profile.value?.about ?? t("User profile page"),
-  ogImage: appConfig.app.default_banner,
+  ogImage: appConfig.app.default_avatar,
 });
 </script>
 
@@ -68,7 +68,7 @@ useSeoMeta({
             preload
             class="w-full md:w-1/2 max-h-[40vh] h-auto object-contain md:rounded-lg"
             loading="lazy"
-            :src="appConfig.app.default_banner"
+            :src="appConfig.app.default_avatar"
           />
         </div>
       </div>
