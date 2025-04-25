@@ -67,4 +67,3 @@ onMounted(() => {
     </NuxtLayout>
   </UApp>
 </template>
-
