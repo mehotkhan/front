@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { profile, generateNewIdentity, loggedIn } = useUser();
+const { profile, generateNewNames, loggedIn } = useUser();
 const { loggedIn: sessionLoggedIn } = useUserSession();
 
 const { t } = useI18n();
@@ -44,8 +44,8 @@ useSeoMeta({
               v-if="loggedIn"
               color="neutral"
               variant="subtle"
-              :label="$t('Generate Random Name')"
-              @click="generateNewIdentity"
+              :label="$t('New Random Name')"
+              @click="generateNewNames"
             />
           </UButtonGroup>
         </div>
@@ -68,7 +68,7 @@ useSeoMeta({
             preload
             class="w-full md:w-1/2 max-h-[40vh] h-auto object-contain md:rounded-lg"
             loading="lazy"
-            :src="appConfig.app.default_avatar"
+            :src="appConfig.app.default_banner"
           />
         </div>
       </div>
@@ -83,7 +83,7 @@ useSeoMeta({
 
       <UModal
         v-if="sessionLoggedIn"
-        :open="changePasswordIsOpen"
+        v-model:open="changePasswordIsOpen"
         :title="$t('Change Password')"
       >
         <template #body>
@@ -92,7 +92,7 @@ useSeoMeta({
       </UModal>
       <UModal
         v-if="sessionLoggedIn"
-        :open="updateProfileIsOpen"
+        v-model:open="updateProfileIsOpen"
         :title="$t('Update Profile')"
       >
         <template #body>
