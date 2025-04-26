@@ -2,6 +2,7 @@
 import * as locales from "@nuxt/ui/locale";
 import { onMounted } from "vue";
 
+import FarhangFont from "~/assets/fonts/FarhangVariableDot.woff";
 import Vazirmatn from "~/assets/fonts/Vazirmatn[wght].woff2";
 
 const { locale } = useI18n();
@@ -49,6 +50,13 @@ useHead({
       href: Vazirmatn,
       as: "font",
       type: "font/woff2",
+      crossorigin: "anonymous",
+    },
+    {
+      rel: "preload",
+      href: FarhangFont,
+      as: "font",
+      type: "font/woff",
       crossorigin: "anonymous",
     },
   ],

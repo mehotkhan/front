@@ -6,13 +6,15 @@
   font-family: "FarhangDot";
   font-style: normal;
   font-weight: 100 900;
-  src: url("~/assets/fonts/FarhangVariableDot.woff");
+  src: url("~/assets/fonts/FarhangVariableDot.woff") format("woff");
+  font-display: swap;
 }
 @font-face {
   font-family: "Vazirmatn";
   font-style: normal;
   font-weight: 100 900;
-  src: url("~/assets/fonts/Vazirmatn[wght].woff2");
+  src: url("~/assets/fonts/Vazirmatn[wght].woff2") format("woff2");
+  font-display: swap;
 }
 :root {
   font-family: Vazirmatn;
