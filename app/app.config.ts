@@ -1,10 +1,10 @@
 export default defineAppConfig({
   installed: true,
-  ui: {
-    colors: {
-      primary: "zinc",
-    },
-  },
+  // ui: {
+  //   colors: {
+  //     primary: "zinc",
+  //   },
+  // },
   mainMenu: [
     {
       label: "Home",
@@ -23,10 +23,6 @@ export default defineAppConfig({
     {
       label: "Dashboard",
       to: "/manage",
-    },
-    {
-      label: "Pages",
-      to: "/manage/pages",
     },
     {
       label: "Comments",
