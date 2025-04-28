@@ -1,7 +1,7 @@
 ---
 title: Modern Web Development on the JAMstack
 date: 2021-08-11T12:29:12.649Z
-thumbnail: content/Modern-Web-Development-on-the-JAMstack.webp
+thumbnail: /content/Modern-Web-Development-on-the-JAMstack.webp
 description: In just the past few years, a flurry of advancements has greatly
   strengthened the web as a content and application platform. Brows‐ ers are
   much more powerful. JavaScript has matured. WebAssembly is on the horizon. It

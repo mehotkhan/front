@@ -190,7 +190,7 @@ export default defineNuxtConfig({
   mdc: {
     highlight: {
       theme: "github-dark",
-      langs: ["ts", "go", "html"],
+      langs: ["ts", "go", "html", "bash"],
       wrapperStyle: true,
     },
   },

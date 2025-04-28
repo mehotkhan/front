@@ -1,6 +1,6 @@
 ---
 title: About Me
-thumbnail: content/physics.webp
+thumbnail: /content/physics.webp
 description: "I’m Ali Zemani, a curious developer passionate about building innovative solutions and sharing knowledge in the tech world."
 ---
 

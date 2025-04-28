@@ -1,6 +1,6 @@
 ---
 title: درباره من
-thumbnail: content/physics.webp
+thumbnail: /content/physics.webp
 description: "من علی زمانی هستم؛ توسعه‌دهنده‌ای کنجکاو، مشتاق به خلق راه‌حل‌های نوآورانه و اشتراک‌گذاری دانش در دنیای فناوری."
 ---
 
