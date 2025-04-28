@@ -188,7 +188,11 @@ export default defineNuxtConfig({
     "#velite": resolve(__dirname, "./.velite"),
   },
   mdc: {
-    highlight: false,
+    highlight: {
+      theme: "github-dark",
+      langs: ["ts", "go", "html"],
+      wrapperStyle: true,
+    },
   },
 
   booster: {
