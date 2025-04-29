@@ -1,4 +1,4 @@
-import { object, optional, parse, string } from "valibot";
+import { object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -24,55 +24,53 @@ export default defineEventHandler(async (event) => {
 
   // Define query parameter schema
   const querySchema = object({
-    startDate: optional(string()),
-    endDate: optional(string()),
+    pageRoute: string(),
   });
 
   // Parse and validate query parameters
   const query = getQuery(event);
-  const { startDate, endDate } = parse(querySchema, query);
+  const { pageRoute } = parse(querySchema, query);
 
-  // Validate and format dates (default to last 7 days if not provided)
-  const today = new Date();
-  const defaultEndDate = today.toISOString().split("T")[0];
-  const defaultStartDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
-    .toISOString()
-    .split("T")[0];
-
-  const formattedStartDate = startDate || defaultStartDate;
-  const formattedEndDate = endDate || defaultEndDate;
-
-  // Validate date format (YYYY-MM-DD)
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (
-    !dateRegex.test(formattedStartDate) ||
-    !dateRegex.test(formattedEndDate)
-  ) {
+  // Decode pageRoute to handle URL-encoded values (e.g., blog%2Ftest%2FtileOne -> blog/test/tileOne)
+  let decodedPageRoute: string;
+  try {
+    decodedPageRoute = decodeURIComponent(pageRoute);
+  } catch (err) {
     throw createError({
       statusCode: 400,
-      statusMessage: t("Invalid date format. Use YYYY-MM-DD."),
+      statusMessage: t("Invalid page route encoding."),
     });
   }
 
+  // Validate decoded pageRoute (non-empty and valid URL path characters, including slashes)
+  const validPathRegex = /^[a-zA-Z0-9-_\/]+$/;
+  if (!decodedPageRoute || !validPathRegex.test(decodedPageRoute)) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: t(
+        "Page route must be a valid path (e.g., 'blog/test/tileOne')."
+      ),
+    });
+  }
+
+  // Construct the clientRequestPath by prepending '/' if not already present
+  const clientRequestPath = decodedPageRoute.startsWith("/")
+    ? decodedPageRoute
+    : `/${decodedPageRoute}`;
+
+  console.log(clientRequestPath);
+
+  const expath = "/about";
   // Construct GraphQL query
   const graphqlQuery = `
-    query {
+    query GetPageViews($path: String!) {
       viewer {
         zones(filter: { zoneTag: "${flareZoneId}" }) {
-          httpRequests1dGroups(
-            filter: { date_geq: "${formattedStartDate}", date_leq: "${formattedEndDate}" }
-            limit: 1000
-            orderBy: [date_ASC]
+          httpRequestsAdaptiveGroups(
+            filter: { clientRequestPath: $path }
+            limit: 1
           ) {
-            dimensions {
-              date
-            }
-            sum {
-              pageViews
-            }
-            uniq {
-              uniques
-            }
+            count
           }
         }
       }
@@ -86,9 +84,11 @@ export default defineEventHandler(async (event) => {
       Authorization: `Bearer ${flareToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ query: graphqlQuery }),
+    body: JSON.stringify({
+      query: graphqlQuery,
+      variables: { path: expath },
+    }),
   });
-
   // Check for HTTP errors
   if (!response.ok) {
     throw createError({
@@ -109,12 +109,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Extract and format traffic data
-  const trafficData = data.viewer.zones[0].httpRequests1dGroups.map((item) => ({
-    date: item.dimensions.date,
-    pageViews: item.sum.pageViews,
-    uniqueVisits: item.uniq.uniques,
-  }));
+  // Extract total page views (default to 0 if no data)
+  const totalPageViews =
+    data.viewer.zones[0].httpRequestsAdaptiveGroups[0]?.sum?.pageViews || 0;
 
-  return trafficData;
+  // Return total page views
+  return { totalPageViews };
 });
