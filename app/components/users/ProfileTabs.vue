@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const items = [
   {
@@ -10,7 +10,13 @@ const items = [
 </script>
 
 <template>
-  <UTabs :items="items" color="neutral" variant="link" class="w-full">
+  <UTabs
+    :items="items"
+    color="neutral"
+    variant="link"
+    class="w-full"
+    :unmount-on-hide="true"
+  >
     <template #comments="{ item }">
       <CommentsSelf />
     </template>
