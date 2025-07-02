@@ -52,7 +52,7 @@ useSeoMeta({
         <!-- Right Side - Image -->
         <div class="flex items-center justify-center p-8">
           <nuxt-img
-            provider="cloudflare"
+            :provider="isDev ? '' : 'cloudflare'" 
             preload
             loading="lazy"
             placeholder

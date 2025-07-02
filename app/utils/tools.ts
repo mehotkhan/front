@@ -15,3 +15,6 @@ export const convertToPersianNumbers = (input: string | number): string => {
     String.fromCharCode(char.charCodeAt(0) + 1728)
   );
 };
+
+
+export const isDev = import.meta.dev

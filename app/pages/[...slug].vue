@@ -110,7 +110,7 @@ useSeoMeta({
 
           <nuxt-img
             v-if="pageData.thumbnail"
-            provider="cloudflare"
+            :provider="isDev ? '' : 'cloudflare'" 
             preload
             loading="lazy"
             placeholder
