@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
-  build: { transpile: ["echarts-liquidfill"] },
+  build: { transpile: ["echarts", "echarts-liquidfill"] },
 
   vite: {
     resolve: {
@@ -53,7 +53,6 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             vendor: ["vue", "vue-router"],
-            echarts: ["echarts"],
             liquidfill: ["echarts-liquidfill"],
           },
         },
@@ -61,6 +60,9 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: ["echarts", "echarts-liquidfill"],
+    },
+    ssr: {
+      noExternal: ["nuxt-echarts", "echarts", "echarts-liquidfill"],
     },
   },
 
@@ -143,7 +145,7 @@ export default defineNuxtConfig({
   },
 
   echarts: {
-    ssr: false,
+    ssr: true,
     renderer: ["svg"],
     charts: ["BarChart", "LineChart"],
     components: [

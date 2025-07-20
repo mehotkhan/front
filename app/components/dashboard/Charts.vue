@@ -56,6 +56,13 @@ const chart = ref(null);
 <template>
   <div class="w-full h-full">
     <h3 class="m-0 p-0 text-xl">{{ $t("Stats") }}</h3>
-    <VChart ref="chart" :option="option" class="chart" />
+    <ClientOnly>
+      <VChart ref="chart" :option="option" class="chart" />
+      <template #fallback>
+        <div class="chart-loading">
+          <USkeleton class="w-full h-64 rounded-lg" />
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </template>
