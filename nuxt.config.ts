@@ -66,7 +66,9 @@ export default defineNuxtConfig({
         "@tiptap/starter-kit",
         "@tiptap/vue-3",
         "tiptap-markdown",
-        "tiptap-extension-auto-joiner"
+        "tiptap-extension-auto-joiner",
+        "@tiptap/extension-bubble-menu",
+        "@tiptap/extension-floating-menu"
       ],
     },
     ssr: {
@@ -78,7 +80,9 @@ export default defineNuxtConfig({
         "@tiptap/starter-kit",
         "@tiptap/vue-3",
         "tiptap-markdown",
-        "tiptap-extension-auto-joiner"
+        "tiptap-extension-auto-joiner",
+        "@tiptap/extension-bubble-menu",
+        "@tiptap/extension-floating-menu"
       ],
     },
   },
