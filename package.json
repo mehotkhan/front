@@ -32,6 +32,8 @@
     "@tiptap/extension-bubble-menu": "^3.0.7",
     "@tiptap/extension-floating-menu": "^3.0.7",
     "@tiptap/extension-placeholder": "^3.0.7",
+    "@tiptap/starter-kit": "^3.0.7",
+    "@tiptap/vue-3": "^3.0.7",
     "@vueuse/core": "^13.5.0",
     "better-sqlite3": "^12.2.0",
     "dexie": "^4.0.11",

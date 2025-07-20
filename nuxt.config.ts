@@ -59,10 +59,27 @@ export default defineNuxtConfig({
       },
     },
     optimizeDeps: {
-      include: ["echarts", "echarts-liquidfill"],
+      include: [
+        "echarts",
+        "echarts-liquidfill",
+        "@tiptap/extension-placeholder",
+        "@tiptap/starter-kit",
+        "@tiptap/vue-3",
+        "tiptap-markdown",
+        "tiptap-extension-auto-joiner"
+      ],
     },
     ssr: {
-      noExternal: ["nuxt-echarts", "echarts", "echarts-liquidfill"],
+      noExternal: [
+        "nuxt-echarts",
+        "echarts",
+        "echarts-liquidfill",
+        "@tiptap/extension-placeholder",
+        "@tiptap/starter-kit",
+        "@tiptap/vue-3",
+        "tiptap-markdown",
+        "tiptap-extension-auto-joiner"
+      ],
     },
   },
 
