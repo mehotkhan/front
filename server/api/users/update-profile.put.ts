@@ -1,6 +1,6 @@
+import { z } from "h3-zod";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -17,16 +17,16 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Define Valibot schema for body validation
-    const schema = object({
-      firstName: string([minLength(1, t("First name must not be empty"))]),
-      lastName: string([minLength(1, t("Last name must not be empty"))]),
-      about: string([minLength(1, t("About must not be empty"))]),
+    // Define Zod schema for body validation
+    const schema = z.object({
+      firstName: z.string().min(1, t("First name must not be empty")),
+      lastName: z.string().min(1, t("Last name must not be empty")),
+      about: z.string().min(1, t("About must not be empty")),
     });
 
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = parse(schema, body, { abortEarly: false });
+    const parsed = schema.parse(body);
     const { firstName, lastName, about } = parsed;
 
     // Initialize the database connection
@@ -50,10 +50,9 @@ export default defineEventHandler(async (event) => {
         console.error("Error parsing permissions for role", role, err);
       }
     }
-    const permissions = Array.from(permissionsSet);
 
-    // Update the user profile and return the updated record
-    const updatedUser = await drizzleDb
+    // Update user profile
+    await drizzleDb
       .update(users)
       .set({
         firstName,
@@ -63,50 +62,35 @@ export default defineEventHandler(async (event) => {
         updatedAt: now,
       })
       .where(eq(users.id, userId))
-      .returning({
-        id: users.id,
-        username: users.username,
-        firstName: users.firstName,
-        lastName: users.lastName,
-        displayName: users.displayName,
-        avatar: users.avatar,
-        email: users.email,
-        about: users.about,
-      })
       .execute();
 
-    if (!updatedUser.length) {
+    // Fetch updated user data
+    const updatedUser = await drizzleDb
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .get();
+
+    if (!updatedUser) {
       throw createError({
-        statusCode: 500,
-        statusMessage: t("Failed to update the user profile"),
+        statusCode: 404,
+        statusMessage: t("User not found"),
       });
     }
 
-    await replaceUserSession(event, {
-      user: {
-        id: updatedUser[0].id,
-        username: updatedUser[0].username,
-        displayName: updatedUser[0].displayName,
-        pub: session.user.pub,
-        permissions,
-      },
-      loggedInAt: now,
-    });
-
-    // Successful response with profile data
     return {
       message: t("Profile updated successfully"),
-      firstName: updatedUser[0].firstName,
-      lastName: updatedUser[0].lastName,
-      displayName: updatedUser[0].displayName,
-      about: updatedUser[0].about,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      displayName: updatedUser.displayName,
+      about: updatedUser.about,
     };
-  } catch (error: any) {
-    console.error("Error updating profile:", error);
+  } catch (error: unknown) {
+    console.error("Error updating user profile:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Internal Server Error");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage:
-        error.statusMessage || t("Internal Server Error. Please try again."),
+      statusCode: error instanceof Error && 'statusCode' in error ? (error as { statusCode: number }).statusCode : 500,
+      statusMessage: errorMessage,
     });
   }
 });

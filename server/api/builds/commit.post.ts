@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -17,11 +17,11 @@ export default defineEventHandler(async (event) => {
 
   // Validate incoming payload
   const body = await readBody(event);
-  const schema = object({
-    path: string([minLength(1, t("Path must not be empty"))]),
-    body: string([minLength(1, t("Content must not be empty"))]),
+  const schema = z.object({
+    path: z.string().min(1, t("Path must not be empty")),
+    body: z.string().min(1, t("Content must not be empty")),
   });
-  const parsed = parse(schema, body, { abortEarly: false });
+  const parsed = schema.parse(body);
   const { path, body: content } = parsed;
 
   // Retrieve the current user session

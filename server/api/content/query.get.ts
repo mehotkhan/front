@@ -1,5 +1,5 @@
 // server/api/content/query.get.ts
-import { object, optional, parse, pipe, string, transform } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -8,28 +8,19 @@ export default defineEventHandler(async (event) => {
       with: { type: "json" },
     });
 
-    // Define Valibot schema for query parameters
-    const schema = object({
-      intro: optional(
-        pipe(
-          string(),
-          transform((value) => value === "true")
-        ), // Transform string "true"/"false" to boolean
-        undefined
-      ),
-      sortBy: optional(string(), "date"), // Default to sorting by date
-      sortOrder: optional(string(), "DESC"), // Default to descending
-      limit: optional(
-        pipe(string(), transform(Number)), // Transform string to number
-        10
-      ),
-      locale: optional(string()), // Locale as optional string
-      cat: optional(string()), // Add cat as optional string
+    // Define Zod schema for query parameters
+    const schema = z.object({
+      intro: z.string().optional().transform((value) => value === "true"),
+      sortBy: z.string().optional().default("date"),
+      sortOrder: z.string().optional().default("DESC"),
+      limit: z.string().optional().transform((val) => val ? Number(val) : 10),
+      locale: z.string().optional(),
+      cat: z.string().optional(),
     });
 
     // Parse query parameters
     const query = getQuery(event);
-    const parsed = parse(schema, query);
+    const parsed = schema.parse(query);
 
     // Filter logs by intro, locale, and cat if provided
     let filteredLogs = Logs;
@@ -45,10 +36,10 @@ export default defineEventHandler(async (event) => {
       filteredLogs = filteredLogs.filter((log) => log.cat === parsed.cat);
     }
 
-    // Sort logs
+    // Sort logs with type safety
     filteredLogs = filteredLogs.sort((a, b) => {
-      const aValue = a[parsed.sortBy] || "";
-      const bValue = b[parsed.sortBy] || "";
+      const aValue = (a as Record<string, unknown>)[parsed.sortBy] || "";
+      const bValue = (b as Record<string, unknown>)[parsed.sortBy] || "";
       const order = parsed.sortOrder === "ASC" ? 1 : -1;
       return aValue > bValue ? order : -order;
     });
@@ -56,27 +47,13 @@ export default defineEventHandler(async (event) => {
     // Apply limit
     filteredLogs = filteredLogs.slice(0, parsed.limit);
 
-    // Return formatted response
-    return {
-      status: 200,
-      data: filteredLogs.map((log) => ({
-        path: log.path,
-        title: log.title || "",
-        thumbnail: log.thumbnail || "",
-        description: log.description || "",
-        author: log.author || "",
-        date: log.date || "",
-        cat: log.cat || "",
-        intro: log.intro || false,
-        comments: log.comments || false,
-        toc: log.toc || false,
-      })),
-    };
-  } catch (error) {
-    console.error("Error querying logs:", error);
+    return { data: filteredLogs };
+  } catch (error: unknown) {
+    console.error("Error in content query:", error);
+    const errorMessage = error instanceof Error ? error.message : "Invalid query parameters";
     throw createError({
-      statusCode: 500,
-      message: "Failed to query logs. Please check server logs for details.",
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });

@@ -6,11 +6,28 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data, error } = useAsyncData(
+interface QueryResponse {
+  data: Array<{
+    title: string;
+    thumbnail: string;
+    description: string;
+    path: string;
+    date: string;
+    cat: string;
+    intro: boolean;
+    comments: boolean;
+    newsletter: boolean;
+    toc: boolean;
+    body: string;
+    tocData: Array<{ id: string; text: string; depth: number }>;
+  }>;
+}
+
+const { data } = useAsyncData(
   `logs-archives-${route.path}-${props.cat}`,
   async () => {
     try {
-      const response = await $fetch("/api/content/query", {
+      const response = await $fetch<QueryResponse>("/api/content/query", {
         query: {
           ...(props.cat && { cat: props.cat }), // Include cat if provided
           sortBy: "date",
@@ -20,7 +37,7 @@ const { data, error } = useAsyncData(
         },
       });
       // Response is { status: 200, data: [...] }
-      return response.data || null;
+      return response?.data || null;
     } catch (e) {
       console.error("Error fetching logs archives:", e);
       return null;

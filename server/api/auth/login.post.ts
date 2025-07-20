@@ -1,25 +1,22 @@
+import { z } from "h3-zod";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, pipe, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  const headers = getHeaders(event);
   const now = new Date();
 
-  // Schema validation with pipe pattern
-  const schema = object({
-    userName: pipe(string(), minLength(1, t("Username must not be empty"))),
-    password: pipe(string(), minLength(1, t("Password must not be empty"))),
-    pub: pipe(string(), minLength(1, t("Public key must not be empty"))),
+  // Schema validation with Zod
+  const schema = z.object({
+    userName: z.string().min(1, t("Username must not be empty")),
+    password: z.string().min(1, t("Password must not be empty")),
+    pub: z.string().min(1, t("Public key must not be empty")),
   });
 
   try {
     // Validate request body
     const body = await readBody(event);
-    const { userName, password, pub } = parse(schema, body, {
-      abortEarly: false,
-    });
+    const { userName, password, pub } = schema.parse(body);
 
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);
@@ -64,73 +61,43 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // Get device information
-    const deviceInfo = {
-      ip: headers["cf-connecting-ip"] || "",
-      userAgent: headers["user-agent"] || "",
-      location: headers["cf-ipcountry"] || "unknown",
-    };
+    // Update last login time
+    await db
+      .update(users)
+      .set({ lastLoginAt: now })
+      .where(eq(users.id, user.id))
+      .execute();
 
-    // Handle device
-    const existingDevice = await db
-      .select()
-      .from(devices)
-      .where(eq(devices.pubKey, pub))
-      .get();
-
-    if (existingDevice) {
-      await db
-        .update(devices)
-        .set({
-          lastActivity: now,
-          ip: deviceInfo.ip,
-          userAgent: deviceInfo.userAgent,
-          location: deviceInfo.location,
-        })
-        .where(eq(devices.id, existingDevice.id))
-        .execute();
-    } else {
-      await db
-        .insert(devices)
-        .values({
-          userId: user.id,
-          pubKey: pub,
-          deviceName: `Device - ${pub.slice(0, 6)}`,
-          ip: deviceInfo.ip,
-          userAgent: deviceInfo.userAgent,
-          location: deviceInfo.location,
-          loginDate: now,
-          lastActivity: now,
-        })
-        .execute();
-    }
-
-    // Set user session
+    // Create session
     await setUserSession(event, {
       user: {
         id: user.id,
-        username: userName,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         displayName: user.displayName,
-        pub,
-        permissions: Array.from(permissions),
+        about: user.about,
+        avatar: user.avatar,
+        pub: user.pub,
       },
       loggedInAt: now,
+      permissions: Array.from(permissions),
     });
 
-    // Return success response
     return {
-      message: t("Login successful"),
       firstName: user.firstName,
       lastName: user.lastName,
       displayName: user.displayName,
       about: user.about,
-      username: user.username,
+      avatar: user.avatar,
+      pub: user.pub,
     };
-  } catch (error: any) {
-    console.error("Error logging in user:", error);
+  } catch (error: unknown) {
+    console.error("Login error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Login failed");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.statusMessage || t("Internal Server Error"),
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });

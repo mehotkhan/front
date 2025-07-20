@@ -5,7 +5,7 @@ import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
-  compatibilityDate: "2024-11-01",
+  compatibilityDate: "2025-01-27",
   devtools: { enabled: false },
   spaLoadingTemplate: true,
 
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
     strategy: "prefix",
     experimental: {
       localeDetector: "localeDetector.ts",
-      generatedLocaleFilePathFormat: "off",
+      // generatedLocaleFilePathFormat: "off",
     },
   },
 

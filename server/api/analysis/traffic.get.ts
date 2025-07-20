@@ -1,4 +1,4 @@
-import { object, optional, parse, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -22,15 +22,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Define query parameter schema
-  const querySchema = object({
-    startDate: optional(string()),
-    endDate: optional(string()),
+  // Define Zod schema for query parameters
+  const querySchema = z.object({
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
   });
 
   // Parse and validate query parameters
   const query = getQuery(event);
-  const { startDate, endDate } = parse(querySchema, query);
+  const { startDate, endDate } = querySchema.parse(query);
 
   // Validate and format dates (default to last 7 days if not provided)
   const today = new Date();

@@ -1,19 +1,17 @@
 import { drizzle } from "drizzle-orm/d1";
-import { email, object, parse, pipe, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
-  const schema = object({
-    email: pipe(string(), email(t("Invalid email address"))),
-    route: string(), // optional: validate format or fallback
+  const schema = z.object({
+    email: z.string().email(t("Invalid email address")),
+    route: z.string(), // optional: validate format or fallback
   });
 
   try {
     const body = await readBody(event);
-    const { email: emailAddress, route } = parse(schema, body, {
-      abortEarly: false,
-    });
+    const { email: emailAddress, route } = schema.parse(body);
 
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);
@@ -32,11 +30,12 @@ export default defineEventHandler(async (event) => {
       message: t("Subscription successful"),
       email: emailAddress,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Newsletter subscription error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Subscription failed");
     throw createError({
       statusCode: 400,
-      statusMessage: error.statusMessage || t("Subscription failed"),
+      statusMessage: errorMessage,
     });
   }
 });

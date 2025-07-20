@@ -22,4 +22,4 @@ const isDark = computed({
       @click="isDark ? (isDark = false) : (isDark = true)"
     />
   </div>
-</template>
+</template> 

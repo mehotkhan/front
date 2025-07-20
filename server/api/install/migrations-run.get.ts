@@ -1,12 +1,10 @@
-import type { D1Database } from "@cloudflare/workers-types";
+import { z } from "h3-zod";
 import { sha256 } from "@noble/hashes/sha2";
 import { bytesToHex } from "@noble/hashes/utils";
-import { array, minLength, object, parse, pipe, string } from "valibot";
 
 async function computeHash(data: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const hashBytes = sha256(encoder.encode(data));
-  return bytesToHex(hashBytes);
+  const hash = await sha256(data);
+  return bytesToHex(hash);
 }
 
 async function ensureMigrationsTable(db: D1Database) {
@@ -55,65 +53,62 @@ async function markMigrationAsApplied(
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  const db: D1Database = event.context.cloudflare.env.DB;
-  const appConfig = useAppConfig(event);
 
-  // Check if app is installed
-  if (appConfig.installed) {
-    throw createError({
-      statusCode: 403,
-      message: t("Application is already installed"),
-    });
-  }
+  // Get D1 database from Cloudflare environment
+  const db = event.context.cloudflare?.env?.DB;
 
-  // Define Valibot schema for migrations
-  const MigrationSchema = array(
-    object({
-      name: pipe(string(), minLength(1, t("Migration name must not be empty"))),
-      content: pipe(
-        string(),
-        minLength(1, t("Migration content must not be empty"))
-      ),
-    })
-  );
-
-  if (!db) {
-    console.warn("No D1 database found in environment; skipping migrations.");
-    throw createError({
-      statusCode: 500,
-      message: t("Database connection is not configured."),
-    });
-  }
+  // Define Zod schema for migrations
+  const schema = z.object({
+    migrations: z.array(z.string().min(1, t("Migration name must not be empty"))),
+  });
 
   try {
-    // Validate migrations
-    const migrations = parse(MigrationSchema, dbMigrations);
+    // Read and validate the body
+    const body = await readBody(event);
+    const { migrations } = schema.parse(body);
+
+    if (!db) {
+      console.warn("No D1 database found in environment; skipping migrations.");
+      throw createError({
+        statusCode: 500,
+        message: t("Database connection is not configured."),
+      });
+    }
 
     await ensureMigrationsTable(db);
-    const appliedMigrations = await getAppliedMigrations(db);
 
+    // Process each migration
     for (const migration of migrations) {
-      const hash = await computeHash(migration.content);
-      if (!appliedMigrations.includes(hash)) {
-        await applyMigration(db, migration.content);
-        await markMigrationAsApplied(db, hash);
-        console.log(`Applied migration: ${migration.name}`);
-      } else {
-        console.log(`Skipping already applied migration: ${migration.name}`);
+      const migrationHash = await computeHash(migration);
+      
+      // Check if migration already applied
+      const existingMigration = await db
+        .prepare("SELECT id FROM __drizzle_migrations WHERE hash = ?")
+        .bind(migrationHash)
+        .first();
+
+      if (!existingMigration) {
+        // Apply migration
+        await db.prepare(migration).run();
+        
+        // Record migration
+        await db
+          .prepare("INSERT INTO __drizzle_migrations (hash, applied_at) VALUES (?, ?)")
+          .bind(migrationHash, new Date().toISOString())
+          .run();
       }
     }
 
     return {
-      status: "success",
+      success: true,
       message: t("All pending migrations applied successfully."),
     };
-  } catch (error: any) {
-    console.error("Automatic migration failed:", error);
+  } catch (error: unknown) {
+    console.error("Migrations run error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Migrations run failed");
     throw createError({
-      statusCode: error.statusCode || 500,
-      message:
-        t("Automatic migration failed: ") +
-        (error.message || t("Unknown error")),
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });

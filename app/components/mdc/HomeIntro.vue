@@ -2,12 +2,28 @@
 const route = useRoute();
 const { locale } = useI18n();
 
+interface QueryResponse {
+  data: Array<{
+    title: string;
+    thumbnail: string;
+    description: string;
+    path: string;
+    date: string;
+    cat: string;
+    intro: boolean;
+    comments: boolean;
+    newsletter: boolean;
+    toc: boolean;
+    body: string;
+    tocData: Array<{ id: string; text: string; depth: number }>;
+  }>;
+}
 
-const { data, error } = useAsyncData(
+const { data } = useAsyncData(
   `home-intro-${route.path}`,
   async () => {
     try {
-      const response = await $fetch("/api/content/query", {
+      const response = await $fetch<QueryResponse>("/api/content/query", {
         query: {
           intro: true,
           sortBy: "date",
@@ -17,7 +33,7 @@ const { data, error } = useAsyncData(
         },
       });
       // Response is { status: 200, data: [...] }
-      return response.data[0] || null;
+      return response?.data?.[0] || null;
     } catch (e) {
       console.error("Error fetching home intro:", e);
       return null;
@@ -37,10 +53,10 @@ const { data, error } = useAsyncData(
       <div class="w-full md:w-1/2 flex flex-col justify-end order-1 md:order-none">
         <h2
           class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold hover:underline transition-colors duration-300">
-          <NuxtLink :to="data.path">{{ data.title }}</NuxtLink>
+          <NuxtLink :to="data?.path">{{ data?.title }}</NuxtLink>
         </h2>
         <p class="mt-4 text-sm sm:text-base md:text-lg text-justify">
-          {{ data.description }}
+          {{ data?.description }}
         </p>
         <NuxtLink :to="data.path" class="mt-4 text-sm sm:text-base hover:underline transition-colors duration-300">
           {{ $t("more") }}...

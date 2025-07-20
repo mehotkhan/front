@@ -1,16 +1,16 @@
-import { minLength, object, parse, pipe, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const { default: Content } = await import("#velite/content.json", {
     with: { type: "json" },
   });
   const t = await useTranslation(event);
-  const schema = object({
-    path: pipe(string(), minLength(1, "Missing or invalid path parameter")),
+  const schema = z.object({
+    path: z.string().min(1, "Missing or invalid path parameter"),
   });
   try {
     const query = getQuery(event);
-    const parsed = parse(schema, query, { abortEarly: false });
+    const parsed = schema.parse(query);
     let { path } = parsed as { path: string };
 
     // Normalize path
@@ -34,10 +34,11 @@ export default defineEventHandler(async (event) => {
     }
 
     return item;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : t("Internal Server Error");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.statusMessage || t("Internal Server Error"),
+      statusCode: error instanceof Error && 'statusCode' in error ? (error as any).statusCode : 500,
+      statusMessage: errorMessage,
     });
   }
 });

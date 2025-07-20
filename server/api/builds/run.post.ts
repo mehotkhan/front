@@ -1,20 +1,16 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { integer, minValue, number, object, parse, pipe } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
   // Validate incoming payload
   const body = await readBody(event);
-  const schema = object({
-    buildId: pipe(
-      number(),
-      integer(t("buildId must be an integer")),
-      minValue(1, t("buildId must be a positive integer"))
-    ),
+  const schema = z.object({
+    buildId: z.number().int().min(1, t("Build ID must be a positive integer")),
   });
-  const parsed = parse(schema, body, { abortEarly: false });
+  const parsed = schema.parse(body);
   const { buildId } = parsed;
 
   // Initialize DB connection

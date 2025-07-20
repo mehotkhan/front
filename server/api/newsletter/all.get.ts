@@ -1,15 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
-import {
-  minValue,
-  number,
-  object,
-  optional,
-  parse,
-  pipe,
-  string,
-  transform,
-} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);

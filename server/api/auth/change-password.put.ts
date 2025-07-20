@@ -1,10 +1,16 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   const now = new Date();
+
+  // Define Zod schema for body validation
+  const schema = z.object({
+    oldPassword: z.string().min(1, t("Old password must not be empty")),
+    newPassword: z.string().min(1, t("New password must not be empty")),
+  });
 
   try {
     // Ensure user is authenticated
@@ -17,26 +23,17 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Define Valibot schema for body validation
-    const schema = object({
-      oldPassword: string([
-        minLength(1, t("Current password must not be empty")),
-      ]),
-      newPassword: string([minLength(1, t("New password must not be empty"))]),
-    });
-
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = parse(schema, body, { abortEarly: false });
-    const { oldPassword, newPassword } = parsed;
+    const { oldPassword, newPassword } = schema.parse(body);
 
     // Initialize DB from Cloudflare environment
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
 
-    // Fetch user record (only need the password field)
+    // Fetch current user data
     const user = await drizzleDb
-      .select({ password: users.password })
+      .select()
       .from(users)
       .where(eq(users.id, userId))
       .get();
@@ -48,22 +45,23 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Verify that the provided old password is correct
-    const isValidPassword = await verifyWorkerPassword(
+    // Verify current password
+    const isCurrentPasswordValid = await verifyWorkerPassword(
       oldPassword,
       user.password
     );
-    if (!isValidPassword) {
+
+    if (!isCurrentPasswordValid) {
       throw createError({
-        statusCode: 401,
+        statusCode: 400,
         statusMessage: t("Current password is incorrect"),
       });
     }
 
-    // Hash the new password using the worker's hashing method
+    // Hash new password
     const hashedNewPassword = await hashWorkerPassword(newPassword);
 
-    // Update the user's password and updatedAt timestamp
+    // Update password
     await drizzleDb
       .update(users)
       .set({
@@ -74,13 +72,12 @@ export default defineEventHandler(async (event) => {
       .execute();
 
     return { success: true, message: t("Password changed successfully") };
-  } catch (error: any) {
-    console.error("Error changing password:", error);
+  } catch (error: unknown) {
+    console.error("Change password error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Change password failed");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage:
-        error.statusMessage ||
-        t("Internal Server Error. Please try again later."),
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });

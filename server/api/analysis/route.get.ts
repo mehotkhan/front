@@ -1,15 +1,13 @@
-import { object, parse, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
-  // Check permission to read dashboard
+  // Permission check: only allow if the user has readDashboard permission
   if (await denies(event, readDashboard)) {
     throw createError({
       statusCode: 403,
-      statusMessage: t(
-        "Forbidden: You do not have permission to read dashboard."
-      ),
+      statusMessage: t("Forbidden: You do not have permission to read dashboard."),
     });
   }
 
@@ -22,20 +20,20 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Define query parameter schema
-  const querySchema = object({
-    pageRoute: string(),
+  // Define Zod schema for query parameters
+  const querySchema = z.object({
+    pageRoute: z.string(),
   });
 
   // Parse and validate query parameters
   const query = getQuery(event);
-  const { pageRoute } = parse(querySchema, query);
+  const { pageRoute } = querySchema.parse(query);
 
   // Decode pageRoute to handle URL-encoded values (e.g., blog%2Ftest%2FtileOne -> blog/test/tileOne)
   let decodedPageRoute: string;
   try {
     decodedPageRoute = decodeURIComponent(pageRoute);
-  } catch (err) {
+  } catch {
     throw createError({
       statusCode: 400,
       statusMessage: t("Invalid page route encoding."),
@@ -43,7 +41,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Validate decoded pageRoute (non-empty and valid URL path characters, including slashes)
-  const validPathRegex = /^[a-zA-Z0-9-_\/]+$/;
+  const validPathRegex = /^[a-zA-Z0-9-_/]+$/;
   if (!decodedPageRoute || !validPathRegex.test(decodedPageRoute)) {
     throw createError({
       statusCode: 400,

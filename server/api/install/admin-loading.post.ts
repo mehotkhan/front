@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, optional, parse, pipe, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -18,28 +18,27 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Define Valibot schema with pipe pattern
-  const UserSchema = object({
-    firstName: pipe(string(), minLength(1, t("First name must not be empty"))),
-    lastName: pipe(string(), minLength(1, t("Last name must not be empty"))),
-    userName: pipe(string(), minLength(1, t("Username must not be empty"))),
-    password: pipe(string(), minLength(1, t("Password must not be empty"))),
-    pub: pipe(string(), minLength(1, t("Public key must not be empty"))),
-    about: pipe(string(), minLength(1, t("About must not be empty"))),
-    avatar: optional(string()),
+  // Define Zod schema for admin user
+  const UserSchema = z.object({
+    firstName: z.string().min(1, t("First name must not be empty")),
+    lastName: z.string().min(1, t("Last name must not be empty")),
+    userName: z.string().min(1, t("Username must not be empty")),
+    password: z.string().min(1, t("Password must not be empty")),
+    pub: z.string().min(1, t("Public key must not be empty")),
+    about: z.string().min(1, t("About must not be empty")),
+    avatar: z.string().optional(),
   });
 
   try {
-    // Validate request body
+    // Read and validate the body
     const body = await readBody(event);
-    const { firstName, lastName, userName, password, pub, about, avatar } =
-      parse(UserSchema, body, { abortEarly: false });
+    const parsed = UserSchema.parse(body);
 
     // Check for existing username
     const existingUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, userName))
+      .where(eq(users.username, parsed.userName))
       .get();
     if (existingUser) {
       throw createError({
@@ -49,18 +48,18 @@ export default defineEventHandler(async (event) => {
     }
 
     // Hash password
-    const hashedPassword = await hashWorkerPassword(password);
+    const hashedPassword = await hashWorkerPassword(parsed.password);
 
     // Insert new user
     await drizzleDb
       .insert(users)
       .values({
-        firstName,
-        lastName,
-        displayName: `${firstName} ${lastName}`,
-        username: userName,
-        about,
-        avatar: avatar || "",
+        firstName: parsed.firstName,
+        lastName: parsed.lastName,
+        displayName: `${parsed.firstName} ${parsed.lastName}`,
+        username: parsed.userName,
+        about: parsed.about,
+        avatar: parsed.avatar || "",
         password: hashedPassword,
         createdAt: now,
         updatedAt: now,
@@ -72,7 +71,7 @@ export default defineEventHandler(async (event) => {
     const newUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, userName))
+      .where(eq(users.username, parsed.userName))
       .get();
     if (!newUser) {
       throw createError({
@@ -87,8 +86,8 @@ export default defineEventHandler(async (event) => {
     const location = headers["cf-ipcountry"] || "unknown";
     await drizzleDb.insert(devices).values({
       userId: newUser.id,
-      pubKey: pub,
-      deviceName: `Device - ${pub.slice(0, 6)}`,
+      pubKey: parsed.pub,
+      deviceName: `Device - ${parsed.pub.slice(0, 6)}`,
       ip,
       location,
       userAgent,
@@ -120,7 +119,7 @@ export default defineEventHandler(async (event) => {
         id: newUser.id,
         username: newUser.username,
         displayName: newUser.displayName,
-        pub,
+        pub: parsed.pub,
         permissions: [],
       },
       loggedInAt: now,
@@ -129,13 +128,12 @@ export default defineEventHandler(async (event) => {
     return {
       message: t("Admin user registered and loaded successfully."),
     };
-  } catch (error: any) {
-    console.error("Error during admin user registration:", error);
+  } catch (error: unknown) {
+    console.error("Admin loading error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Admin loading failed");
     throw createError({
-      statusCode: error.statusCode || 500,
-      message:
-        error.message ||
-        t("An unexpected error occurred. Please try again later."),
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });

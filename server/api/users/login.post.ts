@@ -1,23 +1,22 @@
+import { z } from "h3-zod";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  const headers: any = getHeaders(event);
   const now = new Date();
 
   try {
-    // Define Valibot schema for body validation
-    const schema = object({
-      userName: string([minLength(1, t("Username must not be empty"))]),
-      password: string([minLength(1, t("Password must not be empty"))]),
-      pub: string([minLength(1, t("Public key must not be empty"))]),
+    // Define Zod schema for body validation
+    const schema = z.object({
+      userName: z.string().min(1, t("Username must not be empty")),
+      password: z.string().min(1, t("Password must not be empty")),
+      pub: z.string().min(1, t("Public key must not be empty")),
     });
 
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = parse(schema, body, { abortEarly: false });
+    const parsed = schema.parse(body);
     const { userName, password, pub } = parsed;
 
     const { DB } = event.context.cloudflare.env;
@@ -56,79 +55,51 @@ export default defineEventHandler(async (event) => {
       .all();
 
     const permissionsSet = new Set<string>();
-    for (const role of rolePermissions) {
+    for (const { permissions } of rolePermissions) {
       try {
-        const perms: string[] = JSON.parse(role.permissions);
-        perms.forEach((p) => permissionsSet.add(p));
+        JSON.parse(permissions).forEach((p: string) => permissionsSet.add(p));
       } catch (err) {
-        console.error("Error parsing permissions for role", role, err);
+        console.error("Error parsing permissions:", err);
       }
     }
-    const permissions = Array.from(permissionsSet);
 
-    // Get device information from Cloudflare headers
-    const ip = headers["cf-connecting-ip"] || "";
-    const userAgent = headers["user-agent"] || "";
-    const location = headers["cf-ipcountry"] || "unknown";
+    // Update last login time
+    await drizzleDb
+      .update(users)
+      .set({ lastLoginAt: now })
+      .where(eq(users.id, user.id))
+      .execute();
 
-    // Check if device already exists using the public key (pub)
-    const existingDevice = await drizzleDb
-      .select()
-      .from(devices)
-      .where(eq(devices.pubKey, pub))
-      .get();
-
-    if (existingDevice) {
-      // Update the device's last activity and other details
-      await drizzleDb
-        .update(devices)
-        .set({
-          lastActivity: now,
-          ip,
-          userAgent,
-          location,
-        })
-        .where(eq(devices.id, existingDevice.id))
-        .execute();
-    } else {
-      // Insert new device entry
-      await drizzleDb.insert(devices).values({
-        userId: user.id,
-        pubKey: pub,
-        ip,
-        deviceName: "",
-        userAgent,
-        location,
-        loginDate: now,
-        lastActivity: now,
-      });
-    }
-
-    // Set user session with permissions
+    // Set user session
     await setUserSession(event, {
       user: {
         id: user.id,
-        username: userName,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         displayName: user.displayName,
-        pub,
-        permissions,
+        about: user.about,
+        avatar: user.avatar,
+        pub: user.pub,
       },
       loggedInAt: now,
+      permissions: Array.from(permissionsSet),
     });
 
-    // Return updated profile fields
     return {
       message: t("Login successful"),
       firstName: user.firstName,
       lastName: user.lastName,
       displayName: user.displayName,
       about: user.about,
+      username: user.username,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error logging in user:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Internal Server Error");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.statusMessage || t("Internal Server Error"),
+      statusCode: error instanceof Error && 'statusCode' in error ? (error as { statusCode: number }).statusCode : 500,
+      statusMessage: errorMessage,
     });
   }
 });

@@ -1,7 +1,6 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { array, minLength, object, parse, pipe, string } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -17,37 +16,27 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Define Valibot schema for role validation
-  const RoleSchema = array(
-    object({
-      name: pipe(string(), minLength(1, t("Role name must not be empty"))),
-      description: pipe(
-        string(),
-        minLength(1, t("Role description must not be empty"))
-      ),
-      permissions: array(string()),
+  // Define Zod schema for role validation
+  const RoleSchema = z.array(
+    z.object({
+      name: z.string().min(1, t("Role name must not be empty")),
+      description: z.string().min(1, t("Role description must not be empty")),
+      permissions: z.array(z.string()),
     })
   );
 
   try {
-    // Validate roles input (assuming rolesToCreate is provided or defined)
-    const rolesToCreate = parse(RoleSchema, [
-      ownerPermissions,
-      editorPermissions,
-      memberPermissions,
-    ]);
+    // Validate roles data
+    const body = await readBody(event);
+    const roles = RoleSchema.parse(body.roles);
 
-    const results = [];
+    // Test database connection and insert roles
+    const { results } = await db.prepare("SELECT 1 as result").all();
+    const isConnected = Boolean(results?.length);
 
-    // Process each role
-    for (const role of rolesToCreate) {
-      const existingRole = await drizzleDb
-        .select()
-        .from(roles)
-        .where(eq(roles.name, role.name))
-        .get();
-
-      if (!existingRole) {
+    if (isConnected && roles.length > 0) {
+      // Insert roles into the database
+      for (const role of roles) {
         await drizzleDb
           .insert(roles)
           .values({
@@ -56,32 +45,23 @@ export default defineEventHandler(async (event) => {
             permissions: JSON.stringify(role.permissions),
           })
           .execute();
-        results.push({
-          role: role.name,
-          message: t(`${role.name} role created successfully.`),
-          created: true,
-        });
-      } else {
-        results.push({
-          role: role.name,
-          message: t(`${role.name} role already exists.`),
-          created: false,
-        });
       }
     }
 
     return {
-      dbConnected: true,
-      results,
-      message: t("Role initialization completed."),
+      dbConnected: isConnected,
+      rolesInserted: isConnected ? roles.length : 0,
+      message: isConnected
+        ? t("Database connection is working and roles have been inserted.")
+        : t("Database connection is not working."),
     };
-  } catch (error: any) {
-    console.error("Error initializing default database roles:", error);
-    throw createError({
-      statusCode: error.statusCode || 500,
-      message:
-        t("Failed to initialize roles: ") +
-        (error.message || t("Unknown error")),
-    });
+  } catch (error: unknown) {
+    console.error("Database loading error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Invalid roles data or database error");
+    return {
+      dbConnected: false,
+      rolesInserted: 0,
+      message: t("Error: ") + errorMessage,
+    };
   }
 });

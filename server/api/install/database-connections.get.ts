@@ -1,5 +1,6 @@
+import { z } from "h3-zod";
 import type { D1Database } from "@cloudflare/workers-types";
-import { minLength, parse, pipe, string } from "valibot";
+
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   const d1: D1Database = event.context.cloudflare.env.DB;
@@ -13,16 +14,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Schema validator using pipe pattern
-  const PublicKeySchema = pipe(
-    string(),
-    minLength(1, t("Public key must not be empty"))
-  );
+  // Zod schema for public key
+  const PublicKeySchema = z.string().min(1, t("Public key must not be empty"));
 
   try {
     // Validate public key (assuming it's part of the request)
     const body = await readBody(event);
-    parse(PublicKeySchema, body.publicKey);
+    PublicKeySchema.parse(body.publicKey);
 
     // Test database connection
     const { results } = await d1.prepare("SELECT 1 as result").all();
@@ -34,12 +32,11 @@ export default defineEventHandler(async (event) => {
         ? t("Database connection is working.")
         : t("Database connection is not working."),
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       dbConnected: false,
       message:
-        t("Error: ") +
-        (error.message || t("Invalid public key or database error")),
+        t("Error: ") + (error instanceof Error ? error.message : t("Invalid public key or database error")),
     };
   }
 });

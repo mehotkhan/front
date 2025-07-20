@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { integer, minValue, number, object, parse, picklist } from "valibot";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -15,22 +15,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  try {
-    // Define Valibot schema for body validation
-    const schema = object({
-      id: number([
-        integer(),
-        minValue(1, t("Comment ID must be a positive integer")),
-      ]),
-      newStatus: picklist(
-        ["published", "spam", "new"],
-        t("Invalid status value.")
-      ),
-    });
+  // Define Zod schema for body validation
+  const schema = z.object({
+    id: z.number().int().min(1, t("Comment ID must be a positive integer")),
+    newStatus: z.enum(["published", "spam", "new"], t("Invalid status value.")),
+  });
 
+  try {
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = parse(schema, body, { abortEarly: false });
+    const parsed = schema.parse(body);
     const { id, newStatus } = parsed;
 
     // Initialize database connection
@@ -60,11 +54,12 @@ export default defineEventHandler(async (event) => {
       message: t("Comment status updated successfully."),
       comment: result[0],
     };
-  } catch (error: any) {
-    console.error("Error updating comment status:", error);
+  } catch (error: unknown) {
+    console.error("Moderate comment error:", error);
+    const errorMessage = error instanceof Error ? error.message : t("Moderate comment failed");
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.statusMessage || t("Internal Server Error"),
+      statusCode: 400,
+      statusMessage: errorMessage,
     });
   }
 });
