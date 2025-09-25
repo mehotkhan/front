@@ -26,7 +26,7 @@ const titleSecond = computed(() => {
 
 <template>
   <div
-    class="flex items-center justify-center whitespace-nowrap text-2xl logo py-1"
+    class="flex items-center justify-center whitespace-nowrap text-xl md:text-2xl logo py-1"
   >
     <NuxtLinkLocale
       :to="route.path.includes('manage') ? '/manage/' : '/'"

@@ -55,7 +55,7 @@ const items = computed(() => {
 
 <template>
   <div class="relative flex">
-    <UButtonGroup class="gap-3" color="success">
+    <div class="flex items-center gap-3">
       <Can :ability="createCommit">
         <UButton
           v-if="!route.path.includes('manage')"
@@ -121,6 +121,6 @@ const items = computed(() => {
           </NuxtLinkLocale>
         </template>
       </UDropdownMenu>
-    </UButtonGroup>
+    </div>
   </div>
 </template>

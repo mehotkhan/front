@@ -4,7 +4,6 @@ import viteCompression from "vite-plugin-compression";
 import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
-  future: { compatibilityVersion: 4 },
   compatibilityDate: "2025-01-27",
   devtools: { enabled: false },
   spaLoadingTemplate: true,
@@ -14,7 +13,6 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "nuxt-auth-utils",
     "nitro-cloudflare-dev",
-    "nuxt-tiptap-editor",
     "@nuxtjs/i18n",
     "nuxt-authorization",
     "nuxt-echarts",
@@ -23,8 +21,8 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "@nuxt/eslint",
-    "nuxt-booster",
-    "nuxt-delay-hydration",
+    // "nuxt-booster",
+    // "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -120,10 +118,10 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
-    lazy: true,
+    // bundle: {
+    //   optimizeTranslationDirective: false,
+    // },
+    // lazy: true,
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n",
@@ -166,7 +164,7 @@ export default defineNuxtConfig({
   },
 
   echarts: {
-    ssr: true,
+    // ssr: true,
     renderer: ["svg"],
     charts: ["BarChart", "LineChart"],
     components: [
@@ -201,36 +199,36 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
-  booster: {
-    detection: {
-      performance: true,
-      browserSupport: true,
-    },
-    performanceMetrics: {
-      device: {
-        hardwareConcurrency: { min: 2, max: 48 },
-        deviceMemory: { min: 2 },
-      },
-      timing: {
-        fcp: 800,
-        dcl: 1200,
-      },
-    },
-    optimizeSSR: {
-      cleanPreloads: true,
-      cleanPrefetches: true,
-      inlineStyles: true,
-    },
-    disableNuxtFontaine: true,
-    disableNuxtImage: true,
-    experimental: {
-      fallbackInit: true,
-    },
-  },
-  delayHydration: {
-    mode: "mount", // or 'manual' or 'mount'
-    debug: process.env.NODE_ENV === "development",
-  },
+  // booster: {
+  //   detection: {
+  //     performance: true,
+  //     browserSupport: true,
+  //   },
+  //   performanceMetrics: {
+  //     device: {
+  //       hardwareConcurrency: { min: 2, max: 48 },
+  //       deviceMemory: { min: 2 },
+  //     },
+  //     timing: {
+  //       fcp: 800,
+  //       dcl: 1200,
+  //     },
+  //   },
+  //   optimizeSSR: {
+  //     cleanPreloads: true,
+  //     cleanPrefetches: true,
+  //     inlineStyles: true,
+  //   },
+  //   disableNuxtFontaine: true,
+  //   disableNuxtImage: true,
+  //   experimental: {
+  //     fallbackInit: true,
+  //   },
+  // },
+  // delayHydration: {
+  //   mode: "mount", // or 'manual' or 'mount'
+  //   debug: process.env.NODE_ENV === "development",
+  // },
   robots: {
     disallow: ["/manage", "/profile"],
   },

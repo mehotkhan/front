@@ -64,7 +64,7 @@ const items = [
     <UCard :ui="{ root: ' ' }">
       <template #header>
         <div class="flex items-center w-full justify-between">
-          <h1 class="text-2xl">{{ t("Mamoochi Database  Installation") }}</h1>
+          <h1 class="text-xl md:text-2xl">{{ t("Mamoochi Database  Installation") }}</h1>
           <div class="flex">
             <LanguageSwitcher />
             <ThemeSwitcher />

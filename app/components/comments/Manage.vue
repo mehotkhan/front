@@ -10,7 +10,6 @@ const toast = useToast();
 
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");
-const UButtonGroup = resolveComponent("UButtonGroup");
 const UButton = resolveComponent("UButton");
 const UBadge = resolveComponent("UBadge");
 const UAvatar = resolveComponent("UAvatar");
@@ -161,34 +160,33 @@ const columns: TableColumn<Comment>[] = [
       const isSpam = comment.status === "spam";
       return h("div", { class: "text-right" }, [
         h(
-          UButtonGroup,
-          {
-            size: "xs",
-          },
-          {
-            default: () => [
-              h(UButton, {
-                color: "success",
-                variant: isPublished ? "solid" : "subtle",
-                label: t("Approve"),
-                onClick: () => updateCommentStatus(comment.id, "published"),
-              }),
-              h(UButton, {
-                color: "warning",
-                variant: isSpam ? "solid" : "subtle",
-                label: t("Spam"),
-                onClick: () => updateCommentStatus(comment.id, "spam"),
-              }),
-              h(UButton, {
-                color: "secondary",
-                variant: "subtle",
-                label: t("Edit"),
-                onClick: () => {
-                  console.log(edit);
-                },
-              }),
-            ],
-          }
+          "div",
+          { class: "inline-flex items-center gap-2" },
+          [
+            h(UButton, {
+              color: "success",
+              variant: isPublished ? "solid" : "subtle",
+              size: "xs",
+              label: t("Approve"),
+              onClick: () => updateCommentStatus(comment.id, "published"),
+            }),
+            h(UButton, {
+              color: "warning",
+              variant: isSpam ? "solid" : "subtle",
+              size: "xs",
+              label: t("Spam"),
+              onClick: () => updateCommentStatus(comment.id, "spam"),
+            }),
+            h(UButton, {
+              color: "secondary",
+              variant: "subtle",
+              size: "xs",
+              label: t("Edit"),
+              onClick: () => {
+                console.log(edit);
+              },
+            }),
+          ]
         ),
       ]);
     },

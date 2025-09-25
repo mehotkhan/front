@@ -43,8 +43,8 @@ const active = computed({
         class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 gap-7"
       >
         <div class="flex justify-between w-full">
-          <h2 class="text-2xl text-bolder">{{ $t("Manage Users") }}</h2>
-          <UButtonGroup size="sm">
+          <h2 class="text-xl font-semibold md:text-2xl">{{ $t("Manage Users") }}</h2>
+          <div class="flex items-center gap-2">
             <UButton
               color="neutral"
               variant="subtle"
@@ -58,7 +58,7 @@ const active = computed({
               :label="$t('Add New User')"
               icon="i-lucide-user-plus"
             />
-          </UButtonGroup>
+          </div>
         </div>
         <UTabs
           v-model="active"

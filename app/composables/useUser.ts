@@ -1,5 +1,5 @@
-import { schnorr } from "@noble/curves/secp256k1";
-import { bytesToHex } from "@noble/hashes/utils";
+import { schnorr } from "@noble/curves/secp256k1.js";
+import { bytesToHex } from "@noble/hashes/utils.js";
 import { useStorage } from "@vueuse/core";
 
 // Define Profile interface for type safety

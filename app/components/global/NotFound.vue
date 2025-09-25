@@ -4,7 +4,7 @@
       class="flex flex-col items-center max-w-7xl mx-auto gap-6 text-center"
     >
       <UIcon name="i-lucide-search-x" class="text-yellow-500 size-40" />
-      <h2 class="text-3xl font-semibold">{{ $t("404 - Page Not Found") }}</h2>
+      <h2 class="text-2xl font-semibold md:text-3xl">{{ $t("404 - Page Not Found") }}</h2>
       <p class="text-lg">
         {{
           $t("The page you are looking for doesn’t exist or has been moved.")

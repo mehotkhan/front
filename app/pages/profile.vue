@@ -25,7 +25,7 @@ useSeoMeta({
         class="w-full page-header flex flex-col gap-5 pt-8 pb-6 md:pb-12 md:min-h-[50vh] items-center justify-start text-gray-600 border-gray-200 bg-gray-100"
       >
         <div class="flex justify-end w-full max-w-5xl">
-          <UButtonGroup>
+          <div class="flex items-center gap-2">
             <UButton
               v-if="sessionLoggedIn"
               color="neutral"
@@ -47,14 +47,14 @@ useSeoMeta({
               :label="$t('New Random Name')"
               @click="generateNewNames"
             />
-          </UButtonGroup>
+          </div>
         </div>
         <div
           class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 md:justify-around"
         >
           <div class="w-full md:w-1/2 flex flex-col justify-end md:gap-20">
             <h1
-              class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold transition-colors duration-300"
+              class="text-2xl sm:text-3xl md:text-4xl font-bold transition-colors duration-300"
             >
               {{ profile.displayName }}
             </h1>

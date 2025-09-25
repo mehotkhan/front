@@ -58,7 +58,7 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
     class="flex flex-col w-full items-center border rounded md:flex-row md:justify-between"
   >
     <div class="flex-1 w-full p-5">
-      <h2 class="text-3xl font-semibold">
+      <h2 class="text-2xl font-semibold md:text-3xl">
         {{ $t("Subscribe to Newsletter") }}
       </h2>
       <p>
@@ -74,7 +74,7 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
         class="space-y-4 w-full"
         @submit="subscribe"
       >
-        <UButtonGroup size="xl" class="w-full flex">
+        <div class="flex w-full items-center gap-2">
           <UInput
             v-model="state.email"
             variant="subtle"
@@ -85,7 +85,7 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
           <UButton type="submit" :loading="submitting" variant="subtle">
             {{ $t("Subscribe") }}
           </UButton>
-        </UButtonGroup>
+        </div>
       </UForm>
     </div>
   </div>

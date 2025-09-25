@@ -55,7 +55,7 @@ onMounted(() => {
 <template>
   <section id="comments" class="w-full">
     <div class="flex justify-between items-center">
-      <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
+      <h2 class="text-2xl font-semibold md:text-3xl">{{ $t("Comments") }}</h2>
     </div>
     <CommentsCreateForm @comment-posted="handleCommentPosted" />
 

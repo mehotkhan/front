@@ -116,7 +116,7 @@ const isTyping = (data: string): void => (state.body = data);
             <UFormField label="عنوان" class="w-full" size="md">
               <UInput v-model="state.title" class="w-full" />
             </UFormField>
-            <UButtonGroup size="md">
+            <div class="flex items-center gap-2">
               <UButton
                 :icon="codeEditor ? 'i-lucide-brush' : 'i-lucide-code'"
                 color="secondary"
@@ -137,7 +137,7 @@ const isTyping = (data: string): void => (state.body = data);
               >
                 {{ $t("Save") }}
               </UButton>
-            </UButtonGroup>
+            </div>
           </div>
 
           <UTextarea

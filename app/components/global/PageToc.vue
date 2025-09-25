@@ -7,7 +7,7 @@ defineProps({
 
 <template>
   <div class="w-full mb-15">
-    <h2 class="text-3xl font-semibold">
+    <h2 class="text-xl font-semibold md:text-2xl">
       {{ $t("Content Toc") }}
     </h2>
     <ol class="md:-mb-4 space-y-2">

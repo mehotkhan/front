@@ -1,34 +1,32 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
   try {
-    // Define Valibot schema for query parameters
-    const querySchema = object({
-      page: optional(
-        pipe(
-          string(),
-          transform((val) => (val ? Number(val) : 1)),
-          number([minValue(1, t("Page must be at least 1"))])
-        )
-      ),
-      pageSize: optional(
-        pipe(
-          string(),
-          transform((val) => (val ? Number(val) : 5)),
-          number([minValue(1, t("Page size must be at least 1"))])
-        )
-      ),
+    const querySchema = z.object({
+      page: z
+        .coerce
+        .number({ invalid_type_error: t("Page must be at least 1") })
+        .int()
+        .min(1, t("Page must be at least 1"))
+        .optional(),
+      pageSize: z
+        .coerce
+        .number({ invalid_type_error: t("Page size must be at least 1") })
+        .int()
+        .min(1, t("Page size must be at least 1"))
+        .optional(),
     });
 
-    // Read and validate query parameters
     const query = getQuery(event);
-    const parsedQuery = parse(querySchema, query, { abortEarly: false });
+    const { page, pageSize } = querySchema.parse(query);
 
-    const { page = 1, pageSize = 5 } = parsedQuery;
-    const offset = (page - 1) * pageSize;
+    const currentPage = page ?? 1;
+    const currentPageSize = pageSize ?? 5;
+    const offset = (currentPage - 1) * currentPageSize;
 
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
@@ -43,7 +41,7 @@ export default defineEventHandler(async (event) => {
     const allUsers = await drizzleDb
       .select()
       .from(users)
-      .limit(pageSize)
+      .limit(currentPageSize)
       .offset(offset);
 
     // Remove sensitive fields such as password
@@ -51,8 +49,8 @@ export default defineEventHandler(async (event) => {
 
     return {
       total,
-      page,
-      pageSize,
+      page: currentPage,
+      pageSize: currentPageSize,
       users: safeUsers,
     };
   } catch (error: any) {

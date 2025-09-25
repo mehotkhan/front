@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -15,30 +16,28 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Define Valibot schema for query validation
-    const querySchema = object({
-      page: optional(
-        pipe(
-          string(),
-          transform((val) => (val ? Number(val) : 1)),
-          number([minValue(1, t("Page must be at least 1"))])
-        )
-      ),
-      pageSize: optional(
-        pipe(
-          string(),
-          transform((val) => (val ? Number(val) : 10)),
-          number([minValue(1, t("Page size must be at least 1"))])
-        )
-      ),
-      email: optional(string()), // email filter
+    const querySchema = z.object({
+      page: z
+        .coerce
+        .number({ invalid_type_error: t("Page must be at least 1") })
+        .int()
+        .min(1, t("Page must be at least 1"))
+        .optional(),
+      pageSize: z
+        .coerce
+        .number({ invalid_type_error: t("Page size must be at least 1") })
+        .int()
+        .min(1, t("Page size must be at least 1"))
+        .optional(),
+      email: z.string().optional(),
     });
 
     const query = getQuery(event);
-    const parsedQuery = parse(querySchema, query, { abortEarly: false });
+    const { page, pageSize, email } = querySchema.parse(query);
 
-    const { page = 1, pageSize = 10, email } = parsedQuery;
-    const offset = (page - 1) * pageSize;
+    const currentPage = page ?? 1;
+    const currentPageSize = pageSize ?? 10;
+    const offset = (currentPage - 1) * currentPageSize;
 
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);
@@ -56,7 +55,7 @@ export default defineEventHandler(async (event) => {
       .select()
       .from(newsletter)
       .orderBy(newsletter.createdAt)
-      .limit(pageSize)
+      .limit(currentPageSize)
       .offset(offset);
 
     if (email) {
@@ -67,8 +66,8 @@ export default defineEventHandler(async (event) => {
 
     return {
       total,
-      page,
-      pageSize,
+      page: currentPage,
+      pageSize: currentPageSize,
       subscriptions,
     };
   } catch (error: any) {
