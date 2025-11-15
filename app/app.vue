@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import * as locales from "@nuxt/ui/locale";
-import { onMounted } from "vue";
 
 import Vazirmatn from "~/assets/fonts/Vazirmatn[wght].woff2";
 
@@ -9,9 +8,10 @@ const { initDevice } = useUser();
 const appConfig = useAppConfig();
 
 // Determine the proper locale object from @nuxt/ui/locale.
+// Only access the locales we need - tree-shaking will handle the rest
 const appLocales = computed(() => {
   const localeKey = locale.value === "fa" ? "fa_ir" : locale.value;
-  return locales[localeKey];
+  return locales[localeKey] || locales.en;
 });
 
 // Derived computed properties for language code and text direction.
@@ -50,6 +50,7 @@ useHead({
       as: "font",
       type: "font/woff2",
       crossorigin: "anonymous",
+      fetchpriority: "high",
     },
   ],
 });

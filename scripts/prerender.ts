@@ -11,7 +11,7 @@ export const generateRoutes = (): string[] => {
 
   if (!fs.existsSync(contentDir)) {
     console.warn("Content directory not found:", contentDir);
-    return ["/"];
+    return ["/fa", "/en"]; // Return default locale routes instead of root
   }
 
   const locales = fs
@@ -30,8 +30,7 @@ export const generateRoutes = (): string[] => {
     });
   }
 
-  // Add root and locale roots
-  routes.add("/");
+  // Add locale roots (skip root "/" since i18n prefix strategy redirects it)
   locales.forEach((locale) => routes.add(`/${locale}`));
 
   const routeList = Array.from(routes);

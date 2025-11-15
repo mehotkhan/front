@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LanguageSwitcher from '~/components/global/LanguageSwitcher.vue'
+import ThemeSwitcher from '~/components/global/ThemeSwitcher.vue'
+
 const { t } = useI18n();
 const {
   dbConnected,

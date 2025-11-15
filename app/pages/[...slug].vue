@@ -111,8 +111,8 @@ useSeoMeta({
           <nuxt-img
             v-if="pageData.thumbnail"
             :provider="isDev ? '' : 'cloudflare'" 
-            preload
-            loading="lazy"
+            loading="eager"
+            fetchpriority="high"
             placeholder
             class="w-full max-w-7xl max-h-[50vh] h-auto object-contain md:rounded-lg"
             :src="pageData.thumbnail"

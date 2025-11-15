@@ -1,6 +1,6 @@
-import { z } from "h3-zod";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { bytesToHex } from "@noble/hashes/utils.js";
+import { z } from "h3-zod";
 
 async function computeHash(data: string): Promise<string> {
   const hash = await sha256(data);

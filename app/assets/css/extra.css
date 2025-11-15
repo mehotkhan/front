@@ -1,6 +1,5 @@
-@import "tailwindcss";
-
 /* custom themes  */
+@reference "tailwindcss";
 
 @font-face {
   font-family: "FarhangDot";

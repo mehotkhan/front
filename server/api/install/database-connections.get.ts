@@ -1,5 +1,5 @@
-import { z } from "h3-zod";
 import type { D1Database } from "@cloudflare/workers-types";
+import { z } from "h3-zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
