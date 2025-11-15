@@ -188,6 +188,7 @@ export default defineNuxtConfig({
   },
   ui: { fonts: false },
   image: {
+    provider: process.env.NODE_ENV === "production" ? "cloudflare" : "ipx",
     screens: {
       default: 320,
       xxs: 480,
@@ -200,13 +201,13 @@ export default defineNuxtConfig({
       "4k": 1921,
     },
     cloudflare: {
-      baseURL: process.env.NUXT_BASE_URL,
+      baseURL: process.env.NUXT_BASE_URL || "https://mohet.ir",
     },
     formats: ["webp", "avif"],
     density: [1, 2],
     quality: 70,
     // Configure domains for nuxt-booster YouTube/Vimeo components (even if not used)
-    domains: ["i.ytimg.com", "vumbnail.com"],
+    domains: ["mohet.ir", "i.ytimg.com", "vumbnail.com"],
     alias: {
       youtube: "i.ytimg.com",
       vimeo: "vumbnail.com",
