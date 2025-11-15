@@ -3,6 +3,7 @@
   "version": 1,
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@8.7.1",
   "scripts": {
     "build": "velite build & nuxt build",
     "build:local": "node --max-old-space-size=8192 node_modules/nuxt/bin/nuxt.mjs build",
@@ -92,6 +93,11 @@
       "esbuild",
       "sharp",
       "vue-demi"
-    ]
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@nuxt/scripts": "0.13"
+      }
+    }
   }
 }
