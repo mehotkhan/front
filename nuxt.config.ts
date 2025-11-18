@@ -54,15 +54,11 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes("node_modules/@nuxt/ui")) {
-              return "nuxt-ui";
-            }
+            // Only chunk Vue core separately to avoid circular dependencies
             if (id.includes("node_modules/vue") || id.includes("node_modules/@vue")) {
               return "vue-core";
             }
-            if (id.includes("node_modules")) {
-              return "vendor";
-            }
+            // Let Vite handle @nuxt/ui automatically to avoid circular deps
           },
         },
       },
