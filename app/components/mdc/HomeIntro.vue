@@ -63,7 +63,7 @@ const { data } = useAsyncData(
         </NuxtLink>
       </div>
       <nuxt-img 
-        :provider="isDev ? '' : 'cloudflare'" :modifiers="{ fit: 'contain' }" preload loading="lazy"
+        :modifiers="{ fit: 'contain' }" preload loading="lazy"
         class="w-full md:w-1/2 max-h-[40vh] h-auto object-contain md:rounded-lg order-2 md:order-none"
         :src="data.thumbnail" :alt="data.title || 'Image'" placeholder />
     </div>

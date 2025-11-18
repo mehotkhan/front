@@ -1,5 +1,4 @@
 import { resolve } from "path";
-import viteCompression from "vite-plugin-compression";
 
 import { generateRoutes } from "./scripts/prerender";
 
@@ -7,8 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-11-15",
   devtools: { enabled: false },
   spaLoadingTemplate: true,
-  
-  // Performance optimizations
+
   sourcemap: {
     server: false,
     client: false,
@@ -27,22 +25,10 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "@nuxt/eslint",
-    "nuxt-booster",
-    "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
-  
-  postcss: {
-    plugins: {
-      cssnano: {
-        preset: ["default", {
-          discardComments: { removeAll: true },
-        }],
-      },
-    },
-  },
-  
+
   build: { 
     transpile: ["echarts", "echarts-liquidfill"],
   },
@@ -62,52 +48,9 @@ export default defineNuxtConfig({
         host: "localhost",
       },
     },
-    plugins: [
-      viteCompression({
-        algorithm: "brotliCompress",
-        threshold: 1024,
-      }),
-    ],
+  
     build: {
       target: "esnext",
-      minify: "esbuild",
-      cssMinify: true, // Use default minifier (more compatible than lightningcss)
-      cssCodeSplit: true,
-      reportCompressedSize: false,
-      chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            // Core Vue framework
-            if (id.includes("node_modules/vue/") || id.includes("node_modules/@vue/")) {
-              return "vue-core";
-            }
-            // Router separate
-            if (id.includes("node_modules/vue-router")) {
-              return "vue-router";
-            }
-            // i18n separate chunk
-            if (id.includes("node_modules/@intlify") || id.includes("node_modules/vue-i18n")) {
-              return "i18n";
-            }
-            // Nuxt UI components
-            if (id.includes("node_modules/@nuxt/ui")) {
-              return "nuxt-ui";
-            }
-            // Echarts
-            if (id.includes("node_modules/echarts") || id.includes("echarts-liquidfill")) {
-              return "echarts";
-            }
-            // Other large vendors
-            if (id.includes("node_modules")) {
-              return "vendor";
-            }
-          },
-          chunkFileNames: "_nuxt/[name]-[hash].js",
-          entryFileNames: "_nuxt/[name]-[hash].js",
-          assetFileNames: "_nuxt/[name]-[hash][extname]",
-        },
-      },
     },
     optimizeDeps: {
       include: [
@@ -130,51 +73,10 @@ export default defineNuxtConfig({
     minify: true,
     sourceMap: false,
     timing: false,
-    rollupConfig: {
-      plugins: [
-        {
-          name: "fix-to-value-import",
-          transform(code, id) {
-            // Only process files that might have the issue
-            if (!code.includes("toValue") || !code.includes("@vueuse/core")) {
-              return null;
-            }
-            
-            let modified = false;
-            let newCode = code;
-            
-            // Handle import pattern: import { toValue, ...other } from '@vueuse/core'
-            const importPattern = /import\s*\{([^}]*)\}\s*from\s*['"]@vueuse\/core['"]/g;
-            
-            newCode = newCode.replace(importPattern, (match, imports) => {
-              if (!imports.includes("toValue")) {
-                return match;
-              }
-              
-              modified = true;
-              const importsList = imports.split(",").map((i: string) => i.trim());
-              const toValueImports = importsList.filter((i: string) => i.includes("toValue"));
-              const otherImports = importsList.filter((i: string) => !i.includes("toValue"));
-              
-              let result = "";
-              if (toValueImports.length > 0) {
-                result += `import { ${toValueImports.join(", ")} } from 'vue';\n`;
-              }
-              if (otherImports.length > 0) {
-                result += `import { ${otherImports.join(", ")} } from '@vueuse/core';`;
-              }
-              return result || match;
-            });
-            
-            return modified ? { code: newCode, map: null } : null;
-          },
-        },
-      ],
-    },
     prerender: {
       crawlLinks: false,
       routes: generateRoutes(),
-      failOnError: false, // Don't fail on icon timeout warnings during prerender
+      failOnError: false,
       autoSubfolderIndex: false,
       concurrency: 10,
     },
@@ -188,7 +90,7 @@ export default defineNuxtConfig({
   },
   ui: { fonts: false },
   image: {
-    provider: process.env.NODE_ENV === "production" ? "cloudflare" : "ipx",
+    provider: process.env.NODE_ENV === "production" ? "cloudflare" : "none",
     screens: {
       default: 320,
       xxs: 480,
@@ -203,10 +105,7 @@ export default defineNuxtConfig({
     cloudflare: {
       baseURL: process.env.NUXT_BASE_URL || "https://mohet.ir",
     },
-    formats: ["webp", "avif"],
-    density: [1, 2],
     quality: 70,
-    // Configure domains for nuxt-booster YouTube/Vimeo components (even if not used)
     domains: ["mohet.ir", "i.ytimg.com", "vumbnail.com"],
     alias: {
       youtube: "i.ytimg.com",
@@ -215,7 +114,6 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    lazy: true,
     langDir: "locales",
     defaultLocale: "fa",
     strategy: "prefix",
@@ -252,7 +150,6 @@ export default defineNuxtConfig({
       ssr: true,
       cors: true,
     },
-    // Exclude root route from prerendering (i18n prefix strategy redirects it)
     "/": {
       prerender: false,
       ssr: false,
@@ -265,7 +162,6 @@ export default defineNuxtConfig({
       prerender: false, 
       ssr: false,
     },
-    // Cache static pages aggressively
     "/:locale": { 
       swr: 3600,
       headers: {
@@ -289,7 +185,6 @@ export default defineNuxtConfig({
   },
 
   echarts: {
-    // ssr: true,
     renderer: ["svg"],
     charts: ["BarChart", "LineChart"],
     components: [
@@ -324,43 +219,14 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
-  booster: {
-    detection: {
-      performance: true,
-      browserSupport: true,
-    },
-    performanceMetrics: {
-      device: {
-        hardwareConcurrency: { min: 2, max: 48 },
-        deviceMemory: { min: 2 },
-      },
-      timing: {
-        fcp: 800,
-        dcl: 1200,
-      },
-    },
-    targetFormats: ["webp", "avif"],
-    componentAutoImport: false,
-    componentPrefix: undefined,
-    lazyOffset: {
-      component: "0%",
-      asset: "0%",
-    },
-  },
-  delayHydration: {
-    mode: "init",
-    debug: process.env.NODE_ENV === "development",
-    replayClick: true,
-  },
   robots: {
     disallow: ["/manage", "/profile"],
   },
-  
-  // Icon configuration - use local mode and increase timeout
+
   icon: {
     serverBundle: {
       collections: ["lucide"],
     },
-    timeout: 5000, // Increase timeout from default 1500ms to 5000ms
+    timeout: 5000,
   },
 });

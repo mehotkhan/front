@@ -99,7 +99,6 @@ const items = computed(() => {
           class="bg-transparent cursor-pointer -mx-2"
           icon="i-lucide-user"
           placeholder
-          :provider="isDev ? '' : 'cloudflare'" 
           :modifiers="{ fit: 'contain' }"
           :src="profile.avatar"
           preload
@@ -111,7 +110,6 @@ const items = computed(() => {
             <UAvatar
               icon="i-lucide-user"
               placeholder
-              :provider="isDev ? '' : 'cloudflare'" 
               :modifiers="{ fit: 'contain' }"
               :src="profile.avatar"
               preload

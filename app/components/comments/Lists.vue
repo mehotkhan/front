@@ -36,7 +36,6 @@ const emit = defineEmits<{
               icon="i-lucide-user"
               size="xl"
               placeholder
-              :provider="isDev ? '' : 'cloudflare'" 
               :modifiers="{ fit: 'contain' }"
               :src="comment.author.avatar"
               preload
