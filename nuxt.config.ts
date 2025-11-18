@@ -51,11 +51,27 @@ export default defineNuxtConfig({
   
     build: {
       target: "esnext",
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules/@nuxt/ui")) {
+              return "nuxt-ui";
+            }
+            if (id.includes("node_modules/vue") || id.includes("node_modules/@vue")) {
+              return "vue-core";
+            }
+            if (id.includes("node_modules")) {
+              return "vendor";
+            }
+          },
+        },
+      },
     },
     optimizeDeps: {
       include: [
         "echarts",
         "echarts-liquidfill",
+        "@nuxt/ui",
       ],
     },
     ssr: {
