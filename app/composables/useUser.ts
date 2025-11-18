@@ -39,7 +39,7 @@ export default () => {
 
   // Generate a new secret key
   const generateSecretKey = (): Uint8Array => {
-    return schnorr.utils.randomPrivateKey();
+    return schnorr.utils.randomSecretKey();
   };
 
   // Derive public key from secret key

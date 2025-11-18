@@ -75,6 +75,8 @@ export default defineNuxtConfig({
         "nuxt-echarts",
         "echarts",
         "echarts-liquidfill",
+        "@noble/curves",
+        "@noble/hashes",
       ],
     },
   },
