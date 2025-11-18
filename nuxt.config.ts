@@ -41,6 +41,7 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         scss: { api: "modern" },
       },
+      devSourcemap: false,
     },
     server: {
       hmr: {
@@ -186,6 +187,27 @@ export default defineNuxtConfig({
       swr: 3600,
       headers: {
         "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      },
+    },
+    // Cache static assets with long lifetimes
+    "/_nuxt/**": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
+    "/content/**": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
+    "/*.woff": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    },
+    "/*.woff2": {
+      headers: {
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     },
   },

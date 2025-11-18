@@ -45,6 +45,30 @@ const { data } = useAsyncData(
     server: true,
   }
 );
+
+// Preload LCP image for better performance
+useHead({
+  link: computed(() => {
+    if (!data.value?.thumbnail) return [];
+    // Handle both relative and absolute URLs
+    let imageUrl = data.value.thumbnail;
+    if (!imageUrl.startsWith('http')) {
+      // If it's a relative path, construct the full URL
+      // For Cloudflare Images, we need to use the CDN URL
+      imageUrl = imageUrl.startsWith('/') 
+        ? `https://mohet.ir/cdn-cgi/image/q=70${imageUrl}`
+        : `https://mohet.ir/cdn-cgi/image/q=70/${imageUrl}`;
+    }
+    return [
+      {
+        rel: "preload",
+        as: "image",
+        href: imageUrl,
+        fetchpriority: "high",
+      },
+    ];
+  }),
+});
 </script>
 
 <template>
@@ -63,9 +87,13 @@ const { data } = useAsyncData(
         </NuxtLink>
       </div>
       <nuxt-img 
-        :modifiers="{ fit: 'contain' }" preload loading="lazy"
+        :modifiers="{ fit: 'contain' }" 
+        loading="eager"
+        fetchpriority="high"
         class="w-full md:w-1/2 max-h-[40vh] h-auto object-contain md:rounded-lg order-2 md:order-none"
-        :src="data.thumbnail" :alt="data.title || 'Image'" placeholder />
+        :src="data.thumbnail" 
+        :alt="data.title || 'Image'" 
+        placeholder />
     </div>
     <div v-else>
       <div class="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8">
